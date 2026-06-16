@@ -1,0 +1,24 @@
+# Core (always needed)
+streamlit>=1.35
+numpy
+pandas>=2.1
+scikit-learn
+
+# Semantic retrieval (preferred backend)
+chromadb>=0.5
+sentence-transformers>=3.0
+
+# Sentiment
+transformers>=4.41
+torch
+
+# Generation (optional — extractive fallback works without these)
+openai>=1.30
+google-generativeai>=0.7
+
+# Data
+edgartools>=2.20
+yfinance>=0.2.40
+
+# Dev / CI
+pytest>=8.0
