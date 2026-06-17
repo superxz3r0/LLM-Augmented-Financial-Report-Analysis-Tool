@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import sys
 from pathlib import Path
@@ -11,11 +12,12 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 st.set_page_config(page_title="FinSight — Filing Analysis", page_icon="📑",
                    layout="wide", initial_sidebar_state="expanded")
 
+from finsight import diff as diff_mod
+from finsight import rag, sentiment
 from finsight.config import FILINGS_DIR, SAMPLE_DIR
 from finsight.chunker import chunk_corpus
 from finsight.index import build_index
 from finsight.ingest import load_corpus
-from finsight import rag
 
 _SECRETS_FILE = Path(__file__).parent / ".streamlit" / "secrets.toml"
 
@@ -81,11 +83,13 @@ def boot():
 
 docs, chunks, index, backend = boot()
 tickers = sorted({d.ticker for d in docs})
+n_real = len([d for d in docs if d.path.parent.name != "sample"])
 
 left, right = st.columns([3, 2])
 with left:
     st.title("📑 FinSight")
-    st.caption("LLM-augmented analysis of SEC filings · retrieval with citations")
+    st.caption("LLM-augmented analysis of SEC filings · retrieval with citations, "
+               "computed fundamentals, and substantive-change detection")
 with right:
     a, b, c = st.columns(3)
     a.metric("Filings", len(docs))
@@ -96,9 +100,11 @@ with st.sidebar:
     st.subheader("Corpus")
     st.write(f"**Companies:** {', '.join(tickers)}")
     st.write(f"**Retrieval backend:** `{backend}`")
-    if not any(d.path.parent.name != "sample" for d in docs):
+    if n_real == 0:
         st.info("Running on bundled sample data. Fetch real EDGAR filings:\n\n"
                 "`python scripts/fetch_filings.py`")
+    else:
+        st.success(f"{n_real} real EDGAR filings loaded.")
 
     st.divider()
     st.subheader("API Keys")
@@ -117,7 +123,9 @@ with st.sidebar:
 
     st.caption("COMP47250 · Project P8 · UCD Summer 2026")
 
-tab_qa, = st.tabs(["💬 Ask the filings"])
+tab_qa, tab_signals, tab_fund, tab_diff = st.tabs(
+    ["💬 Ask the filings", "📊 Structured signals", "📐 Fundamentals", "🔍 Filing diff"]
+)
 
 with tab_qa:
     top = st.columns([3, 1])
@@ -129,7 +137,8 @@ with tab_qa:
 
     if not st.session_state.chat:
         st.caption("Try: *What are the main supply chain risks?* · "
-                   "*How did operating expenses change?*")
+                   "*How did operating expenses change?* · "
+                   "*What does management say about AI?*")
 
     for msg in st.session_state.chat:
         with st.chat_message(msg["role"]):
@@ -173,3 +182,138 @@ with tab_qa:
     if st.session_state.chat and st.button("🗑 Clear conversation"):
         st.session_state.chat = []
         st.rerun()
+
+with tab_signals:
+    st.caption("Rule-based extraction of four signal types per filing: revenue "
+               "guidance, capex guidance, risk-factor count, FinBERT sentiment.")
+    c1, c2 = st.columns(2)
+    t_sel = c1.selectbox("Company", tickers, key="sig_ticker")
+    t_docs = sorted([d for d in docs if d.ticker == t_sel], key=lambda d: d.date, reverse=True)
+    d_sel = c2.selectbox("Filing", t_docs, format_func=lambda d: f"{d.form} · {d.date}")
+
+    from finsight.store import cached_extract
+    with st.spinner("Extracting signals (cached after first run)…"):
+        sig_d = cached_extract(d_sel)
+    from finsight.extract import SignalSet
+    sig = SignalSet(**sig_d)
+    a, b, c, d4 = st.columns(4)
+    a.metric("Sentiment (MD&A)", f"{sig.sentiment_score:+.3f}",
+             help=f"backend: {sig.sentiment_backend}")
+    st.caption(f"extraction: `{sig.method}`" +
+               (f" · regex cross-check {'agrees ✓' if sig.xcheck_agree else 'DISAGREES ✗'}"
+                if sig.xcheck_agree is not None else ""))
+    b.metric("Risk factors", sig.risk_factor_count)
+    c.metric("Revenue guidance hits", len(sig.revenue_guidance))
+    d4.metric("Capex guidance hits", len(sig.capex_guidance))
+    if sig.revenue_guidance:
+        st.markdown("**Revenue guidance:** " + esc(" · ".join(sig.revenue_guidance)))
+    if sig.capex_guidance:
+        st.markdown("**Capex guidance:** " + esc(" · ".join(sig.capex_guidance)))
+
+    st.divider()
+    st.markdown("**Sentiment over time** — MD&A sentiment per filing, per company.")
+    if st.button("Compute sentiment trend across the corpus"):
+        import pandas as pd
+        rows = []
+        prog = st.progress(0.0)
+        for i, d in enumerate(docs):
+            s = cached_extract(d, use_llm=False)
+            rows.append({"date": d.date, "ticker": d.ticker, "sentiment": s["sentiment_score"]})
+            prog.progress((i + 1) / len(docs))
+        prog.empty()
+        df = pd.DataFrame(rows).pivot_table(index="date", columns="ticker", values="sentiment")
+        st.line_chart(df)
+
+with tab_fund:
+    from finsight import metrics as metrics_mod
+
+    st.caption("Computed financial analysis: ratios, YoY growth, and rule-based health flags.")
+    source = st.radio("Data source",
+                      ["Sample (offline)", "SEC XBRL (structured)", "yfinance"],
+                      horizontal=True, label_visibility="collapsed")
+    periods = []
+    if source == "Sample (offline)":
+        payload = json.loads((SAMPLE_DIR / "AURB_fundamentals.json").read_text())
+        periods = [metrics_mod.Fundamentals(**{k: v for k, v in p.items()})
+                   for p in payload["periods"]]
+        st.caption(f"Synthetic fundamentals for {payload['ticker']} (USD millions)")
+    else:
+        cc1, cc2 = st.columns([1, 3])
+        live_ticker = cc1.text_input("Ticker", value="AAPL", label_visibility="collapsed")
+        if cc2.button("Fetch statements"):
+            with st.spinner("Fetching…"):
+                try:
+                    if source.startswith("SEC"):
+                        from finsight.xbrl import fetch_fundamentals
+                        st.session_state.fund = fetch_fundamentals(live_ticker)
+                    else:
+                        st.session_state.fund = metrics_mod.from_yfinance(live_ticker)
+                except Exception as e:
+                    st.error(f"Fetch failed: {e}")
+        periods = st.session_state.get("fund", [])
+
+    if periods:
+        import pandas as pd
+
+        ratio_rows = {p.period: metrics_mod.compute_ratios(p) for p in periods}
+        df = pd.DataFrame(ratio_rows)
+        pct = ["gross_margin", "operating_margin", "net_margin", "roe", "roa", "fcf_margin"]
+
+        def _fmt(idx, v):
+            if v is None or (isinstance(v, float) and v != v):
+                return "—"
+            if idx in pct:
+                return f"{v:.1%}"
+            return f"{v:,.0f}" if idx == "fcf" else f"{v:.2f}"
+
+        styled = pd.DataFrame(
+            {col: [_fmt(idx, df.at[idx, col]) for idx in df.index] for col in df.columns},
+            index=df.index, dtype="object",
+        )
+        st.dataframe(styled, use_container_width=True)
+
+        g = metrics_mod.growth_analysis(periods)
+        if any(any(v is not None for v in vals) for vals in g.values()):
+            st.markdown("**YoY growth**")
+            glabels = [f"{a.period}→{b.period}" for a, b in zip(periods, periods[1:])]
+            gdf = pd.DataFrame(g, index=glabels).T
+            st.dataframe(gdf.map(lambda v: "—" if v is None else f"{v:+.1%}"),
+                         use_container_width=True)
+
+        st.markdown("**Health check**")
+        icon = {"red": "🔴", "amber": "🟡", "green": "🟢"}
+        for f in metrics_mod.health_check(periods):
+            st.markdown(f"{icon[f.severity]} **{f.metric}** — {f.message}  \n"
+                        f"<small>rule: `{f.rule}`</small>", unsafe_allow_html=True)
+
+with tab_diff:
+    st.caption("Detects substantive disclosure changes between two filings of the same company.")
+    by_ticker = {t: sorted([d for d in docs if d.ticker == t], key=lambda d: d.date)
+                 for t in tickers}
+    eligible = [t for t, ds in by_ticker.items() if len(ds) >= 2]
+    if not eligible:
+        st.info("Need at least two filings for one company.")
+    else:
+        c1, c2, c3 = st.columns(3)
+        t = c1.selectbox("Company", eligible, key="diff_ticker")
+        ds = by_ticker[t]
+        old_doc = c2.selectbox("Older filing", ds[:-1],
+                               format_func=lambda d: f"{d.form} · {d.date}")
+        newer = [d for d in ds if d.date > old_doc.date]
+        new_doc = c3.selectbox("Newer filing", newer, index=len(newer) - 1,
+                               format_func=lambda d: f"{d.form} · {d.date}")
+        if st.button("Run diff", type="primary"):
+            with st.spinner("Comparing filings…"):
+                items = diff_mod.diff_documents(old_doc, new_doc)
+            shown = [i for i in items if i.kind in ("new", "substantive", "removed")]
+            st.success(f"{len(shown)} substantive changes "
+                       f"({len(items) - len(shown)} minor edits suppressed)")
+            badge = {"new": "🟢 NEW", "substantive": "🟠 CHANGED", "removed": "🔴 REMOVED"}
+            for it in shown:
+                st.markdown(f"**{badge[it.kind]}** · Item {it.item} · similarity {it.similarity}")
+                lcol, rcol = st.columns(2)
+                lcol.caption(f"{old_doc.form} · {old_doc.date}")
+                lcol.text(it.old_text or "—")
+                rcol.caption(f"{new_doc.form} · {new_doc.date}")
+                rcol.text(it.new_text or "—")
+                st.divider()
