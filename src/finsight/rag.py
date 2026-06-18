@@ -39,11 +39,17 @@ def _gemini_generate(question: str, context: str) -> str:
     return resp.text
 
 
+def _token_jaccard(a: str, b: str) -> float:
+    wa, wb = set(a.lower().split()), set(b.lower().split())
+    if not wa or not wb:
+        return 0.0
+    return len(wa & wb) / len(wa | wb)
+
+
 def _dedupe(hits: list, k: int) -> list:
-    from .diff import token_jaccard
     kept: list = []
     for chunk, score in hits:
-        if any(token_jaccard(chunk.text, kc.text) > 0.85 for kc, _ in kept):
+        if any(_token_jaccard(chunk.text, kc.text) > 0.85 for kc, _ in kept):
             continue
         kept.append((chunk, score))
         if len(kept) >= k:

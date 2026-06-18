@@ -1,0 +1,9 @@
+{
+  "_comment": "Synthetic fundamentals for AURB matching the sample filings narrative; lets the Fundamentals tab demo offline. Units: USD millions.",
+  "ticker": "AURB",
+  "periods": [
+    {"period": "FY2023", "revenue": 2034, "cost_of_revenue": 1180, "operating_income": 285, "net_income": 224, "total_assets": 3100, "total_equity": 1850, "total_debt": 150, "cash": 720, "current_assets": 1450, "current_liabilities": 880, "operating_cash_flow": 360, "capex": 250, "interest_expense": 12},
+    {"period": "FY2024", "revenue": 2400, "cost_of_revenue": 1360, "operating_income": 372, "net_income": 295, "total_assets": 3520, "total_equity": 2150, "total_debt": 145, "cash": 890, "current_assets": 1680, "current_liabilities": 940, "operating_cash_flow": 445, "capex": 310, "interest_expense": 11},
+    {"period": "FY2025", "revenue": 2550, "cost_of_revenue": 1480, "operating_income": 358, "net_income": 270, "total_assets": 3610, "total_equity": 2330, "total_debt": 140, "cash": 760, "current_assets": 1610, "current_liabilities": 1010, "operating_cash_flow": 390, "capex": 240, "interest_expense": 10}
+  ]
+}

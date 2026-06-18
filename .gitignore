@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+data/filings/
+data/index/
+.streamlit/secrets.toml
+data/finsight.db
+*.pdf

@@ -1,0 +1,25 @@
+AURORA ROBOTICS, INC. — FORM 10-K (FISCAL 2024) — SYNTHETIC SAMPLE FOR DEMO
+
+Item 1A. Risk Factors
+
+Competition in industrial automation could adversely affect our results.
+The industrial automation market is intensely competitive. We compete against larger companies with greater financial resources, and pricing pressure in our core robotic arm segment could cause our revenue and margins to decline. If we fail to innovate at the pace of our competitors, demand for our products may decrease and our operating results could be adversely affected.
+
+Our reliance on a limited number of semiconductor suppliers exposes us to supply risk.
+We source precision motion controllers from three suppliers, two of which are located in a single geographic region. Any disruption, natural disaster, or trade restriction affecting these suppliers could delay production, increase our costs, and harm customer relationships. We carry limited inventory and a prolonged shortage would have a material adverse effect on our business.
+
+We may not successfully integrate acquisitions.
+Our growth strategy includes acquisitions of complementary software businesses. Integration involves significant challenges, including retention of key personnel and harmonisation of technology platforms. Failure to realise expected synergies could result in impairment charges and weaken our financial position.
+
+Litigation related to workplace robotics safety standards remains uncertain.
+We are subject to evolving safety regulation in the jurisdictions where our collaborative robots are deployed. Adverse outcomes in pending litigation or new regulatory requirements could increase compliance costs and expose us to losses.
+
+Item 7. Management's Discussion and Analysis of Financial Condition and Results of Operations
+
+Fiscal 2024 was a year of strong execution. Total revenue grew 18 percent to $2.4 billion, driven by record demand for our collaborative robot line and successful expansion into warehouse automation. Gross margin improved 140 basis points as supply conditions normalised, and we achieved profitable growth in all three operating segments.
+
+Looking ahead, we expect fiscal 2025 revenue of $2.7 billion to $2.9 billion, reflecting continued strength in logistics automation and the benefit of our recent software acquisitions. We anticipate capital expenditures of approximately $310 million, primarily for capacity expansion at our Galway and Austin facilities.
+
+Our outlook assumes stable component availability. We remain confident in the opportunity ahead: the installed base of our connected robots grew 31 percent this year, creating a growing stream of recurring software revenue. We believe this transition strengthens the durability of our business model and represents a significant opportunity for margin improvement.
+
+We ended the year with $890 million in cash and equivalents and no long-term debt, providing flexibility to invest through the cycle.

@@ -1,0 +1,21 @@
+{
+  "_README": "Hand-labelled ground truth for extraction evaluation. Add one entry per filing as the real corpus is labelled. Label ~30 real filings (held out from any tuning) to make the >85% accuracy claim in the report.",
+  "AURB_10-K_2024-12-15": {
+    "risk_factor_count": 4,
+    "revenue_guidance_contains": ["2.7", "2.9"],
+    "capex_guidance_contains": ["310"],
+    "sentiment_sign": 1
+  },
+  "AURB_10-K_2025-12-12": {
+    "risk_factor_count": 5,
+    "revenue_guidance_contains": ["2.6", "2.8"],
+    "capex_guidance_contains": ["240"],
+    "sentiment_sign": -1
+  },
+  "HELX_10-K_2025-11-30": {
+    "risk_factor_count": 3,
+    "revenue_guidance_contains": ["160", "190"],
+    "capex_guidance_contains": ["55"],
+    "sentiment_sign": 1
+  }
+}

@@ -47,11 +47,15 @@ def _save_keys(gemini: str, openai: str) -> None:
 
 def _render_key_form() -> None:
     with st.form("api_key_form", clear_on_submit=False):
-        gemini = st.text_input("Gemini API key", value=os.environ.get("GEMINI_API_KEY", ""),
-                               type="password", placeholder="AIza…")
-        openai = st.text_input("OpenAI API key (optional)",
-                               value=os.environ.get("OPENAI_API_KEY", ""),
-                               type="password", placeholder="sk-…")
+        gemini = st.text_input(
+            "Gemini API key", value=os.environ.get("GEMINI_API_KEY", ""),
+            type="password", placeholder="AIza…",
+            help="Free tier via Google AI Studio — gemini-2.5-flash",
+        )
+        openai = st.text_input(
+            "OpenAI API key (optional)", value=os.environ.get("OPENAI_API_KEY", ""),
+            type="password", placeholder="sk-…",
+        )
         if st.form_submit_button("Save & apply", type="primary"):
             gemini, openai = gemini.strip(), openai.strip()
             if not gemini and not openai:
@@ -62,7 +66,7 @@ def _render_key_form() -> None:
                     os.environ["GEMINI_API_KEY"] = gemini
                 if openai:
                     os.environ["OPENAI_API_KEY"] = openai
-                st.success("Keys saved.")
+                st.success("Keys saved — will reload automatically on next start.")
                 st.rerun()
 
 
@@ -101,10 +105,18 @@ with st.sidebar:
     st.write(f"**Companies:** {', '.join(tickers)}")
     st.write(f"**Retrieval backend:** `{backend}`")
     if n_real == 0:
-        st.info("Running on bundled sample data. Fetch real EDGAR filings:\n\n"
+        st.info("Running on bundled synthetic samples. Add real EDGAR filings:\n\n"
                 "`python scripts/fetch_filings.py`")
     else:
         st.success(f"{n_real} real EDGAR filings loaded.")
+    with st.expander("How it works"):
+        st.markdown(
+            "1. **Ingest** — Item-level section split of 10-K/10-Q text\n"
+            "2. **Index** — sentence-aware chunks → vector store\n"
+            "3. **Answer** — RAG with mandatory `[n]` citations + hallucination audit\n"
+            "4. **Compute** — signals, ratios, health flags\n"
+            "5. **Compare** — substantive-change diff between filings\n"
+            "6. **Correlate** — signals vs forward returns (OLS)")
 
     st.divider()
     st.subheader("API Keys")
@@ -118,20 +130,23 @@ with st.sidebar:
         with st.expander("Update keys"):
             _render_key_form()
     else:
-        st.warning("No LLM key set — running in extractive mode.")
+        st.warning("No LLM key set — running in extractive mode. "
+                   "Paste a key below to enable generated answers.")
         _render_key_form()
 
     st.caption("COMP47250 · Project P8 · UCD Summer 2026")
 
-tab_qa, tab_signals, tab_fund, tab_diff = st.tabs(
-    ["💬 Ask the filings", "📊 Structured signals", "📐 Fundamentals", "🔍 Filing diff"]
+tab_qa, tab_signals, tab_fund, tab_diff, tab_returns = st.tabs(
+    ["💬 Ask the filings", "📊 Structured signals", "📐 Fundamentals",
+     "🔍 Filing diff", "📈 Signal → returns"]
 )
 
 with tab_qa:
     top = st.columns([3, 1])
     with top[1]:
         scope = st.selectbox("Scope", ["All companies"] + tickers,
-                             label_visibility="collapsed")
+                             label_visibility="collapsed",
+                             help="Restrict retrieval to one company")
     if "chat" not in st.session_state:
         st.session_state.chat = []
 
@@ -246,6 +261,7 @@ with tab_fund:
                     if source.startswith("SEC"):
                         from finsight.xbrl import fetch_fundamentals
                         st.session_state.fund = fetch_fundamentals(live_ticker)
+                        st.caption("Source: SEC XBRL companyfacts — issuer-filed structured data.")
                     else:
                         st.session_state.fund = metrics_mod.from_yfinance(live_ticker)
                 except Exception as e:
@@ -285,14 +301,17 @@ with tab_fund:
         for f in metrics_mod.health_check(periods):
             st.markdown(f"{icon[f.severity]} **{f.metric}** — {f.message}  \n"
                         f"<small>rule: `{f.rule}`</small>", unsafe_allow_html=True)
+        st.caption("Screening heuristics for further investigation — not investment advice.")
 
 with tab_diff:
-    st.caption("Detects substantive disclosure changes between two filings of the same company.")
+    st.caption("Detects substantive disclosure changes between two filings of the same company, "
+               "filtering out boilerplate and numeric-only edits.")
     by_ticker = {t: sorted([d for d in docs if d.ticker == t], key=lambda d: d.date)
                  for t in tickers}
     eligible = [t for t, ds in by_ticker.items() if len(ds) >= 2]
     if not eligible:
-        st.info("Need at least two filings for one company.")
+        st.info("Need at least two filings for one company — fetch more with "
+                "`scripts/fetch_filings.py`.")
     else:
         c1, c2, c3 = st.columns(3)
         t = c1.selectbox("Company", eligible, key="diff_ticker")
@@ -310,10 +329,35 @@ with tab_diff:
                        f"({len(items) - len(shown)} minor edits suppressed)")
             badge = {"new": "🟢 NEW", "substantive": "🟠 CHANGED", "removed": "🔴 REMOVED"}
             for it in shown:
-                st.markdown(f"**{badge[it.kind]}** · Item {it.item} · similarity {it.similarity}")
+                st.markdown(f"**{badge[it.kind]}** · Item {it.item} · "
+                            f"similarity {it.similarity}")
                 lcol, rcol = st.columns(2)
                 lcol.caption(f"{old_doc.form} · {old_doc.date}")
                 lcol.text(it.old_text or "—")
                 rcol.caption(f"{new_doc.form} · {new_doc.date}")
                 rcol.text(it.new_text or "—")
                 st.divider()
+
+with tab_returns:
+    st.caption("Regresses filing sentiment against 5- and 20-day forward returns, "
+               "controlling for the market (SPY) over the same window.")
+    real_docs = [d for d in docs if d.path.parent.name != "sample"]
+    if not real_docs:
+        st.info("No real filings loaded yet. Once `scripts/fetch_filings.py` has run, "
+                "this tab scores sentiment per filing, fetches forward returns, and "
+                "reports OLS coefficients, t-statistics and R² per window.")
+    elif st.button("Run signal → return study", type="primary"):
+        from finsight import returns as ret_mod
+        rows = []
+        prog = st.progress(0.0, "Scoring sentiment per filing…")
+        for i, d in enumerate(real_docs):
+            s = sentiment.score_text(d.full_text[:20000])
+            rows.append({"ticker": d.ticker, "date": d.date, "signal": s.score})
+            prog.progress((i + 1) / len(real_docs))
+        prog.empty()
+        with st.spinner("Fetching prices and running regressions…"):
+            results = ret_mod.run_study(rows)
+        for r in results:
+            st.markdown(f"- {esc(r.summary())}")
+        st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
+                   "holding the market return constant. |t| > 2 ≈ significant at 5%.")
