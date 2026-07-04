@@ -1,3 +1,20 @@
+"""Retrieval: hybrid lexical + dense index.
+
+Design decision (deliberate departure from the suggested FAISS/Chroma-only
+stack): financial queries are keyword-heavy — tickers, "Item 1A", "deferred
+revenue" — where exact-term matching (BM25) outperforms embeddings, while
+embeddings win on paraphrase ("supply problems" -> "component shortages").
+So we run both and merge with Reciprocal Rank Fusion (RRF), the standard
+zero-tuning fusion method.
+
+  lexical:  _BM25            — pure-python Okapi BM25, no dependencies
+  dense:    _ChromaIndex     — sentence-transformers + ChromaDB (persisted)
+            _TfidfIndex      — scikit-learn fallback when no model available
+  fusion:   HybridIndex      — RRF over both ranked lists
+
+All backends expose .search(query, k, ticker) -> list[(Chunk, score)], which
+is the only interface the RAG layer depends on.
+"""
 from __future__ import annotations
 
 import math
@@ -14,6 +31,9 @@ def _tokenize(text: str) -> list[str]:
 
 
 class _BM25:
+    """Okapi BM25 (k1=1.5, b=0.75). ~50 lines, fully explainable in an
+    interview — that is the point of implementing it rather than importing."""
+
     K1, B = 1.5, 0.75
 
     def __init__(self, chunks: list[Chunk]):
@@ -53,6 +73,10 @@ class _BM25:
 
 
 class HybridIndex:
+    """Reciprocal Rank Fusion over lexical and dense rankings:
+    rrf(d) = sum over rankers of 1 / (60 + rank_d). Rank-based, so the two
+    incomparable score scales never need calibrating."""
+
     RRF_K = 60
 
     def __init__(self, lexical, dense, dense_name: str):
@@ -87,6 +111,9 @@ class _ChromaIndex:
         self.chunks = {c.chunk_id: c for c in chunks}
         client = chromadb.PersistentClient(path=str(INDEX_DIR))
 
+        # Fingerprint the corpus; if the persisted collection matches, reuse
+        # it instead of re-embedding (a 300-doc corpus takes ~20-40 min on
+        # CPU — unacceptable on every app start).
         fp = hashlib.sha256("|".join(sorted(self.chunks)).encode()).hexdigest()[:16]
         try:
             col = client.get_collection("filings")
@@ -103,11 +130,21 @@ class _ChromaIndex:
         texts = [c.text for c in chunks]
         embeddings = self.model.encode(texts, batch_size=32, show_progress_bar=True,
                                        normalize_embeddings=True)
-        self.col.add(
-            ids=[c.chunk_id for c in chunks],
-            embeddings=embeddings.tolist(),
-            metadatas=[{"ticker": c.ticker, "form": c.form, "date": c.date} for c in chunks],
-        )
+        ids = [c.chunk_id for c in chunks]
+        embs = embeddings.tolist()
+        metas = [{"ticker": c.ticker, "form": c.form, "date": c.date,
+                  "doc_id": c.doc_id, "item": c.item,
+                  "section_title": c.section_title} for c in chunks]
+        # Chroma caps a single .add() at ~5461 records — batch to stay under it
+        # (unbatched, a 5,863-chunk corpus raises and silently falls back to TF-IDF).
+        BATCH = 5000
+        for i in range(0, len(ids), BATCH):
+            self.col.add(
+                ids=ids[i:i + BATCH],
+                embeddings=embs[i:i + BATCH],
+                documents=texts[i:i + BATCH],
+                metadatas=metas[i:i + BATCH],
+            )
 
     def search(self, query: str, k: int, ticker: str | None = None):
         q = self.model.encode([query], normalize_embeddings=True).tolist()
@@ -115,8 +152,19 @@ class _ChromaIndex:
         res = self.col.query(query_embeddings=q, n_results=k, where=where)
         out = []
         for cid, dist in zip(res["ids"][0], res["distances"][0]):
-            out.append((self.chunks[cid], 1.0 - dist))
+            # in-memory dict when we built this session; reconstruct from the
+            # persisted store when only the Chroma directory is present
+            chunk = self.chunks.get(cid) or self._chunk_from_store(cid)
+            out.append((chunk, 1.0 - dist))
         return out
+
+    def _chunk_from_store(self, cid: str) -> Chunk:
+        got = self.col.get(ids=[cid], include=["documents", "metadatas"])
+        m = got["metadatas"][0]
+        return Chunk(chunk_id=cid, text=got["documents"][0],
+                     doc_id=m.get("doc_id", ""), ticker=m["ticker"],
+                     form=m["form"], date=m["date"], item=m.get("item", ""),
+                     section_title=m.get("section_title", ""))
 
 
 class _TfidfIndex:
@@ -143,11 +191,14 @@ class _TfidfIndex:
 
 
 def build_index(chunks: list[Chunk]):
+    """Return a hybrid (BM25 + dense) index; dense backend is the best
+    available: semantic embeddings, else TF-IDF."""
     lexical = _BM25(chunks)
     try:
         dense, dense_name = _ChromaIndex(chunks), "bge"
-    except Exception as e:
-        print(f"[index] semantic backend unavailable ({type(e).__name__}: {e}); falling back to TF-IDF")
+    except Exception as e:  # no model cached / no chromadb / offline
+        print(f"[index] semantic backend unavailable ({type(e).__name__}: {e}); "
+              f"dense side falling back to TF-IDF")
         dense, dense_name = _TfidfIndex(chunks), "tfidf"
     hybrid = HybridIndex(lexical, dense, dense_name)
     return hybrid, hybrid.name

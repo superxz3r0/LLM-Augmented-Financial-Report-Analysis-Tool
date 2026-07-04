@@ -1,3 +1,8 @@
+"""Chunking: split sections into overlapping passages for embedding.
+
+We chunk on sentence boundaries where possible so retrieved passages read
+naturally and citations point at coherent text, not mid-sentence fragments.
+"""
 from __future__ import annotations
 
 import re
@@ -6,7 +11,7 @@ from dataclasses import dataclass
 from .config import settings
 from .ingest import Document
 
-_SENT_SPLIT = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9“\"(])")
+_SENT_SPLIT = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9\u201c\"(])")
 
 
 @dataclass
@@ -22,10 +27,18 @@ class Chunk:
 
     @property
     def citation(self) -> str:
+        if self.form.upper() == "TRANSCRIPT":
+            phase = {"QA": "Q&A", "PR": "Prepared Remarks"}.get(self.item)
+            head = f"{self.ticker} Earnings Call ({self.date})"
+            if phase:
+                return f"{head}, {phase} — {self.section_title}"
+            return f"{head} — {self.section_title}"   # flat text: no speaker structure
         return f"{self.ticker} {self.form} ({self.date}), Item {self.item} — {self.section_title}"
 
 
 def _pack_sentences(sentences: list[str], size: int, overlap: int) -> list[str]:
+    """Pack sentences into ~size-char chunks; overlap carries whole trailing
+    sentences (never mid-word slices) so every chunk starts cleanly."""
     chunks: list[str] = []
     cur: list[str] = []
     cur_len = 0
@@ -35,6 +48,7 @@ def _pack_sentences(sentences: list[str], size: int, overlap: int) -> list[str]:
             continue
         if cur_len + len(s) + 1 > size and cur:
             chunks.append(" ".join(cur))
+            # carry whole sentences from the tail until overlap budget is met
             carried: list[str] = []
             budget = 0
             for prev in reversed(cur):
