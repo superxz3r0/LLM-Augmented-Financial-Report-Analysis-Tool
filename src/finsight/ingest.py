@@ -112,19 +112,28 @@ def _split_sections(text: str) -> list[Section]:
 #     Operator
 # and the Prepared-Remarks vs Q&A boundary, so every chunk can later cite
 # WHO said it and in WHICH phase of the call.
+
+#don't need every first letter is uppercase letter
+_NAME = r"[A-Z][\w.'\u2019-]*"
+_PART = r"(?:de|del|della|der|den|di|da|dos|du|la|le|van|von|ter|ten|te|bin|al|el)"
+
 _SPEAKER_LINE = re.compile(
-    r"^([A-Z][\w.'\u2019-]*(?:\s+[A-Z][\w.'\u2019-]*){0,3})"   # 1-4 capitalised name words
-    r"\s*(?:--|\u2014|\u2013)\s*"                              # -- or em/en dash
-    r"([A-Z].{1,80})$"                                          # role/title, starts uppercase
+    r"^(" + _NAME + r"(?:\s+(?:" + _PART + r"\s+){0,2}" + _NAME + r"){0,3})"
+    r"\s*(?:--|\u2014|\u2013)\s*"
+    r"([A-Z].{1,80})$"
 )
+
 _OPERATOR_LINE = re.compile(r"^Operator\s*:?\s*$", re.IGNORECASE)
 _QA_BOUNDARY = re.compile(
     r"^\s*(?:question[s]?[\s\-]*(?:&|and)?[\s\-]*answer|q\s*&\s*a\b)", re.IGNORECASE)
 # API-sourced transcripts (e.g. API Ninjas) use "Name: speech..." on one line
 # instead of a standalone "Name -- Title" header. Require 2-4 capitalised
 # words (or Operator) so prose like "Note:" / "Contents:" doesn't match.
+
 _SPEAKER_COLON = re.compile(
-    r"^((?:[A-Z][\w.'\u2019-]+\s+){1,3}[A-Z][\w.'\u2019-]+|Operator)\s*:\s+(\S.*)$")
+    r"^(" + _NAME + r"(?:\s+(?:" + _PART + r"\s+){0,2}" + _NAME + r"){1,3}|Operator)"
+    r"\s*:\s+(\S.*)$")
+
 # Those same API transcripts often lack an explicit "Questions and Answers"
 # header line, so also flip to Q&A when the operator hands over to questions.
 _QA_HEURISTIC = re.compile(
