@@ -10,6 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from finsight import audit, diff, extract
+from finsight.charts import (
+    _validate_payload,
+    discover_chart_candidates,
+    load_chart_chunks,
+)
 from finsight.chunker import chunk_corpus, chunk_document
 from finsight.config import SAMPLE_DIR
 from finsight.ingest import clean_text, load_corpus
@@ -52,6 +57,64 @@ def test_chunks_carry_citation_metadata(docs):
     c = chunks[0]
     assert c.ticker and c.form and c.date and c.item
     assert c.ticker in c.citation and c.date in c.citation
+
+
+def test_official_chart_samples_become_rag_chunks():
+    chunks = load_chart_chunks(SAMPLE_DIR)
+    assert len(chunks) == 3
+    assert {c.ticker for c in chunks} == {"GOOGL", "META", "NVDA"}
+    assert all(c.content_type == "chart" and c.asset_path and c.asset_path.exists()
+               for c in chunks)
+    assert all(c.source_url.startswith("https://www.sec.gov/") for c in chunks)
+    nvda = next(c for c in chunks if c.ticker == "NVDA")
+    assert "2286.8" in nvda.text and "pixel-verified" in nvda.text
+    assert "Chart -" in nvda.citation
+
+
+def test_chart_candidate_detection_uses_nearby_filing_language():
+    filing = """
+    <html><body><h2>Stock Performance Graph</h2>
+    <p>The following graph compares cumulative total return.</p>
+    <img src="issuer-20241231_g2.jpg" width="900" height="500" alt="Performance graph">
+    <img src="issuer-logo.jpg" width="900" height="500" alt="Company logo">
+    </body></html>
+    """
+    found = discover_chart_candidates(
+        filing,
+        "https://www.sec.gov/Archives/edgar/data/1/accession/issuer.htm",
+    )
+    assert found
+    assert found[0].image_url.endswith("issuer-20241231_g2.jpg")
+    assert all(not c.image_url.endswith("issuer-logo.jpg") for c in found)
+
+
+def test_chart_schema_rejects_points_outside_visible_axis():
+    payload = {
+        "title": "Revenue trend",
+        "chart_type": "line",
+        "summary": "Revenue trend.",
+        "x_axis": {"label": "Year", "unit": "year", "categories": ["2024"]},
+        "y_axis": {"label": "Revenue", "unit": "USDm", "minimum": 0, "maximum": 100},
+        "series": [{
+            "name": "Revenue",
+            "values": [{"x": "2024", "y": 120, "estimated": True}],
+        }],
+        "insights": [],
+        "caveats": [],
+    }
+    with pytest.raises(ValueError, match="above the visible y-axis"):
+        _validate_payload(payload)
+
+
+def test_chart_questions_retrieve_the_matching_chart():
+    from finsight.index import _BM25
+
+    chunks = load_chart_chunks(SAMPLE_DIR)
+    bm25 = _BM25(chunks)
+    nvda = bm25.search("NVIDIA five-year cumulative return 2286.8 chart", k=1)
+    meta = bm25.search("Meta investment value fell to 59.8 in 2022", k=1)
+    assert nvda[0][0].ticker == "NVDA"
+    assert meta[0][0].ticker == "META"
 
 
 def test_chunk_sizes_bounded(docs):

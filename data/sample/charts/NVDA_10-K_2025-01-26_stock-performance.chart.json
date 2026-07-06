@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "chart_id": "stock-performance",
+  "ticker": "NVDA",
+  "company": "NVIDIA Corporation",
+  "form": "10-K",
+  "period_end": "2025-01-26",
+  "filing_date": "2025-02-26",
+  "item": "5",
+  "filing_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126.htm",
+  "image_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126_g2.jpg",
+  "image_file": "NVDA_10-K_2025-01-26_stock-performance.jpg",
+  "extraction_provider": "openai+pixel-verified",
+  "review_status": "pixel-verified",
+  "title": "Comparison of Five-Year Cumulative Total Return - NVIDIA",
+  "chart_type": "line",
+  "summary": "Value of a $100 investment in NVIDIA, the S&P 500, and the Nasdaq 100 from January 26, 2020 through January 26, 2025, with index dividends reinvested.",
+  "x_axis": {
+    "label": "Date",
+    "unit": "fiscal year end",
+    "categories": ["01/26/2020", "01/31/2021", "01/30/2022", "01/29/2023", "01/28/2024", "01/26/2025"]
+  },
+  "y_axis": {
+    "label": "Value of $100 investment",
+    "unit": "USD",
+    "minimum": 0,
+    "maximum": 2500
+  },
+  "series": [
+    {
+      "name": "NVIDIA Corporation",
+      "values": [
+        {"x": "01/26/2020", "y": 100.0, "estimated": false},
+        {"x": "01/31/2021", "y": 235.9, "estimated": true},
+        {"x": "01/30/2022", "y": 367.5, "estimated": true},
+        {"x": "01/29/2023", "y": 331.2, "estimated": true},
+        {"x": "01/28/2024", "y": 982.3, "estimated": true},
+        {"x": "01/26/2025", "y": 2286.8, "estimated": true}
+      ]
+    },
+    {
+      "name": "S&P 500",
+      "values": [
+        {"x": "01/26/2020", "y": 100.0, "estimated": false},
+        {"x": "01/31/2021", "y": 111.0, "estimated": true},
+        {"x": "01/30/2022", "y": 127.0, "estimated": true},
+        {"x": "01/29/2023", "y": 95.0, "estimated": true},
+        {"x": "01/28/2024", "y": 134.0, "estimated": true},
+        {"x": "01/26/2025", "y": 202.0, "estimated": true}
+      ]
+    },
+    {
+      "name": "Nasdaq 100",
+      "values": [
+        {"x": "01/26/2020", "y": 100.0, "estimated": false},
+        {"x": "01/31/2021", "y": 148.0, "estimated": true},
+        {"x": "01/30/2022", "y": 170.0, "estimated": true},
+        {"x": "01/29/2023", "y": 141.0, "estimated": true},
+        {"x": "01/28/2024", "y": 204.0, "estimated": true},
+        {"x": "01/26/2025", "y": 250.0, "estimated": true}
+      ]
+    }
+  ],
+  "insights": [
+    "NVIDIA ended at approximately $2,287 per $100 initially invested, far above both benchmarks.",
+    "NVIDIA's indexed investment value increased by approximately $1,305 between January 2024 and January 2025.",
+    "NVIDIA dipped modestly in fiscal 2023 before accelerating in fiscal 2024 and fiscal 2025."
+  ],
+  "caveats": [
+    "Except for the $100 starting values, values were digitized from the raster marker positions and are approximate.",
+    "The filing states that total return is historical and is not intended to indicate future performance."
+  ]
+}

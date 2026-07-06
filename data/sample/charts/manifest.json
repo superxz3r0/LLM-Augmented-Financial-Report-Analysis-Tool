@@ -1,0 +1,42 @@
+{
+  "description": "Official SEC 10-K chart excerpts used by the offline chart-RAG demo.",
+  "downloaded_utc": "2026-07-06",
+  "samples": [
+    {
+      "ticker": "GOOGL",
+      "company": "Alphabet Inc.",
+      "form": "10-K",
+      "period_end": "2024-12-31",
+      "filing_date": "2025-02-05",
+      "item": "5",
+      "image_file": "GOOGL_10-K_2024-12-31_stock-performance.jpg",
+      "filing_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/goog-20241231.htm",
+      "image_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/goog-20241231_g1.jpg",
+      "context": "Stock Performance Graphs. Comparison of cumulative five-year total return for Alphabet Class A common stock, the S&P 500, NASDAQ Composite, and RDG Internet Composite. A $100 investment on December 31, 2019 is tracked through December 31, 2024 with dividends reinvested."
+    },
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "form": "10-K",
+      "period_end": "2025-01-26",
+      "filing_date": "2025-02-26",
+      "item": "5",
+      "image_file": "NVDA_10-K_2025-01-26_stock-performance.jpg",
+      "filing_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126.htm",
+      "image_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126_g2.jpg",
+      "context": "Comparison of five-year cumulative total return among NVIDIA Corporation, the S&P 500 Index, and the Nasdaq 100 Index. The chart tracks a $100 investment from January 26, 2020 through January 26, 2025."
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "form": "10-K",
+      "period_end": "2024-12-31",
+      "filing_date": "2025-01-30",
+      "item": "5",
+      "image_file": "META_10-K_2024-12-31_stock-performance.jpg",
+      "filing_url": "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm",
+      "image_url": "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231_g2.jpg",
+      "context": "Stock Performance Graph. Comparison of cumulative total return for Meta Class A common stock, the Dow Jones Internet Composite Index, S&P 500, and Nasdaq Composite for the five years ended December 31, 2024. A $100 investment at the end of 2019 is assumed, with dividends reinvested."
+    }
+  ]
+}

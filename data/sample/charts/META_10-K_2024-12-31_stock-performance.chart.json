@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "chart_id": "stock-performance",
+  "ticker": "META",
+  "company": "Meta Platforms, Inc.",
+  "form": "10-K",
+  "period_end": "2024-12-31",
+  "filing_date": "2025-01-30",
+  "item": "5",
+  "filing_url": "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm",
+  "image_url": "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231_g2.jpg",
+  "image_file": "META_10-K_2024-12-31_stock-performance.jpg",
+  "extraction_provider": "openai+pixel-verified",
+  "review_status": "pixel-verified",
+  "title": "Comparison of Five-Year Cumulative Total Return - Meta",
+  "chart_type": "line",
+  "summary": "Value of a $100 investment in Meta, DJINET, the S&P 500, and the Nasdaq Composite from December 31, 2019 through December 31, 2024, with dividends reinvested.",
+  "x_axis": {
+    "label": "Date",
+    "unit": "year end",
+    "categories": ["12/31/2019", "12/31/2020", "12/31/2021", "12/31/2022", "12/31/2023", "12/31/2024"]
+  },
+  "y_axis": {
+    "label": "Value of $100 investment",
+    "unit": "USD",
+    "minimum": 50,
+    "maximum": 300
+  },
+  "series": [
+    {
+      "name": "Meta Platforms, Inc.",
+      "values": [
+        {"x": "12/31/2019", "y": 100.0, "estimated": false},
+        {"x": "12/31/2020", "y": 133.1, "estimated": true},
+        {"x": "12/31/2021", "y": 162.1, "estimated": true},
+        {"x": "12/31/2022", "y": 59.8, "estimated": true},
+        {"x": "12/31/2023", "y": 172.2, "estimated": true},
+        {"x": "12/31/2024", "y": 285.3, "estimated": true}
+      ]
+    },
+    {
+      "name": "DJINET",
+      "values": [
+        {"x": "12/31/2019", "y": 100.0, "estimated": false},
+        {"x": "12/31/2020", "y": 155.4, "estimated": true},
+        {"x": "12/31/2021", "y": 163.8, "estimated": true},
+        {"x": "12/31/2022", "y": 90.5, "estimated": true},
+        {"x": "12/31/2023", "y": 137.3, "estimated": true},
+        {"x": "12/31/2024", "y": 179.2, "estimated": true}
+      ]
+    },
+    {
+      "name": "S&P 500",
+      "values": [
+        {"x": "12/31/2019", "y": 100.0, "estimated": false},
+        {"x": "12/31/2020", "y": 116.3, "estimated": true},
+        {"x": "12/31/2021", "y": 150.6, "estimated": true},
+        {"x": "12/31/2022", "y": 121.6, "estimated": true},
+        {"x": "12/31/2023", "y": 155.4, "estimated": true},
+        {"x": "12/31/2024", "y": 195.3, "estimated": true}
+      ]
+    },
+    {
+      "name": "Nasdaq Composite",
+      "values": [
+        {"x": "12/31/2019", "y": 100.0, "estimated": false},
+        {"x": "12/31/2020", "y": 148.8, "estimated": true},
+        {"x": "12/31/2021", "y": 190.4, "estimated": true},
+        {"x": "12/31/2022", "y": 129.6, "estimated": true},
+        {"x": "12/31/2023", "y": 198.7, "estimated": true},
+        {"x": "12/31/2024", "y": 250.4, "estimated": true}
+      ]
+    }
+  ],
+  "insights": [
+    "Meta ended highest at approximately $285 per $100 initially invested.",
+    "Meta fell to approximately $60 in 2022, then recovered to approximately $285 by the end of 2024.",
+    "Meta exceeded the Nasdaq Composite by approximately $35 at the end of 2024."
+  ],
+  "caveats": [
+    "Except for the $100 starting values, values were digitized from the raster marker positions and are approximate.",
+    "The filing states that stock-price performance is not necessarily indicative of future performance."
+  ]
+}

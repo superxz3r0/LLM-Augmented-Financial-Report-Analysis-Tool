@@ -14,7 +14,8 @@ st.set_page_config(page_title="FinSight — Filing Analysis", page_icon="📑",
 
 from finsight import diff as diff_mod
 from finsight import rag, sentiment
-from finsight.config import FILINGS_DIR, SAMPLE_DIR
+from finsight.charts import load_chart_chunks
+from finsight.config import CHARTS_DIR, FILINGS_DIR, SAMPLE_DIR
 from finsight.chunker import chunk_corpus
 from finsight.index import build_index
 from finsight.ingest import load_corpus
@@ -81,13 +82,16 @@ def esc(text: str) -> str:
 def boot():
     docs = load_corpus(FILINGS_DIR, SAMPLE_DIR)
     chunks = chunk_corpus(docs)
+    chunks.extend(load_chart_chunks(CHARTS_DIR, SAMPLE_DIR))
     index, backend = build_index(chunks)
     return docs, chunks, index, backend
 
 
 docs, chunks, index, backend = boot()
-tickers = sorted({d.ticker for d in docs})
+doc_tickers = sorted({d.ticker for d in docs})
+tickers = sorted({d.ticker for d in docs} | {c.ticker for c in chunks})
 n_real = len([d for d in docs if d.path.parent.name != "sample"])
+n_charts = len([c for c in chunks if c.content_type == "chart"])
 
 left, right = st.columns([3, 2])
 with left:
@@ -98,7 +102,7 @@ with right:
     a, b, c = st.columns(3)
     a.metric("Filings", len(docs))
     b.metric("Companies", len(tickers))
-    c.metric("Chunks", f"{len(chunks):,}")
+    c.metric("Chunks", f"{len(chunks):,}", help=f"{n_charts} chart chunks")
 
 with st.sidebar:
     st.subheader("Corpus")
@@ -112,11 +116,12 @@ with st.sidebar:
     with st.expander("How it works"):
         st.markdown(
             "1. **Ingest** — Item-level section split of 10-K/10-Q text\n"
-            "2. **Index** — sentence-aware chunks → vector store\n"
-            "3. **Answer** — RAG with mandatory `[n]` citations + hallucination audit\n"
-            "4. **Compute** — signals, ratios, health flags\n"
-            "5. **Compare** — substantive-change diff between filings\n"
-            "6. **Correlate** — signals vs forward returns (OLS)")
+            "2. **Charts** — detect images and extract axes, series, values, and trends\n"
+            "3. **Index** — text + chart chunks → hybrid vector store\n"
+            "4. **Answer** — RAG with mandatory `[n]` citations + hallucination audit\n"
+            "5. **Compute** — signals, ratios, health flags\n"
+            "6. **Compare** — substantive-change diff between filings\n"
+            "7. **Correlate** — signals vs forward returns (OLS)")
 
     st.divider()
     st.subheader("API Keys")
@@ -153,7 +158,7 @@ with tab_qa:
     if not st.session_state.chat:
         st.caption("Try: *What are the main supply chain risks?* · "
                    "*How did operating expenses change?* · "
-                   "*What does management say about AI?*")
+                   "*Which company had the highest five-year return in its chart?*")
 
     for msg in st.session_state.chat:
         with st.chat_message(msg["role"]):
@@ -162,9 +167,12 @@ with tab_qa:
                 (st.success if msg["audit"]["passed"] else st.error)(msg["audit"]["summary"])
             if msg.get("sources"):
                 with st.expander(f"Sources ({len(msg['sources'])})"):
-                    for i, (cite, snippet) in enumerate(msg["sources"], 1):
+                    for i, source in enumerate(msg["sources"], 1):
+                        cite, snippet = source[:2]
                         st.markdown(f"**[{i}] {cite}**")
                         st.caption(esc(snippet))
+                        if len(source) > 2 and source[2] and Path(source[2]).exists():
+                            st.image(source[2], caption=cite, use_container_width=True)
 
     if q := st.chat_input("Ask a question about the filings…"):
         st.session_state.chat.append({"role": "user", "content": q})
@@ -181,8 +189,14 @@ with tab_qa:
             st.markdown(esc(ans.text))
             st.caption(f"backend: `{ans.backend}`")
 
-            entry = {"role": "assistant", "content": ans.text,
-                     "sources": [(c.citation, c.text[:300] + "…") for c, _ in ans.sources]}
+            entry = {
+                "role": "assistant",
+                "content": ans.text,
+                "sources": [
+                    (c.citation, c.text[:300] + "…", str(c.asset_path) if c.asset_path else "")
+                    for c, _ in ans.sources
+                ],
+            }
             if ans.backend not in ("extractive", "none"):
                 from finsight.audit import audit_answer
                 report = audit_answer(ans.text, [c for c, _ in ans.sources])
@@ -192,6 +206,10 @@ with tab_qa:
                 for i, (c, score) in enumerate(ans.sources, 1):
                     st.markdown(f"**[{i}] {c.citation}** · relevance {score:.2f}")
                     st.caption(esc(c.text[:300]) + "…")
+                    if c.content_type == "chart" and c.asset_path:
+                        st.image(c.asset_path, caption=c.section_title, use_container_width=True)
+                    if c.source_url:
+                        st.markdown(f"[Open SEC filing]({c.source_url})")
             st.session_state.chat.append(entry)
 
     if st.session_state.chat and st.button("🗑 Clear conversation"):
@@ -202,7 +220,7 @@ with tab_signals:
     st.caption("Rule-based extraction of four signal types per filing: revenue "
                "guidance, capex guidance, risk-factor count, FinBERT sentiment.")
     c1, c2 = st.columns(2)
-    t_sel = c1.selectbox("Company", tickers, key="sig_ticker")
+    t_sel = c1.selectbox("Company", doc_tickers, key="sig_ticker")
     t_docs = sorted([d for d in docs if d.ticker == t_sel], key=lambda d: d.date, reverse=True)
     d_sel = c2.selectbox("Filing", t_docs, format_func=lambda d: f"{d.form} · {d.date}")
 

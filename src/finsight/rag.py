@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 
 from .config import settings
@@ -57,10 +58,27 @@ def _dedupe(hits: list, k: int) -> list:
     return kept
 
 
+def _retrieval_query(question: str) -> str:
+    aliases = {
+        "英伟达": " NVIDIA NVDA",
+        "谷歌": " Alphabet GOOGL",
+        "字母表": " Alphabet GOOGL",
+        "脸书": " Meta META",
+    }
+    expanded = question
+    for label, terms in aliases.items():
+        if label in question:
+            expanded += terms
+    if re.search(r"\b(chart|graph|plot|figure|trend|return)\b|图表|曲线|趋势|回报|收益",
+                 question, flags=re.IGNORECASE):
+        expanded += " financial filing chart graph series values trend cumulative total return"
+    return expanded
+
+
 def answer(index, question: str, ticker: str | None = None, k: int | None = None,
            history: list[tuple[str, str]] | None = None) -> RagAnswer:
     k = k or settings.top_k
-    hits = _dedupe(index.search(question, k * 3, ticker=ticker), k)
+    hits = _dedupe(index.search(_retrieval_query(question), k * 3, ticker=ticker), k)
     if not hits:
         return RagAnswer("No relevant passages found in the corpus.", [], "none")
 

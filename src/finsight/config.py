@@ -9,6 +9,7 @@ DATA_DIR = Path(os.environ.get("FINSIGHT_DATA_DIR", PROJECT_ROOT / "data"))
 SAMPLE_DIR = DATA_DIR / "sample"
 FILINGS_DIR = DATA_DIR / "filings"
 INDEX_DIR = DATA_DIR / "index"
+CHARTS_DIR = DATA_DIR / "charts"
 
 
 @dataclass
@@ -19,6 +20,8 @@ class Settings:
     top_k: int = 5
     openai_model: str = "gpt-4o-mini"
     gemini_model: str = "gemini-2.5-flash"
+    chart_openai_model: str = "gpt-4o-mini"
+    chart_gemini_model: str = "gemini-2.5-flash"
     finbert_model: str = "ProsusAI/finbert"
     substantive_similarity_threshold: float = 0.80
     boilerplate_min_ratio: float = 0.97

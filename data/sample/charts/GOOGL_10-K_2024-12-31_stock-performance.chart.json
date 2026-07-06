@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "chart_id": "stock-performance-class-a",
+  "ticker": "GOOGL",
+  "company": "Alphabet Inc.",
+  "form": "10-K",
+  "period_end": "2024-12-31",
+  "filing_date": "2025-02-05",
+  "item": "5",
+  "filing_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/goog-20241231.htm",
+  "image_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/goog-20241231_g1.jpg",
+  "image_file": "GOOGL_10-K_2024-12-31_stock-performance.jpg",
+  "extraction_provider": "openai+pixel-verified",
+  "review_status": "pixel-verified",
+  "title": "Comparison of Cumulative Five-Year Total Return - Alphabet Class A",
+  "chart_type": "line",
+  "summary": "Value of a $100 investment in Alphabet Class A and three benchmark indices from December 31, 2019 through December 31, 2024, including reinvested dividends.",
+  "x_axis": {
+    "label": "Date",
+    "unit": "year end",
+    "categories": ["12/2019", "12/2020", "12/2021", "12/2022", "12/2023", "12/2024"]
+  },
+  "y_axis": {
+    "label": "Value of $100 investment",
+    "unit": "USD",
+    "minimum": 0,
+    "maximum": 400
+  },
+  "series": [
+    {
+      "name": "Alphabet Inc. Class A",
+      "values": [
+        {"x": "12/2019", "y": 100.0, "estimated": false},
+        {"x": "12/2020", "y": 130.8, "estimated": true},
+        {"x": "12/2021", "y": 216.3, "estimated": true},
+        {"x": "12/2022", "y": 131.9, "estimated": true},
+        {"x": "12/2023", "y": 208.6, "estimated": true},
+        {"x": "12/2024", "y": 281.4, "estimated": true}
+      ]
+    },
+    {
+      "name": "S&P 500",
+      "values": [
+        {"x": "12/2019", "y": 100.0, "estimated": false},
+        {"x": "12/2020", "y": 118.6, "estimated": true},
+        {"x": "12/2021", "y": 152.3, "estimated": true},
+        {"x": "12/2022", "y": 124.7, "estimated": true},
+        {"x": "12/2023", "y": 157.8, "estimated": true},
+        {"x": "12/2024", "y": 197.0, "estimated": true}
+      ]
+    },
+    {
+      "name": "NASDAQ Composite",
+      "values": [
+        {"x": "12/2019", "y": 100.0, "estimated": false},
+        {"x": "12/2020", "y": 145.1, "estimated": true},
+        {"x": "12/2021", "y": 177.1, "estimated": true},
+        {"x": "12/2022", "y": 119.7, "estimated": true},
+        {"x": "12/2023", "y": 172.7, "estimated": true},
+        {"x": "12/2024", "y": 222.9, "estimated": true}
+      ]
+    },
+    {
+      "name": "RDG Internet Composite",
+      "values": [
+        {"x": "12/2019", "y": 100.0, "estimated": false},
+        {"x": "12/2020", "y": 137.4, "estimated": true},
+        {"x": "12/2021", "y": 134.6, "estimated": true},
+        {"x": "12/2022", "y": 81.7, "estimated": true},
+        {"x": "12/2023", "y": 119.2, "estimated": true},
+        {"x": "12/2024", "y": 157.8, "estimated": true}
+      ]
+    }
+  ],
+  "insights": [
+    "Alphabet Class A ended highest at approximately $281 per $100 initially invested.",
+    "Alphabet outperformed the NASDAQ Composite by approximately $58 at the end of 2024.",
+    "All four series declined during 2022 and recovered during 2023 and 2024."
+  ],
+  "caveats": [
+    "Except for the $100 starting values, annual values were digitized from the raster line positions and are approximate.",
+    "The filing states that historical returns are not intended to suggest future performance."
+  ]
+}

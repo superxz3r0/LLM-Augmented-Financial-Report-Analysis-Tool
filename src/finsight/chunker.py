@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 from .config import settings
 from .ingest import Document
@@ -19,9 +20,14 @@ class Chunk:
     item: str
     section_title: str
     text: str
+    content_type: str = "text"
+    asset_path: Path | None = None
+    source_url: str = ""
 
     @property
     def citation(self) -> str:
+        if self.content_type == "chart":
+            return f"{self.ticker} {self.form} ({self.date}), Chart - {self.section_title}"
         return f"{self.ticker} {self.form} ({self.date}), Item {self.item} — {self.section_title}"
 
 

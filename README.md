@@ -5,6 +5,7 @@ LLM-augmented analysis tool for SEC financial filings (10-K / 10-Q). Ask questio
 ## Features
 
 - **RAG Q&A** — ask questions across all loaded filings; every answer includes numbered citations and a hallucination audit
+- **Chart RAG** — detect chart images in 10-K/10-Q HTML, extract axes/series/values with OpenAI or Gemini vision, and retrieve the result as first-class chart chunks
 - **Signal extraction** — revenue guidance, capex guidance, risk-factor count, and FinBERT sentiment per filing
 - **Fundamentals** — computed ratios (margins, leverage, FCF), YoY growth, and health flags from SEC XBRL or yfinance
 - **Filing diff** — detects substantive disclosure changes between two filings of the same company
@@ -82,6 +83,44 @@ Keys are stored locally in `.streamlit/secrets.toml` and never sent anywhere exc
 
 ---
 
+## Chart ingestion and RAG
+
+See [`docs/CHART_VISION_RAG_BRANCH.md`](docs/CHART_VISION_RAG_BRANCH.md) for the
+branch-specific architecture, rationale, worked chunk example, limitations, and ingestion roadmap.
+
+The bundled `data/sample/charts/` directory contains three official SEC 10-K
+chart excerpts from Alphabet, NVIDIA, and Meta. Each image has a
+`*.chart.json` sidecar containing filing metadata, axes, series, approximate
+values, visible findings, caveats, and a review status. On startup these
+sidecars are flattened into retrieval-rich text and added to the same hybrid
+BM25/vector index as ordinary filing passages.
+
+To discover and ingest charts from another filing:
+
+```powershell
+python scripts\ingest_charts.py `
+  --filing-url "https://www.sec.gov/Archives/edgar/data/.../filing.htm" `
+  --ticker EXAMPLE --company "Example Corp." --form 10-K `
+  --period-end 2025-12-31 --provider auto
+```
+
+The command:
+
+1. ranks `<img>` elements using nearby chart language, image attributes, and dimensions;
+2. downloads likely chart images;
+3. sends each image and nearby filing context to OpenAI or Gemini vision;
+4. validates a fixed JSON schema and rejects values outside the visible y-axis;
+5. writes the image plus a `*.chart.json` sidecar under `data/charts/`.
+
+Vision-derived points are marked `estimated`. Numeric chart extraction should
+be reviewed or digitized against the raster before being treated as exact; the
+three bundled sidecars have `review_status: pixel-verified`.
+
+Try asking: `Which company had the highest five-year return in its chart?` or
+`How did Meta's indexed investment value change from 2022 to 2024?`
+
+---
+
 ## Fetching real SEC filings
 
 The bundled `data/sample/` folder contains two synthetic companies for offline demo. To load real EDGAR data:
@@ -142,6 +181,7 @@ finsight/
 │   ├── ingest.py              # Filing parser (HTML + plain text)
 │   ├── store.py               # SQLite signal cache
 │   ├── chunker.py             # Sentence-aware text chunker
+│   ├── charts.py              # Chart discovery, vision schema, chart chunks
 │   ├── index.py               # Hybrid BM25 + vector retrieval
 │   ├── rag.py                 # RAG answering with citations
 │   ├── audit.py               # Hallucination audit
@@ -152,6 +192,7 @@ finsight/
 │   ├── xbrl.py                # SEC XBRL fundamentals fetcher
 │   └── returns.py             # Signal → forward return regression
 ├── scripts/
+│   ├── ingest_charts.py       # SEC chart discovery + vision extraction
 │   └── fetch_filings.py       # EDGAR filing downloader
 ├── eval/
 │   ├── run_extraction_eval.py # Extraction accuracy evaluation
@@ -160,6 +201,7 @@ finsight/
 │   └── test_pipeline.py       # Unit tests (offline)
 └── data/
     ├── sample/                # Bundled synthetic filings
+    │   └── charts/            # Official SEC chart images + JSON sidecars
     ├── filings/               # Real EDGAR downloads (gitignored)
     └── index/                 # Persisted vector index (gitignored)
 ```

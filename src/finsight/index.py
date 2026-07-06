@@ -87,7 +87,12 @@ class _ChromaIndex:
         self.chunks = {c.chunk_id: c for c in chunks}
         client = chromadb.PersistentClient(path=str(INDEX_DIR))
 
-        fp = hashlib.sha256("|".join(sorted(self.chunks)).encode()).hexdigest()[:16]
+        fingerprint_rows = (
+            f"{c.chunk_id}|{c.content_type}|{c.text}" for c in chunks
+        )
+        fp = hashlib.sha256(
+            "\n".join(sorted(fingerprint_rows)).encode("utf-8")
+        ).hexdigest()[:16]
         try:
             col = client.get_collection("filings")
             if (col.metadata or {}).get("fingerprint") == fp and col.count() == len(chunks):
@@ -106,7 +111,12 @@ class _ChromaIndex:
         self.col.add(
             ids=[c.chunk_id for c in chunks],
             embeddings=embeddings.tolist(),
-            metadatas=[{"ticker": c.ticker, "form": c.form, "date": c.date} for c in chunks],
+            metadatas=[{
+                "ticker": c.ticker,
+                "form": c.form,
+                "date": c.date,
+                "content_type": c.content_type,
+            } for c in chunks],
         )
 
     def search(self, query: str, k: int, ticker: str | None = None):
