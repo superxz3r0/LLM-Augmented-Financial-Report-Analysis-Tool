@@ -363,19 +363,120 @@ with tab_returns:
 
                 c1, c2, c3 = st.columns(3)
 
-                c1.metric("R²", f"{r.r2:.3f}")
-                c2.metric("RMSE", f"{r.rmse:.4f}")
-                c3.metric("MAE", f"{r.mae:.4f}")
+                c1.metric(
+                    "R²",
+                    f"{r.r2:.3f}",
+                    help="""
+                Coefficient of Determination : Measures how much of the variation in future stock returns is explained by the model. The higher the better.
+
+                Benchmark:
+                
+                • >0.60  Strong
+                
+                • 0.30–0.60  Moderate
+                
+                • <0.30  Weak
+                """
+                )
+
+                c2.metric(
+                    "RMSE",
+                    f"{r.rmse:.4f}",
+                    help="""
+                Root Mean Squared Error : Measures the typical prediction error. Lower values indicate better predictive accuracy.
+                """
+                )
+
+                c3.metric(
+                    "MAE",
+                    f"{r.mae:.4f}",
+                    help="""
+                Mean Absolute Error : Measures the average absolute difference between predicted and actual returns. Lower values indicate more accurate predictions.
+                """
+                )
 
                 c4, c5, c6 = st.columns(3)
 
-                c4.metric("Coefficient (β)", f"{r.coef:.4f}")
-                c5.metric("t-statistic", f"{r.t_stat:.2f}")
-                c6.metric("Observations", r.n)
+                c4.metric(
+                    "Coefficient (β)",
+                    f"{r.coef:.4f}",
+                    help="""
+                Regression coefficient : Represents the expected change in future return for a one-unit increase in the filing sentiment signal.
+
+                • Positive value - Positive relationship
+                
+                • Negative value - Negative relationship
+                """
+                )
+
+                c5.metric(
+                    "t-statistic",
+                    f"{r.t_stat:.2f}",
+                    help="""
+                It measures whether the relationship is statistically significant.
+
+                Benchmark:
+                
+                • |t| > 2  → Significant
+                
+                • |t| < 2  → Weak statistical evidence
+                """
+                )
+
+                c6.metric(
+                    "Observations",
+                    str(r.n),
+                    help="""
+                Number of company filings used to train the regression model. More observations generally improve the reliability of the estimated relationship.
+                """
+                )
+
+                if abs(r.t_stat) >= 2:
+
+                    if r.coef > 0:
+                        verdict = "Positive"
+
+                    else:
+                        verdict = "Negative"
+
+                else:
+                    verdict = "Inconclusive"
 
                 if "mkt" in r.controls:
+
                     beta, t = r.controls["mkt"]
-                    st.info(f"Market β = {beta:.3f} (t = {t:.2f})")
+
+                    c7, c8, c9 = st.columns(3)
+
+                    c7.metric(
+                        "Market β",
+                        f"{beta:.3f}",
+                        help="""
+                Regression coefficient for the market return (SPY). Controls for overall market movement so that the filing signal is evaluated independently.
+                """
+                    )
+
+                    c8.metric(
+                        "Market t-stat",
+                        f"{t:.2f}",
+                        help="""
+                Statistical significance of the market coefficient. Higher absolute values indicate stronger evidence that market movements influence future returns.
+                """
+                    )
+                    
+                c9.metric(
+                    "Signal Assessment",
+                    verdict,
+                    help="""
+                Overall assessment of the predictive power of the filing signal.
+
+                • Positive - Positive relationship with statistically meaningful evidence.
+                
+                • Inconclusive - Relationship exists but evidence is not yet strong enough to draw firm conclusions.
+                
+                • Negative - Negative relationship supported by the regression.
+                """
+                )
 
                 st.divider()
         st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
