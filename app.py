@@ -357,7 +357,26 @@ with tab_returns:
         prog.empty()
         with st.spinner("Fetching prices and running regressions…"):
             results = ret_mod.run_study(rows)
-        for r in results:
-            st.markdown(f"- {esc(r.summary())}")
+            for r in results:
+
+                st.subheader(f"{r.window}-Day Forward Return")
+
+                c1, c2, c3 = st.columns(3)
+
+                c1.metric("R²", f"{r.r2:.3f}")
+                c2.metric("RMSE", f"{r.rmse:.4f}")
+                c3.metric("MAE", f"{r.mae:.4f}")
+
+                c4, c5, c6 = st.columns(3)
+
+                c4.metric("Coefficient (β)", f"{r.coef:.4f}")
+                c5.metric("t-statistic", f"{r.t_stat:.2f}")
+                c6.metric("Observations", r.n)
+
+                if "mkt" in r.controls:
+                    beta, t = r.controls["mkt"]
+                    st.info(f"Market β = {beta:.3f} (t = {t:.2f})")
+
+                st.divider()
         st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
                    "holding the market return constant. |t| > 2 ≈ significant at 5%.")
