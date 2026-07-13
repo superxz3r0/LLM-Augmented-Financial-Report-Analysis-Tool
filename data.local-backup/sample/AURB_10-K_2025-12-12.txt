@@ -1,0 +1,28 @@
+AURORA ROBOTICS, INC. — FORM 10-K (FISCAL 2025) — SYNTHETIC SAMPLE FOR DEMO
+
+Item 1A. Risk Factors
+
+Competition in industrial automation could adversely affect our results.
+The industrial automation market is intensely competitive. We compete against larger companies with greater financial resources, and pricing pressure in our core robotic arm segment could cause our revenue and margins to decline. If we fail to innovate at the pace of our competitors, demand for our products may decrease and our operating results could be adversely affected.
+
+Our reliance on a limited number of semiconductor suppliers exposes us to supply risk.
+We source precision motion controllers from three suppliers, two of which are located in a single geographic region. Any disruption, natural disaster, or trade restriction affecting these suppliers could delay production, increase our costs, and harm customer relationships. We carry limited inventory and a prolonged shortage would have a material adverse effect on our business.
+
+New export control regulations could restrict sales of our autonomous systems.
+During fiscal 2025, expanded export control rules came into effect covering certain autonomous robotics and machine vision technologies. A significant portion of our advanced perception products may require licences for sale into several international markets. We cannot predict whether such licences will be granted, and these restrictions could materially reduce our addressable market, delay shipments, and adversely affect our revenue growth and competitive position.
+
+Concentration of revenue among large logistics customers has increased.
+In fiscal 2025, our three largest customers represented 34 percent of total revenue, up from 21 percent in the prior year. The loss of, or a significant reduction in purchases by, any of these customers could materially harm our results of operations. Negotiating leverage held by these customers may also create pricing pressure and reduce our margins.
+
+Litigation related to workplace robotics safety standards remains uncertain.
+We are subject to evolving safety regulation in the jurisdictions where our collaborative robots are deployed. Adverse outcomes in pending litigation or new regulatory requirements could increase compliance costs and expose us to losses.
+
+Item 7. Management's Discussion and Analysis of Financial Condition and Results of Operations
+
+Fiscal 2025 presented a more challenging demand environment. Total revenue grew 6 percent to $2.55 billion, below our initial guidance, as logistics customers deferred capacity expansion amid macroeconomic uncertainty. Gross margin declined 60 basis points, reflecting pricing pressure and the impact of newly enacted export restrictions on our perception product line.
+
+Looking ahead, we expect fiscal 2026 revenue of $2.6 billion to $2.8 billion, a wider range than usual reflecting uncertainty regarding export licence approvals. We anticipate capital expenditures of approximately $240 million, a reduction from the prior year, as we moderate capacity expansion and prioritise efficiency.
+
+Despite near-term headwinds, the installed base of our connected robots grew 24 percent and recurring software revenue now represents 19 percent of total revenue. We believe this transition continues to strengthen the durability of our business model, although the pace of margin improvement will depend on the demand recovery.
+
+We ended the year with $760 million in cash and equivalents and no long-term debt.
