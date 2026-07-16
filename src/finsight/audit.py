@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from functools import lru_cache
 
 _SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
 _CITE = re.compile(r"\[\d+\]")
@@ -52,6 +53,13 @@ def _is_meta(sentence: str) -> bool:
             or "no relevant passages" in s or len(_content_tokens(sentence)) < 4)
 
 
+@lru_cache(maxsize=2)
+def _embedding_model(model_name: str):
+    from sentence_transformers import SentenceTransformer
+
+    return SentenceTransformer(model_name, local_files_only=True)
+
+
 def audit_answer(answer: str, source_chunks: list) -> AuditReport:
     sources = [c.text for c in source_chunks]
     if not sources:
@@ -66,9 +74,9 @@ def audit_answer(answer: str, source_chunks: list) -> AuditReport:
     backend = "jaccard"
     scores: list[float] = []
     try:
-        from sentence_transformers import SentenceTransformer
         from .config import settings
-        model = SentenceTransformer(settings.embedding_model)
+
+        model = _embedding_model(settings.embedding_model)
         e_sent = model.encode(sentences, normalize_embeddings=True)
         e_src = model.encode(sources, normalize_embeddings=True)
         sims = e_sent @ e_src.T

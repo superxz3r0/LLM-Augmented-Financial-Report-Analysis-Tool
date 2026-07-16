@@ -66,23 +66,36 @@ def _validate_llm_payload(raw: str) -> dict | None:
 
 def _llm_guidance(mda: str) -> dict | None:
     import os
+    from .llm import (
+        LLMCallError,
+        api_key_status,
+        call_with_retries,
+        gemini_error,
+        openai_error,
+    )
     text = mda[:12000]
     try:
-        if os.environ.get("GEMINI_API_KEY"):
-            import google.generativeai as genai
-            genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-            model = genai.GenerativeModel(settings_model(), system_instruction=_LLM_PROMPT)
-            return _validate_llm_payload(model.generate_content(text).text)
-        if os.environ.get("OPENAI_API_KEY"):
-            from openai import OpenAI
-            from .config import settings as _s
-            resp = OpenAI().chat.completions.create(
-                model=_s.openai_model, temperature=0,
-                messages=[{"role": "system", "content": _LLM_PROMPT},
-                          {"role": "user", "content": text}])
-            return _validate_llm_payload(resp.choices[0].message.content)
-    except Exception:
-        return None
+        if api_key_status("gemini", "GEMINI_API_KEY").valid:
+            def gemini_request() -> dict | None:
+                import google.generativeai as genai
+                genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+                model = genai.GenerativeModel(settings_model(), system_instruction=_LLM_PROMPT)
+                return _validate_llm_payload(model.generate_content(text).text)
+            return call_with_retries(gemini_request, gemini_error)
+        if api_key_status("openai", "OPENAI_API_KEY", aliases=("OPENAI_KEY",)).valid:
+            def openai_request() -> dict | None:
+                from openai import OpenAI
+                from .config import settings as _s
+                resp = OpenAI(api_key=os.environ["OPENAI_API_KEY"]).chat.completions.create(
+                    model=_s.openai_model, temperature=0,
+                    messages=[{"role": "system", "content": _LLM_PROMPT},
+                              {"role": "user", "content": text}],
+                    timeout=30,
+                )
+                return _validate_llm_payload(resp.choices[0].message.content or "")
+            return call_with_retries(openai_request, openai_error)
+    except LLMCallError as exc:
+        print(f"[extract] {exc.provider} {exc.category}: {exc}")
     return None
 
 

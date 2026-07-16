@@ -1,0 +1,114 @@
+{
+  "pass_threshold": 0.77,
+  "passed": 82,
+  "failed": 9,
+  "total": 91,
+  "pass_rate": 0.901,
+  "answerable_pass_rate": 0.892,
+  "unanswerable_pass_rate": 1.0,
+  "answer_backend_counts": {
+    "openai": 91
+  },
+  "fallback_after_provider_failure": 0,
+  "answer_failure_category_counts": {},
+  "failure_category_counts": {
+    "Overall quality failure": 8,
+    "Retrieval failure": 1
+  },
+  "summary": {
+    "n": 91,
+    "n_answerable": 83,
+    "n_unanswerable": 8,
+    "overall": 0.837,
+    "metrics": {
+      "answer_relevancy": 0.984,
+      "faithfulness": 0.59,
+      "contextual_relevancy": 0.891,
+      "contextual_recall": 0.982,
+      "contextual_precision": 0.381
+    },
+    "diagnostics": {
+      "abstention_accuracy": 1.0,
+      "answer_correctness": 0.378,
+      "citation_correctness": 0.467,
+      "citation_presence": 0.94,
+      "evidence_hit": 0.976,
+      "exact_chunk_hit": 0.934,
+      "hallucination_rate": 0.41,
+      "metadata_hit_rate": 1.0,
+      "mrr": 0.976,
+      "recall_at_1": 0.922,
+      "recall_at_3": 0.976,
+      "recall_at_5": 0.982,
+      "recall_at_k": 0.982,
+      "retrieval_hit": 0.982
+    }
+  },
+  "by_type": {
+    "cross-filing comparison": {
+      "total": 16,
+      "passed": 11,
+      "failed": 5,
+      "pass_rate": 0.688
+    },
+    "section-specific": {
+      "total": 23,
+      "passed": 23,
+      "failed": 0,
+      "pass_rate": 1.0
+    },
+    "single-filing factual": {
+      "total": 21,
+      "passed": 19,
+      "failed": 2,
+      "pass_rate": 0.905
+    },
+    "transcript QA": {
+      "total": 23,
+      "passed": 21,
+      "failed": 2,
+      "pass_rate": 0.913
+    },
+    "unanswerable": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "pass_rate": 1.0
+    }
+  },
+  "index_backend": "hybrid(bm25+bge)",
+  "index": {
+    "backend": "chroma",
+    "index_path": "D:\\UCD\\CSNL\\Summer\\LLM-Augmented-Financial-Report-Analysis-Tool\\data\\index",
+    "index_status": "existing index loaded",
+    "index_reused": true,
+    "embeddings_regenerated": false,
+    "rebuild_requested": false,
+    "rebuild_performed": false,
+    "rebuild_reason": "",
+    "manifest_version": 1,
+    "embedding_provider": "sentence-transformers",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dimension": 384,
+    "chunk_size": 900,
+    "chunk_overlap": 150,
+    "doc_count": 623,
+    "chunk_count": 101641,
+    "corpus_fingerprint": "d1e72458e62c21b47a3137dd",
+    "load_time_seconds": 16.236,
+    "query_encoder_loaded": true,
+    "query_encoder_error": ""
+  },
+  "doc_count": 623,
+  "chunk_count": 101641,
+  "top_k": 5,
+  "eval_path": "D:\\UCD\\CSNL\\Summer\\LLM-Augmented-Financial-Report-Analysis-Tool\\eval\\rag_questions.json",
+  "evaluation_mode": "rag_answer",
+  "run_mode": "rag_answer",
+  "evaluation_timestamp": "2026-07-15T22:54:41+00:00",
+  "evaluation_runtime_seconds": 275.173,
+  "index_mtime_restored": [
+    "chroma.sqlite3"
+  ],
+  "index_mtime_changed": []
+}

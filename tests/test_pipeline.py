@@ -113,6 +113,91 @@ def test_audit_flags_fabricated_number():
     assert any(s.unsupported_numbers for s in report.sentences)
 
 
+def test_rag_eval_set_loads():
+    from finsight import rag_eval
+
+    cases = rag_eval.load_eval_set()
+    assert len(cases) >= 80
+    assert any(c.expected_unanswerable for c in cases)
+    assert all(c.question_id and c.question and c.gold_answer for c in cases)
+    assert all(
+        source.form in {"10-K", "10-Q", "TRANSCRIPT"}
+        for c in cases
+        for source in c.gold_sources
+    )
+    assert not any(
+        source.ticker in {"AURB", "HELX"}
+        for c in cases
+        for source in c.gold_sources
+    )
+
+
+def test_rag_eval_scores_gold_context_and_citation():
+    from finsight import rag_eval
+    from finsight.rag import RagAnswer
+
+    case = rag_eval.RagEvalCase(
+        question_id="RAG_TEST",
+        question="What revenue guidance did Aurora provide?",
+        gold_answer="Aurora expected fiscal 2025 revenue of $2.7 billion to $2.9 billion.",
+        gold_sources=[
+            rag_eval.GoldSource(
+                ticker="AURB", form="10-K", date="2024-12-15", item="7",
+                section="Management's Discussion and Analysis",
+                evidence=("Looking ahead, we expect fiscal 2025 revenue of "
+                          "$2.7 billion to $2.9 billion."),
+            )
+        ],
+    )
+
+    class Chunk:
+        ticker = "AURB"
+        form = "10-K"
+        date = "2024-12-15"
+        item = "7"
+        section_title = "Management's Discussion and Analysis"
+        text = ("Looking ahead, we expect fiscal 2025 revenue of $2.7 billion "
+                "to $2.9 billion, reflecting continued strength.")
+
+    def answerer(index, question, k):
+        return RagAnswer(
+            "Aurora expected fiscal 2025 revenue of $2.7 billion to $2.9 billion [1].",
+            [(Chunk(), 0.9)],
+            "fake",
+        )
+
+    result = rag_eval.evaluate_case(index=None, case=case, k=1, answerer=answerer)
+    assert result.metrics.contextual_recall == 1.0
+    assert result.metrics.contextual_precision == 1.0
+    assert result.diagnostics["citation_presence"] == 1.0
+    assert result.diagnostics["citation_correctness"] == 1.0
+
+
+def test_rag_eval_scores_unanswerable_abstention():
+    from finsight import rag_eval
+    from finsight.rag import RagAnswer
+
+    case = rag_eval.RagEvalCase(
+        question_id="RAG_EMPTY",
+        question="What revenue guidance does Aurora give for fiscal 2030?",
+        gold_answer="The available filings do not provide fiscal 2030 revenue guidance.",
+        gold_sources=[],
+        expected_unanswerable=True,
+    )
+
+    def answerer(index, question, k):
+        return RagAnswer("The filings do not provide fiscal 2030 revenue guidance.", [], "fake")
+
+    class EmptyIndex:
+        def search(self, question, k):
+            return []
+
+    result = rag_eval.evaluate_case(index=EmptyIndex(), case=case, k=1, answerer=answerer)
+    assert result.metrics.answer_relevancy == 1.0
+    assert result.metrics.contextual_recall is None
+    assert result.diagnostics["abstention_accuracy"] == 1.0
+
+
 def test_ols_recovers_known_slope():
     rng = np.random.default_rng(7)
     x = rng.normal(size=200)

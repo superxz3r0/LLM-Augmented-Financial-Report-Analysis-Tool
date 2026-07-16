@@ -28,7 +28,22 @@ from __future__ import annotations
 import argparse
 import sys
 import time
+
+import os
 from pathlib import Path
+
+# Load secrets from .streamlit/secrets.toml if present (local dev);
+# on cloud machines just export the env var directly.
+_secrets_path = Path(__file__).resolve().parents[1] / ".streamlit" / "secrets.toml"
+if _secrets_path.exists() and not os.environ.get("EARNINGSCALL_API_KEY"):
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        import tomli as tomllib
+    with open(_secrets_path, "rb") as f:
+        _secrets = tomllib.load(f)
+    for k, v in _secrets.items():
+        os.environ.setdefault(k, str(v))
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "filings"
 

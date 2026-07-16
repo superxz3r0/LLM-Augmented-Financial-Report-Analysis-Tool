@@ -212,14 +212,50 @@ with tab_signals:
     from finsight.extract import SignalSet
     sig = SignalSet(**sig_d)
     a, b, c, d4 = st.columns(4)
-    a.metric("Sentiment (MD&A)", f"{sig.sentiment_score:+.3f}",
-             help=f"backend: {sig.sentiment_backend}")
-    st.caption(f"extraction: `{sig.method}`" +
-               (f" · regex cross-check {'agrees ✓' if sig.xcheck_agree else 'DISAGREES ✗'}"
-                if sig.xcheck_agree is not None else ""))
-    b.metric("Risk factors", sig.risk_factor_count)
-    c.metric("Revenue guidance hits", len(sig.revenue_guidance))
-    d4.metric("Capex guidance hits", len(sig.capex_guidance))
+    a.metric(
+        "Sentiment (MD&A)",
+        f"{sig.sentiment_score:+.3f}",
+        help=f"""
+    Measures the overall tone of the Management Discussion & Analysis (MD&A) section using FinBERT.
+
+    Range:
+    
+    • Positive (>0) - Optimistic management tone
+    
+    • Negative (<0) - Pessimistic management tone
+    
+    • Around 0 - Neutral
+
+    """
+    )
+
+    b.metric(
+        "Risk Factor Signals",
+        sig.risk_factor_count,
+        help="""
+    Counts the number of risk-related disclosures identified in the filing. Higher values generally indicate that management discusses more risks or uncertainties. This is a rule-based extraction and should be interpreted as an indicator rather than a direct measure of company risk.
+    """
+    )
+
+    c.metric(
+        "Revenue Guidance Hits",
+        len(sig.revenue_guidance),
+        help="""
+    Number of revenue guidance statements detected in the filing. More guidance statements generally indicate greater discussion of future revenue performance.
+    
+    Examples include: Revenue forecasts, Sales outlook, Growth expectations.
+    """
+    )
+
+    d4.metric(
+        "Capex Guidance Hits",
+        len(sig.capex_guidance),
+        help="""
+    Number of capital expenditure (CapEx) guidance statements detected. CapEx guidance helps assess future investment strategy.
+
+    Examples include: Planned investments, Expansion spending, Infrastructure or equipment expenditure
+    """
+    )
     if sig.revenue_guidance:
         st.markdown("**Revenue guidance:** " + esc(" · ".join(sig.revenue_guidance)))
     if sig.capex_guidance:
@@ -242,7 +278,7 @@ with tab_signals:
 with tab_fund:
     from finsight import metrics as metrics_mod
 
-    st.caption("Computed financial analysis: ratios, YoY growth, and rule-based health flags.")
+    st.caption("Computed financial analysis: Health Checks, Ratios and YoY growth")
     source = st.radio("Data source",
                       ["Sample (offline)", "SEC XBRL (structured)", "yfinance"],
                       horizontal=True, label_visibility="collapsed")
@@ -270,9 +306,155 @@ with tab_fund:
 
     if periods:
         import pandas as pd
+        
+        DISPLAY = {
+            "gross_margin": "Gross Margin",
+            "operating_margin": "Operating Margin",
+            "net_margin": "Net Margin",
+            "current_ratio": "Current Ratio",
+            "debt_to_equity": "Debt-to-Equity",
+            "roe": "Return on Equity (ROE)",
+            "roa": "Return on Assets (ROA)",
+            "asset_turnover": "Asset Turnover",
+            "fcf": "Free Cash Flow",
+            "fcf_margin": "Free Cash Flow Margin",
+            "revenue": "Revenue",
+            "operating_income": "Operating Income",
+            "net_income": "Net Income",
+            "operating_cash_flow": "Operating Cash Flow"
+        }
+        
+        st.markdown("### Health Check")
+        st.markdown("**Overall Health Check**")
+
+        flags = metrics_mod.health_check(periods)
+
+        # Count severities
+        red = sum(f.severity == "red" for f in flags)
+        amber = sum(f.severity == "amber" for f in flags)
+        green = sum(f.severity == "green" for f in flags)
+
+        # Overall verdict
+        if red >= 2:
+            verdict = "🔴 Weak"
+            verdict_msg = "Multiple financial metrics require attention."
+        elif red == 1:
+            verdict = "🟡 Moderate"
+            verdict_msg = "Overall financial health is acceptable, but some metrics should be monitored."
+        else:
+            verdict = "🟢 Strong"
+            verdict_msg = "Financial indicators appear healthy overall."
+
+        # Overall summary card
+        with st.container(border=True):
+            st.markdown(f"### {verdict}")
+            st.write(verdict_msg)
+
+        st.markdown("**Individual Checks**")
+
+        icon = {
+            "red": "🔴",
+            "amber": "🟡",
+            "green": "🟢"
+        }
+
+        status = {
+            "red": "Critical",
+            "amber": "Warning",
+            "green": "Healthy"
+        }
+
+        with st.container(border=True):
+
+            cols = st.columns(len(flags))
+
+            for col, f in zip(cols, flags):
+
+                metric_name = DISPLAY.get(f.metric, f.metric.replace("_", " ").title())
+
+                col.markdown(f"## {icon[f.severity]}")
+                col.markdown(f"**{metric_name}**")
+                col.caption(status[f.severity])
+                col.write(f.message)
+
+        st.divider()
+            
+        metric_help = {
+            "gross_margin":
+                "Percentage of revenue remaining after direct production costs. "
+                "Higher values indicate stronger profitability and pricing power.",
+
+            "operating_margin":
+                "Operating income as a percentage of revenue before interest and taxes. "
+                "Measures how efficiently the company's core business generates profit.",
+
+            "net_margin":
+                "Percentage of revenue retained as net profit after all expenses. "
+                "Higher margins indicate better overall financial performance.",
+
+            "current_ratio":
+                "Current Assets ÷ Current Liabilities. "
+                "A value above 1 generally indicates the company can meet its short-term obligations.",
+
+            "debt_to_equity":
+                "Compares total debt to shareholders' equity. "
+                "Lower values generally indicate lower financial risk and reliance on borrowing.",
+
+            "roe":
+                "Return on Equity measures how effectively shareholder investment generates profit. "
+                "Higher ROE generally indicates stronger profitability and management efficiency.",
+
+            "roa":
+                "Return on Assets measures how efficiently company assets generate earnings. "
+                "Higher values indicate better utilization of available resources.",
+
+            "asset_turnover":
+                "Measures how efficiently assets are used to generate revenue. "
+                "Higher values indicate more productive use of company assets.",
+
+            "fcf":
+                "Free Cash Flow is the cash remaining after operating and capital expenses. "
+                "Positive FCF indicates the company has cash available for growth, debt repayment, or dividends.",
+
+            "fcf_margin":
+                "Free Cash Flow expressed as a percentage of revenue. "
+                "Higher values indicate stronger cash generation from sales.",
+
+            "revenue":
+                "Total income generated from the company's core business operations. "
+                "Consistent revenue growth generally reflects increasing business demand.",
+
+            "operating_income":
+                "Profit earned from normal business operations before interest and taxes. "
+                "Shows how profitable the company's core operations are.",
+
+            "net_income":
+                "The company's final profit after all expenses, taxes, and interest. "
+                "Often referred to as the 'bottom line' of the income statement.",
+
+            "operating_cash_flow":
+                "Cash generated from the company's day-to-day business operations. "
+                "Positive operating cash flow indicates the business is generating sustainable cash."
+        }
+
+        st.markdown("### Metric Guide")
+
+        st.caption("Learn about a financial metric :")
+
+        selected_metric = st.selectbox(
+            "Metric",
+            list(metric_help.keys()),
+            format_func=lambda x: DISPLAY.get(x, x),
+            label_visibility="collapsed"
+        )
+
+        with st.container(border=True):
+            st.markdown(f"**{DISPLAY[selected_metric]}**")
+            st.write(metric_help[selected_metric])
 
         ratio_rows = {p.period: metrics_mod.compute_ratios(p) for p in periods}
         df = pd.DataFrame(ratio_rows)
+        df.rename(index=DISPLAY, inplace=True)
         pct = ["gross_margin", "operating_margin", "net_margin", "roe", "roa", "fcf_margin"]
 
         def _fmt(idx, v):
@@ -281,26 +463,117 @@ with tab_fund:
             if idx in pct:
                 return f"{v:.1%}"
             return f"{v:,.0f}" if idx == "fcf" else f"{v:.2f}"
-
+        st.markdown("**Ratios**")
+        df.index.name = "Metric"
         styled = pd.DataFrame(
             {col: [_fmt(idx, df.at[idx, col]) for idx in df.index] for col in df.columns},
-            index=df.index, dtype="object",
+            index=df.index,
+            dtype="object",
         )
+        trend = []
+
+        for metric in df.index:
+
+            vals = df.loc[metric].dropna().tolist()
+
+            if len(vals) < 2:
+                trend.append("—")
+
+            elif vals[-1] > vals[0]:
+                trend.append("📈 Improving")
+
+            elif vals[-1] < vals[0]:
+                trend.append("📉 Declining")
+
+            else:
+                trend.append("➜ Stable")
+
+        styled["Trend"] = trend
+        
         st.dataframe(styled, use_container_width=True)
+        
 
         g = metrics_mod.growth_analysis(periods)
         if any(any(v is not None for v in vals) for vals in g.values()):
             st.markdown("**YoY growth**")
-            glabels = [f"{a.period}→{b.period}" for a, b in zip(periods, periods[1:])]
+            glabels = [f"{a.period} - {b.period}" for a, b in zip(periods, periods[1:])]
             gdf = pd.DataFrame(g, index=glabels).T
-            st.dataframe(gdf.map(lambda v: "—" if v is None else f"{v:+.1%}"),
-                         use_container_width=True)
+            gdf.index.name = "Metric"
+            gdf.rename(index=DISPLAY, inplace=True)
 
-        st.markdown("**Health check**")
-        icon = {"red": "🔴", "amber": "🟡", "green": "🟢"}
-        for f in metrics_mod.health_check(periods):
-            st.markdown(f"{icon[f.severity]} **{f.metric}** — {f.message}  \n"
-                        f"<small>rule: `{f.rule}`</small>", unsafe_allow_html=True)
+            trend = []
+
+            for metric in gdf.index:
+
+                vals = pd.to_numeric(gdf.loc[metric], errors="coerce").dropna().tolist()
+
+                if len(vals) < 2:
+                    trend.append("➜ Stable")
+
+                else:
+                    first = vals[0]
+                    last = vals[-1]
+
+                    # Small tolerance to avoid tiny fluctuations
+                    eps = 0.01
+
+                    if last > first + eps:
+                        trend.append("📈 Accelerating")
+
+                    elif last < first - eps:
+                        trend.append("📉 Decelerating")
+
+                    else:
+                        trend.append("➜ Stable")
+
+            gdf["Trend"] = trend
+            
+            st.dataframe(
+                gdf.map(lambda v: "—" if pd.isna(v) else f"{v:+.1%}" if isinstance(v, (int, float)) else v),
+                use_container_width=True,
+            )
+
+            st.divider()
+
+            st.subheader("Financial Trend")
+
+            graph_type = st.radio(
+                "Display",
+                ["Financial Ratios", "YoY Growth"],
+                horizontal=True
+            )
+
+            if graph_type == "Financial Ratios":
+
+                metric = st.selectbox(
+                    "Choose Ratio",
+                    df.index.tolist(),
+                    key="ratio_plot"
+                )
+
+                plot_df = pd.DataFrame(
+                    {
+                        metric: df.loc[metric]
+                    }
+                )
+
+            else:
+
+                metric = st.selectbox(
+                    "Choose Growth Metric",
+                    gdf.index.tolist(),
+                    key="growth_plot"
+                )
+
+                plot_df = pd.DataFrame(
+                    {
+                        metric: gdf.loc[metric].astype(float) * 100
+                    }
+                )
+
+            st.line_chart(plot_df)
+
+        
         st.caption("Screening heuristics for further investigation — not investment advice.")
 
 with tab_diff:
@@ -357,7 +630,127 @@ with tab_returns:
         prog.empty()
         with st.spinner("Fetching prices and running regressions…"):
             results = ret_mod.run_study(rows)
-        for r in results:
-            st.markdown(f"- {esc(r.summary())}")
+            for r in results:
+
+                st.subheader(f"{r.window}-Day Forward Return")
+
+                c1, c2, c3 = st.columns(3)
+
+                c1.metric(
+                    "R²",
+                    f"{r.r2:.3f}",
+                    help="""
+                Coefficient of Determination : Measures how much of the variation in future stock returns is explained by the model. The higher the better.
+
+                Benchmark:
+                
+                • >0.60  Strong
+                
+                • 0.30–0.60  Moderate
+                
+                • <0.30  Weak
+                """
+                )
+
+                c2.metric(
+                    "RMSE",
+                    f"{r.rmse:.4f}",
+                    help="""
+                Root Mean Squared Error : Measures the typical prediction error. Lower values indicate better predictive accuracy.
+                """
+                )
+
+                c3.metric(
+                    "MAE",
+                    f"{r.mae:.4f}",
+                    help="""
+                Mean Absolute Error : Measures the average absolute difference between predicted and actual returns. Lower values indicate more accurate predictions.
+                """
+                )
+
+                c4, c5, c6 = st.columns(3)
+
+                c4.metric(
+                    "Coefficient (β)",
+                    f"{r.coef:.4f}",
+                    help="""
+                Regression coefficient : Represents the expected change in future return for a one-unit increase in the filing sentiment signal.
+
+                • Positive value - Positive relationship
+                
+                • Negative value - Negative relationship
+                """
+                )
+
+                c5.metric(
+                    "t-statistic",
+                    f"{r.t_stat:.2f}",
+                    help="""
+                It measures whether the relationship is statistically significant.
+
+                Benchmark:
+                
+                • |t| > 2  → Significant
+                
+                • |t| < 2  → Weak statistical evidence
+                """
+                )
+
+                c6.metric(
+                    "Observations",
+                    str(r.n),
+                    help="""
+                Number of company filings used to train the regression model. More observations generally improve the reliability of the estimated relationship.
+                """
+                )
+
+                if abs(r.t_stat) >= 2:
+
+                    if r.coef > 0:
+                        verdict = "Positive"
+
+                    else:
+                        verdict = "Negative"
+
+                else:
+                    verdict = "Inconclusive"
+
+                if "mkt" in r.controls:
+
+                    beta, t = r.controls["mkt"]
+
+                    c7, c8, c9 = st.columns(3)
+
+                    c7.metric(
+                        "Market β",
+                        f"{beta:.3f}",
+                        help="""
+                Regression coefficient for the market return (SPY). Controls for overall market movement so that the filing signal is evaluated independently.
+                """
+                    )
+
+                    c8.metric(
+                        "Market t-stat",
+                        f"{t:.2f}",
+                        help="""
+                Statistical significance of the market coefficient. Higher absolute values indicate stronger evidence that market movements influence future returns.
+                """
+                    )
+                    
+                c9.metric(
+                    "Signal Assessment",
+                    verdict,
+                    help="""
+                Overall assessment of the predictive power of the filing signal.
+
+                • Positive - Positive relationship with statistically meaningful evidence.
+                
+                • Inconclusive - Relationship exists but evidence is not yet strong enough to draw firm conclusions.
+                
+                • Negative - Negative relationship supported by the regression.
+                """
+                )
+
+                st.divider()
         st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
                    "holding the market return constant. |t| > 2 ≈ significant at 5%.")

@@ -1,0 +1,3564 @@
+[
+  {
+    "question_id": "RAG_Q001",
+    "question": "According to Item 1A of Apple's 2025-10-31 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "AAPL",
+    "company": "Apple",
+    "filing_type": "10-K",
+    "filing_date": "2025-10-31",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The Company has invested and will continue to invest in programs to enhance reseller sales, including staffing selected resellers’ stores with Company employees and contractors, improving product placement displays, and developing and making digital marketing assets available to resellers. These programs can require a substantial investment while not assuring return or incremental sales.",
+    "gold_sources": [
+      {
+        "ticker": "AAPL",
+        "company": "Apple",
+        "form": "10-K",
+        "date": "2025-10-31",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AAPL_10-K_2025-10-31.txt",
+        "doc_id": "AAPL_10-K_2025-10-31",
+        "chunk_id": "AAPL_10-K_2025-10-31#69",
+        "acceptable_chunk_ids": [
+          "AAPL_10-K_2025-10-31#68",
+          "AAPL_10-K_2025-10-31#69",
+          "AAPL_10-K_2025-10-31#70"
+        ],
+        "evidence": "The Company has invested and will continue to invest in programs to enhance reseller sales, including staffing selected resellers’ stores with Company employees and contractors, improving product placement displays, and developing and making digital marketing assets available to resellers. These programs can require a substantial investment while not assuring return or incremental sales."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q002",
+    "question": "According to Item 1A of Advanced Micro Devices' 2025-02-05 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "AMD",
+    "company": "Advanced Micro Devices",
+    "filing_type": "10-K",
+    "filing_date": "2025-02-05",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Global economic uncertainty and weakness have in the past impacted the semiconductor market as consumers and businesses have deferred purchases, which negatively impacted demand for our products. Our financial performance has been, and may in the future be, negatively affected by these downturns.",
+    "gold_sources": [
+      {
+        "ticker": "AMD",
+        "company": "Advanced Micro Devices",
+        "form": "10-K",
+        "date": "2025-02-05",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "AMD_10-K_2025-02-05.txt",
+        "doc_id": "AMD_10-K_2025-02-05",
+        "chunk_id": "AMD_10-K_2025-02-05#93",
+        "acceptable_chunk_ids": [
+          "AMD_10-K_2025-02-05#92",
+          "AMD_10-K_2025-02-05#93",
+          "AMD_10-K_2025-02-05#94"
+        ],
+        "evidence": "Global economic uncertainty and weakness have in the past impacted the semiconductor market as consumers and businesses have deferred purchases, which negatively impacted demand for our products. Our financial performance has been, and may in the future be, negatively affected by these downturns."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q003",
+    "question": "According to Item 1A of Amazon's 2026-02-06 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "AMZN",
+    "company": "Amazon",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-06",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Our revenue and operating profit growth depends on the continued growth of demand for the products and services offered by us or our sellers, and our business is affected by, among other things, general economic, business, and geopolitical conditions worldwide.",
+    "gold_sources": [
+      {
+        "ticker": "AMZN",
+        "company": "Amazon",
+        "form": "10-K",
+        "date": "2026-02-06",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AMZN_10-K_2026-02-06.txt",
+        "doc_id": "AMZN_10-K_2026-02-06",
+        "chunk_id": "AMZN_10-K_2026-02-06#44",
+        "acceptable_chunk_ids": [
+          "AMZN_10-K_2026-02-06#43",
+          "AMZN_10-K_2026-02-06#44",
+          "AMZN_10-K_2026-02-06#45"
+        ],
+        "evidence": "Our revenue and operating profit growth depends on the continued growth of demand for the products and services offered by us or our sellers, and our business is affected by, among other things, general economic, business, and geopolitical conditions worldwide."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q004",
+    "question": "According to Item 1A of Costco's 2025-10-08 10-K, what does the filing say about the filing disclosure?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "COST",
+    "company": "Costco",
+    "filing_type": "10-K",
+    "filing_date": "2025-10-08",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The risks described below could materially and adversely affect our business, financial condition and results of operations. We could also be affected by additional risks that apply to all companies operating in the U.S. and globally, as well as other risks that are not presently known to us or that we currently consider to be immaterial.",
+    "gold_sources": [
+      {
+        "ticker": "COST",
+        "company": "Costco",
+        "form": "10-K",
+        "date": "2025-10-08",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "COST_10-K_2025-10-08.txt",
+        "doc_id": "COST_10-K_2025-10-08",
+        "chunk_id": "COST_10-K_2025-10-08#31",
+        "acceptable_chunk_ids": [
+          "COST_10-K_2025-10-08#30",
+          "COST_10-K_2025-10-08#31",
+          "COST_10-K_2025-10-08#32"
+        ],
+        "evidence": "The risks described below could materially and adversely affect our business, financial condition and results of operations. We could also be affected by additional risks that apply to all companies operating in the U.S. and globally, as well as other risks that are not presently known to us or that we currently consider to be immaterial."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q005",
+    "question": "According to Item 1A of Salesforce's 2026-03-02 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "CRM",
+    "company": "Salesforce",
+    "filing_type": "10-K",
+    "filing_date": "2026-03-02",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "We have experienced and may in the future experience defects in our, our customers’, or third-party vendors’ products and components, which may create vulnerabilities that inadvertently permit unauthorized access to protected customer data.",
+    "gold_sources": [
+      {
+        "ticker": "CRM",
+        "company": "Salesforce",
+        "form": "10-K",
+        "date": "2026-03-02",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "CRM_10-K_2026-03-02.txt",
+        "doc_id": "CRM_10-K_2026-03-02",
+        "chunk_id": "CRM_10-K_2026-03-02#83",
+        "acceptable_chunk_ids": [
+          "CRM_10-K_2026-03-02#82",
+          "CRM_10-K_2026-03-02#83",
+          "CRM_10-K_2026-03-02#84"
+        ],
+        "evidence": "We have experienced and may in the future experience defects in our, our customers’, or third-party vendors’ products and components, which may create vulnerabilities that inadvertently permit unauthorized access to protected customer data."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q006",
+    "question": "According to Item 1A of Chevron's 2026-02-24 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "CVX",
+    "company": "Chevron",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-24",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Legislation, regulation, and other government actions and shifting customer and consumer preferences and other private efforts related to greenhouse gas (GHG) emissions and climate change could continue to increase Chevron’s operational costs and reduce demand for Chevron’s hydrocarbon and other products, resulting in a material adverse effect on the company’s results of operations and financial condition Chevron has experienced and may be further challenged by increases in the impacts of international and domestic legislation, regulation, or other government actions relating to GHG emissions (e.g., carbon dioxide and methane) and climate change.",
+    "gold_sources": [
+      {
+        "ticker": "CVX",
+        "company": "Chevron",
+        "form": "10-K",
+        "date": "2026-02-24",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "CVX_10-K_2026-02-24.txt",
+        "doc_id": "CVX_10-K_2026-02-24",
+        "chunk_id": "CVX_10-K_2026-02-24#132",
+        "acceptable_chunk_ids": [
+          "CVX_10-K_2026-02-24#131",
+          "CVX_10-K_2026-02-24#132",
+          "CVX_10-K_2026-02-24#133"
+        ],
+        "evidence": "Legislation, regulation, and other government actions and shifting customer and consumer preferences and other private efforts related to greenhouse gas (GHG) emissions and climate change could continue to increase Chevron’s operational costs and reduce demand for Chevron’s hydrocarbon and other products, resulting in a material adverse effect on the company’s results of operations and financial condition Chevron has experienced and may be further challenged by increases in the impacts of international and domestic legislation, regulation, or other government actions relating to GHG emissions (e.g., carbon dioxide and methane) and climate change."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q007",
+    "question": "According to Item 1A of Disney's 2025-11-13 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "DIS",
+    "company": "Disney",
+    "filing_type": "10-K",
+    "filing_date": "2025-11-13",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "We face risks relating to misalignment with public and consumer tastes and preferences for entertainment, travel and consumer products, which impacts demand for our entertainment offerings and products and services and our results of operations.",
+    "gold_sources": [
+      {
+        "ticker": "DIS",
+        "company": "Disney",
+        "form": "10-K",
+        "date": "2025-11-13",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "DIS_10-K_2025-11-13.txt",
+        "doc_id": "DIS_10-K_2025-11-13",
+        "chunk_id": "DIS_10-K_2025-11-13#274",
+        "acceptable_chunk_ids": [
+          "DIS_10-K_2025-11-13#273",
+          "DIS_10-K_2025-11-13#274",
+          "DIS_10-K_2025-11-13#275"
+        ],
+        "evidence": "We face risks relating to misalignment with public and consumer tastes and preferences for entertainment, travel and consumer products, which impacts demand for our entertainment offerings and products and services and our results of operations."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q008",
+    "question": "According to Item 1A of Alphabet's 2026-02-05 10-K, what does the filing say about liquidity or capital risk?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "GOOGL",
+    "company": "Alphabet",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-05",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Our investments ultimately may not be commercially viable or may not result in an adequate return of capital and, in pursuing new strategies, we may incur unanticipated liabilities. To meet the compute capacity demands of AI training and inference, as well as traditional cloud computing services, we are entering into significant leasing arrangements with third party operators, which may increase costs and operational complexity.",
+    "gold_sources": [
+      {
+        "ticker": "GOOGL",
+        "company": "Alphabet",
+        "form": "10-K",
+        "date": "2026-02-05",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "GOOGL_10-K_2026-02-05.txt",
+        "doc_id": "GOOGL_10-K_2026-02-05",
+        "chunk_id": "GOOGL_10-K_2026-02-05#43",
+        "acceptable_chunk_ids": [
+          "GOOGL_10-K_2026-02-05#42",
+          "GOOGL_10-K_2026-02-05#43",
+          "GOOGL_10-K_2026-02-05#44"
+        ],
+        "evidence": "Our investments ultimately may not be commercially viable or may not result in an adequate return of capital and, in pursuing new strategies, we may incur unanticipated liabilities. To meet the compute capacity demands of AI training and inference, as well as traditional cloud computing services, we are entering into significant leasing arrangements with third party operators, which may increase costs and operational complexity."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q009",
+    "question": "According to Item 1A of Goldman Sachs' 2026-02-25 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "GS",
+    "company": "Goldman Sachs",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-25",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation or interest rates; exchange rate or basic commodity price volatility; increasing or high default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit",
+    "gold_sources": [
+      {
+        "ticker": "GS",
+        "company": "Goldman Sachs",
+        "form": "10-K",
+        "date": "2026-02-25",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "GS_10-K_2026-02-25.txt",
+        "doc_id": "GS_10-K_2026-02-25",
+        "chunk_id": "GS_10-K_2026-02-25#1162",
+        "acceptable_chunk_ids": [
+          "GS_10-K_2026-02-25#1161",
+          "GS_10-K_2026-02-25#1162",
+          "GS_10-K_2026-02-25#1163"
+        ],
+        "evidence": "Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation or interest rates; exchange rate or basic commodity price volatility; increasing or high default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q010",
+    "question": "According to Item 1A of Johnson & Johnson's 2026-02-11 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "JNJ",
+    "company": "Johnson & Johnson",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-11",
+    "target_section": "Risk factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Impacts to the Company have included and may include adverse impacts to results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products.",
+    "gold_sources": [
+      {
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "form": "10-K",
+        "date": "2026-02-11",
+        "item": "1A",
+        "section": "Risk factors",
+        "source_file": "JNJ_10-K_2026-02-11.txt",
+        "doc_id": "JNJ_10-K_2026-02-11",
+        "chunk_id": "JNJ_10-K_2026-02-11#52",
+        "acceptable_chunk_ids": [
+          "JNJ_10-K_2026-02-11#51",
+          "JNJ_10-K_2026-02-11#52",
+          "JNJ_10-K_2026-02-11#53"
+        ],
+        "evidence": "Impacts to the Company have included and may include adverse impacts to results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q011",
+    "question": "According to Item 1A of Coca-Cola's 2026-02-20 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "KO",
+    "company": "Coca-Cola",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-20",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "If we and our bottling partners fail to achieve or improperly report on our progress toward achieving our announced environmental goals, or revise our goals, and/or discontinue our environmental initiatives, the resulting negative publicity could adversely affect consumer preference for our products.",
+    "gold_sources": [
+      {
+        "ticker": "KO",
+        "company": "Coca-Cola",
+        "form": "10-K",
+        "date": "2026-02-20",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "KO_10-K_2026-02-20.txt",
+        "doc_id": "KO_10-K_2026-02-20",
+        "chunk_id": "KO_10-K_2026-02-20#195",
+        "acceptable_chunk_ids": [
+          "KO_10-K_2026-02-20#194",
+          "KO_10-K_2026-02-20#195",
+          "KO_10-K_2026-02-20#196"
+        ],
+        "evidence": "If we and our bottling partners fail to achieve or improperly report on our progress toward achieving our announced environmental goals, or revise our goals, and/or discontinue our environmental initiatives, the resulting negative publicity could adversely affect consumer preference for our products."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q012",
+    "question": "According to Item 1A of Meta's 2026-01-29 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "META",
+    "company": "Meta",
+    "filing_type": "10-K",
+    "filing_date": "2026-01-29",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "For example, we have relatively limited experience with consumer hardware products and virtual and augmented reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business.",
+    "gold_sources": [
+      {
+        "ticker": "META",
+        "company": "Meta",
+        "form": "10-K",
+        "date": "2026-01-29",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "META_10-K_2026-01-29.txt",
+        "doc_id": "META_10-K_2026-01-29",
+        "chunk_id": "META_10-K_2026-01-29#80",
+        "acceptable_chunk_ids": [
+          "META_10-K_2026-01-29#79",
+          "META_10-K_2026-01-29#80",
+          "META_10-K_2026-01-29#81"
+        ],
+        "evidence": "For example, we have relatively limited experience with consumer hardware products and virtual and augmented reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q013",
+    "question": "According to Item 1A of Microsoft's 2025-07-30 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "filing_type": "10-K",
+    "filing_date": "2025-07-30",
+    "target_section": "",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Our increasing user traffic, growth in services, and the complexity of our products and services demand more computing power. We spend substantial amounts to build, purchase, or lease datacenters and equipment and to upgrade our technology and network infrastructure to handle more traffic on our websites and in our datacenters.",
+    "gold_sources": [
+      {
+        "ticker": "MSFT",
+        "company": "Microsoft",
+        "form": "10-K",
+        "date": "2025-07-30",
+        "item": "1A",
+        "section": "",
+        "source_file": "MSFT_10-K_2025-07-30.txt",
+        "doc_id": "MSFT_10-K_2025-07-30",
+        "chunk_id": "MSFT_10-K_2025-07-30#11",
+        "acceptable_chunk_ids": [
+          "MSFT_10-K_2025-07-30#10",
+          "MSFT_10-K_2025-07-30#11",
+          "MSFT_10-K_2025-07-30#12"
+        ],
+        "evidence": "Our increasing user traffic, growth in services, and the complexity of our products and services demand more computing power. We spend substantial amounts to build, purchase, or lease datacenters and equipment and to upgrade our technology and network infrastructure to handle more traffic on our websites and in our datacenters."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q014",
+    "question": "According to Item 1A of Netflix's 2026-01-23 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "NFLX",
+    "company": "Netflix",
+    "filing_type": "10-K",
+    "filing_date": "2026-01-23",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon. We use the intellectual property of third parties in creating some of our content, merchandising our products and experiences, and marketing our service.",
+    "gold_sources": [
+      {
+        "ticker": "NFLX",
+        "company": "Netflix",
+        "form": "10-K",
+        "date": "2026-01-23",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NFLX_10-K_2026-01-23.txt",
+        "doc_id": "NFLX_10-K_2026-01-23",
+        "chunk_id": "NFLX_10-K_2026-01-23#168",
+        "acceptable_chunk_ids": [
+          "NFLX_10-K_2026-01-23#167",
+          "NFLX_10-K_2026-01-23#168",
+          "NFLX_10-K_2026-01-23#169"
+        ],
+        "evidence": "Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon. We use the intellectual property of third parties in creating some of our content, merchandising our products and experiences, and marketing our service."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q015",
+    "question": "According to Item 1A of NVIDIA's 2026-02-25 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-25",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The license requires that the H200s go through an inspection process in the United States prior to any shipment to the customer. As a result, any H200 shipped under the new licensing program will be subject to a 25% tariff upon importation into the United States.",
+    "gold_sources": [
+      {
+        "ticker": "NVDA",
+        "company": "NVIDIA",
+        "form": "10-K",
+        "date": "2026-02-25",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NVDA_10-K_2026-02-25.txt",
+        "doc_id": "NVDA_10-K_2026-02-25",
+        "chunk_id": "NVDA_10-K_2026-02-25#174",
+        "acceptable_chunk_ids": [
+          "NVDA_10-K_2026-02-25#173",
+          "NVDA_10-K_2026-02-25#174",
+          "NVDA_10-K_2026-02-25#175"
+        ],
+        "evidence": "The license requires that the H200s go through an inspection process in the United States prior to any shipment to the customer. As a result, any H200 shipped under the new licensing program will be subject to a 25% tariff upon importation into the United States."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q016",
+    "question": "According to Item 1A of PepsiCo's 2026-02-03 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "PEP",
+    "company": "PepsiCo",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-03",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Changes in the retail landscape or in sales to any key customer can adversely affect our business. The retail landscape continues to evolve, including continued growth in e-commerce channels and hard discounters. Our business will be adversely affected if we are unable to maintain and develop successful relationships with e-commerce retailers and hard discounters, while also maintaining relationships with our key customers operating in traditional retail channels (many of whom are also focused on increasing their e-commerce sales).",
+    "gold_sources": [
+      {
+        "ticker": "PEP",
+        "company": "PepsiCo",
+        "form": "10-K",
+        "date": "2026-02-03",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "PEP_10-K_2026-02-03.txt",
+        "doc_id": "PEP_10-K_2026-02-03",
+        "chunk_id": "PEP_10-K_2026-02-03#69",
+        "acceptable_chunk_ids": [
+          "PEP_10-K_2026-02-03#68",
+          "PEP_10-K_2026-02-03#69",
+          "PEP_10-K_2026-02-03#70"
+        ],
+        "evidence": "Changes in the retail landscape or in sales to any key customer can adversely affect our business. The retail landscape continues to evolve, including continued growth in e-commerce channels and hard discounters. Our business will be adversely affected if we are unable to maintain and develop successful relationships with e-commerce retailers and hard discounters, while also maintaining relationships with our key customers operating in traditional retail channels (many of whom are also focused on increasing their e-commerce sales)."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q017",
+    "question": "According to Item 1A of Pfizer's 2026-02-26 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "PFE",
+    "company": "Pfizer",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-26",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "They may demand rebates and/or fees from biopharmaceutical manufacturers for preferred formulary placement, or for unrestricted access on a drug formulary. The growing availability and use of higher-cost innovative specialty pharmaceutical medicines that treat rare life-threatening conditions has also increased payor interest in the deployment of cost-containment strategies.",
+    "gold_sources": [
+      {
+        "ticker": "PFE",
+        "company": "Pfizer",
+        "form": "10-K",
+        "date": "2026-02-26",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "PFE_10-K_2026-02-26.txt",
+        "doc_id": "PFE_10-K_2026-02-26",
+        "chunk_id": "PFE_10-K_2026-02-26#159",
+        "acceptable_chunk_ids": [
+          "PFE_10-K_2026-02-26#158",
+          "PFE_10-K_2026-02-26#159",
+          "PFE_10-K_2026-02-26#160"
+        ],
+        "evidence": "They may demand rebates and/or fees from biopharmaceutical manufacturers for preferred formulary placement, or for unrestricted access on a drug formulary. The growing availability and use of higher-cost innovative specialty pharmaceutical medicines that treat rare life-threatening conditions has also increased payor interest in the deployment of cost-containment strategies."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q018",
+    "question": "According to Item 1A of Tesla's 2026-01-29 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "TSLA",
+    "company": "Tesla",
+    "filing_type": "10-K",
+    "filing_date": "2026-01-29",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "If we do not successfully monitor and comply with applicable national, state and/or local financial regulations and consumer protection laws governing these transactions, we may become subject to enforcement actions or penalties.",
+    "gold_sources": [
+      {
+        "ticker": "TSLA",
+        "company": "Tesla",
+        "form": "10-K",
+        "date": "2026-01-29",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "TSLA_10-K_2026-01-29.txt",
+        "doc_id": "TSLA_10-K_2026-01-29",
+        "chunk_id": "TSLA_10-K_2026-01-29#109",
+        "acceptable_chunk_ids": [
+          "TSLA_10-K_2026-01-29#108",
+          "TSLA_10-K_2026-01-29#109",
+          "TSLA_10-K_2026-01-29#110"
+        ],
+        "evidence": "If we do not successfully monitor and comply with applicable national, state and/or local financial regulations and consumer protection laws governing these transactions, we may become subject to enforcement actions or penalties."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q019",
+    "question": "According to Item 1A of UnitedHealth Group's 2026-03-02 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "UNH",
+    "company": "UnitedHealth Group",
+    "filing_type": "10-K",
+    "filing_date": "2026-03-02",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "In addition, increasing connectivity among technologies and recent trends toward greater consumer engagement in health care require new and enhanced technologies, including more sophisticated applications for mobile devices and new tools and products that leverage AI to improve the customer experience.",
+    "gold_sources": [
+      {
+        "ticker": "UNH",
+        "company": "UnitedHealth Group",
+        "form": "10-K",
+        "date": "2026-03-02",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "UNH_10-K_2026-03-02.txt",
+        "doc_id": "UNH_10-K_2026-03-02",
+        "chunk_id": "UNH_10-K_2026-03-02#76",
+        "acceptable_chunk_ids": [
+          "UNH_10-K_2026-03-02#75",
+          "UNH_10-K_2026-03-02#76",
+          "UNH_10-K_2026-03-02#77"
+        ],
+        "evidence": "In addition, increasing connectivity among technologies and recent trends toward greater consumer engagement in health care require new and enhanced technologies, including more sophisticated applications for mobile devices and new tools and products that leverage AI to improve the customer experience."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q020",
+    "question": "According to Item 1A of Walmart's 2026-03-13 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "WMT",
+    "company": "Walmart",
+    "filing_type": "10-K",
+    "filing_date": "2026-03-13",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Political uncertainty surrounding trade and other international disputes could also have a negative effect on consumer confidence and spending, which could also adversely affect our business or financial performance and our reputation. The economies of some of the countries in which we have operations have in the past suffered from high rates of inflation and currency devaluations, which, if they recur, could adversely affect our financial performance.",
+    "gold_sources": [
+      {
+        "ticker": "WMT",
+        "company": "Walmart",
+        "form": "10-K",
+        "date": "2026-03-13",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "WMT_10-K_2026-03-13.txt",
+        "doc_id": "WMT_10-K_2026-03-13",
+        "chunk_id": "WMT_10-K_2026-03-13#143",
+        "acceptable_chunk_ids": [
+          "WMT_10-K_2026-03-13#142",
+          "WMT_10-K_2026-03-13#143",
+          "WMT_10-K_2026-03-13#144"
+        ],
+        "evidence": "Political uncertainty surrounding trade and other international disputes could also have a negative effect on consumer confidence and spending, which could also adversely affect our business or financial performance and our reputation. The economies of some of the countries in which we have operations have in the past suffered from high rates of inflation and currency devaluations, which, if they recur, could adversely affect our financial performance."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q021",
+    "question": "According to Item 1A of Exxon Mobil's 2026-02-18 10-K, what does the filing say about customer demand or sales channels?",
+    "question_type": "single-filing factual",
+    "difficulty": "medium",
+    "ticker": "XOM",
+    "company": "Exxon Mobil",
+    "filing_type": "10-K",
+    "filing_date": "2026-02-18",
+    "target_section": "RISK FACTORS",
+    "target_item": "1A",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "In addition to direct potential impacts on our costs and revenues, market factors such as rates of inflation may indirectly impact our results to the extent such factors reduce general rates of economic growth and therefore energy demand, as discussed under “Economic conditions.” Market factors may also result in losses from commodity derivatives and other instruments we use to hedge price exposures or for commodity and treasury trading activities. Additional information regarding the potential future impact of market factors on our businesses is included or incorporated by reference underItem 7A in this report.",
+    "gold_sources": [
+      {
+        "ticker": "XOM",
+        "company": "Exxon Mobil",
+        "form": "10-K",
+        "date": "2026-02-18",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "XOM_10-K_2026-02-18.txt",
+        "doc_id": "XOM_10-K_2026-02-18",
+        "chunk_id": "XOM_10-K_2026-02-18#20",
+        "acceptable_chunk_ids": [
+          "XOM_10-K_2026-02-18#19",
+          "XOM_10-K_2026-02-18#20",
+          "XOM_10-K_2026-02-18#21"
+        ],
+        "evidence": "In addition to direct potential impacts on our costs and revenues, market factors such as rates of inflation may indirectly impact our results to the extent such factors reduce general rates of economic growth and therefore energy demand, as discussed under “Economic conditions.” Market factors may also result in losses from commodity derivatives and other instruments we use to hedge price exposures or for commodity and treasury trading activities. Additional information regarding the potential future impact of market factors on our businesses is included or incorporated by reference underItem 7A in this report."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q022",
+    "question": "In Item 2 MD&A of Apple's 2026-05-01 10-Q, what does management report about liquidity and capital resources?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "AAPL",
+    "company": "Apple",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-01",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "On April 30, 2026, the Company also announced the Board of Directors raised the Company’s quarterly cash dividend from $0.26 to $0.27 per share, beginning with the dividend to be paid during the third quarter of 2026. The Company intends to increase its dividend on an annual basis, subject to declaration by the Board of Directors.",
+    "gold_sources": [
+      {
+        "ticker": "AAPL",
+        "company": "Apple",
+        "form": "10-Q",
+        "date": "2026-05-01",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "AAPL_10-Q_2026-05-01.txt",
+        "doc_id": "AAPL_10-Q_2026-05-01",
+        "chunk_id": "AAPL_10-Q_2026-05-01#53",
+        "acceptable_chunk_ids": [
+          "AAPL_10-Q_2026-05-01#52",
+          "AAPL_10-Q_2026-05-01#53",
+          "AAPL_10-Q_2026-05-01#54"
+        ],
+        "evidence": "On April 30, 2026, the Company also announced the Board of Directors raised the Company’s quarterly cash dividend from $0.26 to $0.27 per share, beginning with the dividend to be paid during the third quarter of 2026. The Company intends to increase its dividend on an annual basis, subject to declaration by the Board of Directors."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q023",
+    "question": "In Item 2 MD&A of Advanced Micro Devices' 2026-05-06 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "AMD",
+    "company": "Advanced Micro Devices",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-06",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The increase in gross margin was primarily due to a favorable product mix, including higher Data Center segment revenue. Expenses Research and Development Expenses Research and development expenses of $2.4 billion for the three months ended March 28, 2026 increased by $669 million, or 39%, compared to $1.7 billion for the prior year period.",
+    "gold_sources": [
+      {
+        "ticker": "AMD",
+        "company": "Advanced Micro Devices",
+        "form": "10-Q",
+        "date": "2026-05-06",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+        "source_file": "AMD_10-Q_2026-05-06.txt",
+        "doc_id": "AMD_10-Q_2026-05-06",
+        "chunk_id": "AMD_10-Q_2026-05-06#63",
+        "acceptable_chunk_ids": [
+          "AMD_10-Q_2026-05-06#62",
+          "AMD_10-Q_2026-05-06#63",
+          "AMD_10-Q_2026-05-06#64"
+        ],
+        "evidence": "The increase in gross margin was primarily due to a favorable product mix, including higher Data Center segment revenue. Expenses Research and Development Expenses Research and development expenses of $2.4 billion for the three months ended March 28, 2026 increased by $669 million, or 39%, compared to $1.7 billion for the prior year period."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q024",
+    "question": "In Item 2 MD&A of Amazon's 2026-04-30 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "AMZN",
+    "company": "Amazon",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-30",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Additionally, sales by our sellers have higher payment processing and related transaction costs as a percentage of net sales compared to our retail sales because payment processing costs are based on the gross purchase price of underlying transactions. The increase in fulfillment costs in Q1 2026, compared to the comparable prior year period, is primarily due to increased sales and investments in our fulfillment network, partially offset by operational efficiencies.",
+    "gold_sources": [
+      {
+        "ticker": "AMZN",
+        "company": "Amazon",
+        "form": "10-Q",
+        "date": "2026-04-30",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "AMZN_10-Q_2026-04-30.txt",
+        "doc_id": "AMZN_10-Q_2026-04-30",
+        "chunk_id": "AMZN_10-Q_2026-04-30#90",
+        "acceptable_chunk_ids": [
+          "AMZN_10-Q_2026-04-30#89",
+          "AMZN_10-Q_2026-04-30#90",
+          "AMZN_10-Q_2026-04-30#91"
+        ],
+        "evidence": "Additionally, sales by our sellers have higher payment processing and related transaction costs as a percentage of net sales compared to our retail sales because payment processing costs are based on the gross purchase price of underlying transactions. The increase in fulfillment costs in Q1 2026, compared to the comparable prior year period, is primarily due to increased sales and investments in our fulfillment network, partially offset by operational efficiencies."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q025",
+    "question": "In Item 2 MD&A of Bank of America's 2026-05-01 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "BAC",
+    "company": "Bank of America",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-01",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Consumer Banking Three Months Ended March 31 (Dollars in millions) 2026 2025 % Change ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Net interest income $ 8,993 $ 8,505 6 Noninterest income: Card income 1,273 1,297 (2) Service charges 638 618 3 All other income 145 73 99 Total noninterest income 2,056 1,988 3 Total revenue, net of interest expense 11,049 10,493 5 Provision for credit losses 1,132 1,292 (12) Noninterest expense 5,837 5,826 — Income before income taxes 4,080 3,375 21 Income tax expense 1,020 844 21 Net income $ 3,060 $ 2,531 21 Effective tax rate 25.0 25.0 Net interest yield 3.66 3.48 Efficiency ratio 52.82 55.53 Return on average allocated capital 27 23 Balance Sheet Three Months Ended March 31 Average 2026 2025 % Change Total loans and leases $ 322,164 $ 315,038 2 Tota",
+    "gold_sources": [
+      {
+        "ticker": "BAC",
+        "company": "Bank of America",
+        "form": "10-Q",
+        "date": "2026-05-01",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "BAC_10-Q_2026-05-01.txt",
+        "doc_id": "BAC_10-Q_2026-05-01",
+        "chunk_id": "BAC_10-Q_2026-05-01#227",
+        "acceptable_chunk_ids": [
+          "BAC_10-Q_2026-05-01#226",
+          "BAC_10-Q_2026-05-01#227",
+          "BAC_10-Q_2026-05-01#228"
+        ],
+        "evidence": "Consumer Banking Three Months Ended March 31 (Dollars in millions) 2026 2025 % Change ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Net interest income $ 8,993 $ 8,505 6 Noninterest income: Card income 1,273 1,297 (2) Service charges 638 618 3 All other income 145 73 99 Total noninterest income 2,056 1,988 3 Total revenue, net of interest expense 11,049 10,493 5 Provision for credit losses 1,132 1,292 (12) Noninterest expense 5,837 5,826 — Income before income taxes 4,080 3,375 21 Income tax expense 1,020 844 21 Net income $ 3,060 $ 2,531 21 Effective tax rate 25.0 25.0 Net interest yield 3.66 3.48 Efficiency ratio 52.82 55.53 Return on average allocated capital 27 23 Balance Sheet Three Months Ended March 31 Average 2026 2025 % Change Total loans and leases $ 322,164 $ 315,038 2 Tota"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q026",
+    "question": "In Item 2 MD&A of Costco's 2026-06-03 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "COST",
+    "company": "Costco",
+    "filing_type": "10-Q",
+    "filing_date": "2026-06-03",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Year-to-date Results Gross margin as a percentage of net sales increased by one basis point. Excluding the impact of gasoline price inflation on net sales, gross margin percentage was 11.18%, an increase of six basis points.",
+    "gold_sources": [
+      {
+        "ticker": "COST",
+        "company": "Costco",
+        "form": "10-Q",
+        "date": "2026-06-03",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "COST_10-Q_2026-06-03.txt",
+        "doc_id": "COST_10-Q_2026-06-03",
+        "chunk_id": "COST_10-Q_2026-06-03#66",
+        "acceptable_chunk_ids": [
+          "COST_10-Q_2026-06-03#65",
+          "COST_10-Q_2026-06-03#66",
+          "COST_10-Q_2026-06-03#67"
+        ],
+        "evidence": "Year-to-date Results Gross margin as a percentage of net sales increased by one basis point. Excluding the impact of gasoline price inflation on net sales, gross margin percentage was 11.18%, an increase of six basis points."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q027",
+    "question": "In Item 2 MD&A of Salesforce's 2026-05-28 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "CRM",
+    "company": "Salesforce",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-28",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Subscription and Support Revenues by Service Offering Subscription and support revenues consisted of the following (in millions): Three Months Ended April 30, ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 2026 As a % of Total Subscription and Support Revenues 2025 As a % of Total Subscription and Support Revenues Growth Rate Agentforce Apps $ 6,910 65 $ 6,345 68 9 Data 360, Headless Platform, and Other 3,683 35 2,952 32 25 Total $ 10,593 100 $ 9,297 100 14 Effective as of the first quarter of fiscal year 2027, we have revised the presentation of our disaggregated revenue disclosures to reflect the evolution of our product architecture to deliver the Agentic Enterprise.",
+    "gold_sources": [
+      {
+        "ticker": "CRM",
+        "company": "Salesforce",
+        "form": "10-Q",
+        "date": "2026-05-28",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+        "source_file": "CRM_10-Q_2026-05-28.txt",
+        "doc_id": "CRM_10-Q_2026-05-28",
+        "chunk_id": "CRM_10-Q_2026-05-28#141",
+        "acceptable_chunk_ids": [
+          "CRM_10-Q_2026-05-28#140",
+          "CRM_10-Q_2026-05-28#141",
+          "CRM_10-Q_2026-05-28#142"
+        ],
+        "evidence": "Subscription and Support Revenues by Service Offering Subscription and support revenues consisted of the following (in millions): Three Months Ended April 30, ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 2026 As a % of Total Subscription and Support Revenues 2025 As a % of Total Subscription and Support Revenues Growth Rate Agentforce Apps $ 6,910 65 $ 6,345 68 9 Data 360, Headless Platform, and Other 3,683 35 2,952 32 25 Total $ 10,593 100 $ 9,297 100 14 Effective as of the first quarter of fiscal year 2027, we have revised the presentation of our disaggregated revenue disclosures to reflect the evolution of our product architecture to deliver the Agentic Enterprise."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q028",
+    "question": "In Item 2 MD&A of Chevron's 2026-05-07 10-Q, what does management report about growth or demand?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "CVX",
+    "company": "Chevron",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-07",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Outside the United States, prices for natural gas also depend on regional supply and demand, regulatory circumstances and infrastructure conditions in local markets. The company’s long-term contract prices for LNG are typically linked to crude oil prices.",
+    "gold_sources": [
+      {
+        "ticker": "CVX",
+        "company": "Chevron",
+        "form": "10-Q",
+        "date": "2026-05-07",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "CVX_10-Q_2026-05-07.txt",
+        "doc_id": "CVX_10-Q_2026-05-07",
+        "chunk_id": "CVX_10-Q_2026-05-07#101",
+        "acceptable_chunk_ids": [
+          "CVX_10-Q_2026-05-07#100",
+          "CVX_10-Q_2026-05-07#101",
+          "CVX_10-Q_2026-05-07#102"
+        ],
+        "evidence": "Outside the United States, prices for natural gas also depend on regional supply and demand, regulatory circumstances and infrastructure conditions in local markets. The company’s long-term contract prices for LNG are typically linked to crude oil prices."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q029",
+    "question": "In Item 2 MD&A of Disney's 2026-05-06 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "DIS",
+    "company": "Disney",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-06",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Supplemental revenue and operating income The following table presents supplemental revenue and operating income detail for the Experiences segment: Quarter Ended % Change Better (Worse) (in millions) March 28, March 29, 2026 2025 ────────────────────────────────────────────────────────────────────────────────────────────────────────────── Supplemental revenue detail Parks & Experiences Domestic $ 6,917 $ 6,499 6 % International 1,596 1,441 11 % Consumer Products 974 949 3 % $ 9,487 $ 8,889 7 % Supplemental operating income detail Parks & Experiences Domestic $ 1,909 $ 1,823 5 % International 227 225 1 % Consumer Products 479 443 8 % $ 2,615 $ 2,491 5 % Items Excluded from Segment Operating Income Related to Experiences The following table presents supplemental information for items related to the Experiences segment that are excluded from segment operating income: Quarter Ended % Change",
+    "gold_sources": [
+      {
+        "ticker": "DIS",
+        "company": "Disney",
+        "form": "10-Q",
+        "date": "2026-05-06",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "DIS_10-Q_2026-05-06.txt",
+        "doc_id": "DIS_10-Q_2026-05-06",
+        "chunk_id": "DIS_10-Q_2026-05-06#117",
+        "acceptable_chunk_ids": [
+          "DIS_10-Q_2026-05-06#116",
+          "DIS_10-Q_2026-05-06#117",
+          "DIS_10-Q_2026-05-06#118"
+        ],
+        "evidence": "Supplemental revenue and operating income The following table presents supplemental revenue and operating income detail for the Experiences segment: Quarter Ended % Change Better (Worse) (in millions) March 28, March 29, 2026 2025 ────────────────────────────────────────────────────────────────────────────────────────────────────────────── Supplemental revenue detail Parks & Experiences Domestic $ 6,917 $ 6,499 6 % International 1,596 1,441 11 % Consumer Products 974 949 3 % $ 9,487 $ 8,889 7 % Supplemental operating income detail Parks & Experiences Domestic $ 1,909 $ 1,823 5 % International 227 225 1 % Consumer Products 479 443 8 % $ 2,615 $ 2,491 5 % Items Excluded from Segment Operating Income Related to Experiences The following table presents supplemental information for items related to the Experiences segment that are excluded from segment operating income: Quarter Ended % Change"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q030",
+    "question": "In Item 2 MD&A of Alphabet's 2026-04-30 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "GOOGL",
+    "company": "Alphabet",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-30",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The TAC rate decreased from 20.6% to 19.7% from the three months ended March 31, 2025 to the three months ended March 31, 2026, primarily due to a revenue mix shift from Google Network properties to Google Search & other properties. The TAC rates on Google Search & other revenues was substantially consistent from the three months ended March 31, 2025 to the three months ended March 31, 2026.",
+    "gold_sources": [
+      {
+        "ticker": "GOOGL",
+        "company": "Alphabet",
+        "form": "10-Q",
+        "date": "2026-04-30",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+        "source_file": "GOOGL_10-Q_2026-04-30.txt",
+        "doc_id": "GOOGL_10-Q_2026-04-30",
+        "chunk_id": "GOOGL_10-Q_2026-04-30#131",
+        "acceptable_chunk_ids": [
+          "GOOGL_10-Q_2026-04-30#130",
+          "GOOGL_10-Q_2026-04-30#131",
+          "GOOGL_10-Q_2026-04-30#132"
+        ],
+        "evidence": "The TAC rate decreased from 20.6% to 19.7% from the three months ended March 31, 2025 to the three months ended March 31, 2026, primarily due to a revenue mix shift from Google Network properties to Google Search & other properties. The TAC rates on Google Search & other revenues was substantially consistent from the three months ended March 31, 2025 to the three months ended March 31, 2026."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q031",
+    "question": "In Item 2 MD&A of Goldman Sachs' 2026-05-01 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "GS",
+    "company": "Goldman Sachs",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-01",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Our risk reports detail key risks, drivers and changes for each desk and business, and are distributed daily to senior management of both our revenue-producing units and Risk. VaR is the potential loss in value due to adverse market movements over a defined time horizon with a specified confidence level.",
+    "gold_sources": [
+      {
+        "ticker": "GS",
+        "company": "Goldman Sachs",
+        "form": "10-Q",
+        "date": "2026-05-01",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "GS_10-Q_2026-05-01.txt",
+        "doc_id": "GS_10-Q_2026-05-01",
+        "chunk_id": "GS_10-Q_2026-05-01#740",
+        "acceptable_chunk_ids": [
+          "GS_10-Q_2026-05-01#739",
+          "GS_10-Q_2026-05-01#740",
+          "GS_10-Q_2026-05-01#741"
+        ],
+        "evidence": "Our risk reports detail key risks, drivers and changes for each desk and business, and are distributed daily to senior management of both our revenue-producing units and Risk. VaR is the potential loss in value due to adverse market movements over a defined time horizon with a specified confidence level."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q032",
+    "question": "In Item 2 MD&A of Johnson & Johnson's 2026-04-22 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "JNJ",
+    "company": "Johnson & Johnson",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-22",
+    "target_section": "Management’s discussion and analysis of financial condition and results of operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Cash flow from operations of $2.5 billion was the result of: (Dollars In Billions) $ 5.2 Net earnings 2.5 non-cash expenses and other adjustments primarily for depreciation and amortization, stock-based compensation, deferred tax provision and asset write-downs (1.0) an increase in accounts receivable and inventories (3.9) a decrease in accounts payable and accrued liabilities 0.3 a decrease in other current and non-current assets (0.6) a decrease in other current and non-current liabilities $ 2.5 Net cash flows from operations Cash flow used for investing activities of $1.0 billion was primarily from: (Dollars In Billions) $ (1.0) additions to property, plant and equipment 0.1 net sales of investments (0.1) Other and rounding $ (1.0) Net cash used for investing activities Cash flow from financing activities of $0.5 billion was primarily from: (Dollars In Billions) $ (3.1) dividends to s",
+    "gold_sources": [
+      {
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "form": "10-Q",
+        "date": "2026-04-22",
+        "item": "2",
+        "section": "Management’s discussion and analysis of financial condition and results of operations",
+        "source_file": "JNJ_10-Q_2026-04-22.txt",
+        "doc_id": "JNJ_10-Q_2026-04-22",
+        "chunk_id": "JNJ_10-Q_2026-04-22#138",
+        "acceptable_chunk_ids": [
+          "JNJ_10-Q_2026-04-22#137",
+          "JNJ_10-Q_2026-04-22#138",
+          "JNJ_10-Q_2026-04-22#139"
+        ],
+        "evidence": "Cash flow from operations of $2.5 billion was the result of: (Dollars In Billions) $ 5.2 Net earnings 2.5 non-cash expenses and other adjustments primarily for depreciation and amortization, stock-based compensation, deferred tax provision and asset write-downs (1.0) an increase in accounts receivable and inventories (3.9) a decrease in accounts payable and accrued liabilities 0.3 a decrease in other current and non-current assets (0.6) a decrease in other current and non-current liabilities $ 2.5 Net cash flows from operations Cash flow used for investing activities of $1.0 billion was primarily from: (Dollars In Billions) $ (1.0) additions to property, plant and equipment 0.1 net sales of investments (0.1) Other and rounding $ (1.0) Net cash used for investing activities Cash flow from financing activities of $0.5 billion was primarily from: (Dollars In Billions) $ (3.1) dividends to s"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q033",
+    "question": "In Item 2 MD&A of JPMorgan Chase's 2026-05-01 10-Q, what does management report about the filing disclosure?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "JPM",
+    "company": "JPMorgan Chase",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-01",
+    "target_section": "Unregistered Sales of Equity Securities and Use of Proceeds",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Shares repurchased pursuant to the common share repurchase program during the three months endedMarch 31, 2026 were as follows: Three months ended March 31, 2026 Average price paid per share of common stock (a) Aggregate purchase price of common stock repurchases (in millions) (a) ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── January 9,199,768 $ 312.90 $ 2,878 30,545 February 7,778,818 308.52 2,400 28,145 March 10,530,297 289.63 3,050 25,095 (b) First quarter 27,508,883 $ 302.75 $ 8,328 25,095 (b) (a) Excludes excise tax and commissions. (b) Represents the amount remaining under the $50 billion repurchase program.",
+    "gold_sources": [
+      {
+        "ticker": "JPM",
+        "company": "JPMorgan Chase",
+        "form": "10-Q",
+        "date": "2026-05-01",
+        "item": "2",
+        "section": "Unregistered Sales of Equity Securities and Use of Proceeds",
+        "source_file": "JPM_10-Q_2026-05-01.txt",
+        "doc_id": "JPM_10-Q_2026-05-01",
+        "chunk_id": "JPM_10-Q_2026-05-01#1",
+        "acceptable_chunk_ids": [
+          "JPM_10-Q_2026-05-01#0",
+          "JPM_10-Q_2026-05-01#1",
+          "JPM_10-Q_2026-05-01#2"
+        ],
+        "evidence": "Shares repurchased pursuant to the common share repurchase program during the three months endedMarch 31, 2026 were as follows: Three months ended March 31, 2026 Average price paid per share of common stock (a) Aggregate purchase price of common stock repurchases (in millions) (a) ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── January 9,199,768 $ 312.90 $ 2,878 30,545 February 7,778,818 308.52 2,400 28,145 March 10,530,297 289.63 3,050 25,095 (b) First quarter 27,508,883 $ 302.75 $ 8,328 25,095 (b) (a) Excludes excise tax and commissions. (b) Represents the amount remaining under the $50 billion repurchase program."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q034",
+    "question": "In Item 2 MD&A of Coca-Cola's 2026-04-30 10-Q, what does management report about margin or profitability?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "KO",
+    "company": "Coca-Cola",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-30",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Asia Pacific’s operating income for the three months ended April 3, 2026 and March 28, 2025 was $536 million and $624 million, respectively. The decrease in operating income was primarily driven by unfavorable price/mix, higher commodity costs and increased marketing spending, partially offset by an increase in concentrate sales volume of 10% and a favorable foreign currency exchange rate impact of 3%.",
+    "gold_sources": [
+      {
+        "ticker": "KO",
+        "company": "Coca-Cola",
+        "form": "10-Q",
+        "date": "2026-04-30",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "KO_10-Q_2026-04-30.txt",
+        "doc_id": "KO_10-Q_2026-04-30",
+        "chunk_id": "KO_10-Q_2026-04-30#137",
+        "acceptable_chunk_ids": [
+          "KO_10-Q_2026-04-30#136",
+          "KO_10-Q_2026-04-30#137",
+          "KO_10-Q_2026-04-30#138"
+        ],
+        "evidence": "Asia Pacific’s operating income for the three months ended April 3, 2026 and March 28, 2025 was $536 million and $624 million, respectively. The decrease in operating income was primarily driven by unfavorable price/mix, higher commodity costs and increased marketing spending, partially offset by an increase in concentrate sales volume of 10% and a favorable foreign currency exchange rate impact of 3%."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q035",
+    "question": "In Item 2 MD&A of Meta's 2026-04-30 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "META",
+    "company": "Meta",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-30",
+    "target_section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Family of Apps Reality Labs Total Three Months Ended March 31, % change Three Months Ended March 31, Three Months Ended March 31, % change 2026 2025 2026 2026 2025 (in millions, except percentages) ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Revenue $ $ 33% $ $ $ 33% Costs and expenses 29,009 20,137 44% 4,430 33,439 24,759 35% Income (loss) from operations $ $ 24% $ $ $ 30% Operating margin 48 52 41 41 • Net income was $26.77 billion, with diluted earnings per share (EPS) of $10.44 for the three months ended March 31, 2026. • Capital expenditures, including principal payments on finance leases, were $19.84 billion for the three months ended March 31, 2026. • Dividend and dividend equivalent payments were $1.35 billion for the three months ended March 31, 2026. • Cash, cash equivalents, and marketable securities were $81.18 billion as of March 31, 2026. • Effective tax rate was (23)% for the three months ended March 31, 2026.",
+    "gold_sources": [
+      {
+        "ticker": "META",
+        "company": "Meta",
+        "form": "10-Q",
+        "date": "2026-04-30",
+        "item": "2",
+        "section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "META_10-Q_2026-04-30.txt",
+        "doc_id": "META_10-Q_2026-04-30",
+        "chunk_id": "META_10-Q_2026-04-30#101",
+        "acceptable_chunk_ids": [
+          "META_10-Q_2026-04-30#100",
+          "META_10-Q_2026-04-30#101",
+          "META_10-Q_2026-04-30#102"
+        ],
+        "evidence": "Family of Apps Reality Labs Total Three Months Ended March 31, % change Three Months Ended March 31, Three Months Ended March 31, % change 2026 2025 2026 2026 2025 (in millions, except percentages) ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Revenue $ $ 33% $ $ $ 33% Costs and expenses 29,009 20,137 44% 4,430 33,439 24,759 35% Income (loss) from operations $ $ 24% $ $ $ 30% Operating margin 48 52 41 41 • Net income was $26.77 billion, with diluted earnings per share (EPS) of $10.44 for the three months ended March 31, 2026. • Capital expenditures, including principal payments on finance leases, were $19.84 billion for the three months ended March 31, 2026. • Dividend and dividend equivalent payments were $1.35 billion for the three months ended March 31, 2026. • Cash, cash equivalents, and marketable securities were $81.18 billion as of March 31, 2026. • Effective tax rate was (23)% for the three months ended March 31, 2026."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q036",
+    "question": "In Item 2 MD&A of Microsoft's 2026-04-29 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-29",
+    "target_section": "",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Estimating the total consideration and revenue that will be allocated to remaining performance obligation can involve significant judgments, including identifying and assessing variable consideration and potential renegotiation of commitments. We consider factors such as the nature of the terms and duration of the contract across our portfolio of contracts.",
+    "gold_sources": [
+      {
+        "ticker": "MSFT",
+        "company": "Microsoft",
+        "form": "10-Q",
+        "date": "2026-04-29",
+        "item": "2",
+        "section": "",
+        "source_file": "MSFT_10-Q_2026-04-29.txt",
+        "doc_id": "MSFT_10-Q_2026-04-29",
+        "chunk_id": "MSFT_10-Q_2026-04-29#9",
+        "acceptable_chunk_ids": [
+          "MSFT_10-Q_2026-04-29#8",
+          "MSFT_10-Q_2026-04-29#9",
+          "MSFT_10-Q_2026-04-29#10"
+        ],
+        "evidence": "Estimating the total consideration and revenue that will be allocated to remaining performance obligation can involve significant judgments, including identifying and assessing variable consideration and potential renegotiation of commitments. We consider factors such as the nature of the terms and duration of the contract across our portfolio of contracts."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q037",
+    "question": "In Item 2 MD&A of Netflix's 2026-04-17 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "NFLX",
+    "company": "Netflix",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-17",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Q1'25 2026 2025 (in thousands, except percentages) ────────────────────────────────────────────────────────────────────────── $ $ $ Revenues for the three months ended March 31, 2026 increased 16% as compared to the three months ended March 31, 2025, primarily due to the growth in memberships, price increases, and increased advertising revenue. The following table summarizes revenues by region for the three months ended March 31, 2026 and 2025.",
+    "gold_sources": [
+      {
+        "ticker": "NFLX",
+        "company": "Netflix",
+        "form": "10-Q",
+        "date": "2026-04-17",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "NFLX_10-Q_2026-04-17.txt",
+        "doc_id": "NFLX_10-Q_2026-04-17",
+        "chunk_id": "NFLX_10-Q_2026-04-17#57",
+        "acceptable_chunk_ids": [
+          "NFLX_10-Q_2026-04-17#56",
+          "NFLX_10-Q_2026-04-17#57",
+          "NFLX_10-Q_2026-04-17#58"
+        ],
+        "evidence": "Q1'25 2026 2025 (in thousands, except percentages) ────────────────────────────────────────────────────────────────────────── $ $ $ Revenues for the three months ended March 31, 2026 increased 16% as compared to the three months ended March 31, 2025, primarily due to the growth in memberships, price increases, and increased advertising revenue. The following table summarizes revenues by region for the three months ended March 31, 2026 and 2025."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q038",
+    "question": "In Item 2 MD&A of NVIDIA's 2026-05-20 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-20",
+    "target_section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Edge Computing revenue for the first quarter was $6.4 billion, up 29% from a year ago and up 10% sequentially. The increases were driven by robust Blackwell workstation demand, partially offset by slower consumer PC demand that was tempered by elevated memory and systems prices.",
+    "gold_sources": [
+      {
+        "ticker": "NVDA",
+        "company": "NVIDIA",
+        "form": "10-Q",
+        "date": "2026-05-20",
+        "item": "2",
+        "section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "NVDA_10-Q_2026-05-20.txt",
+        "doc_id": "NVDA_10-Q_2026-05-20",
+        "chunk_id": "NVDA_10-Q_2026-05-20#73",
+        "acceptable_chunk_ids": [
+          "NVDA_10-Q_2026-05-20#72",
+          "NVDA_10-Q_2026-05-20#73",
+          "NVDA_10-Q_2026-05-20#74"
+        ],
+        "evidence": "Edge Computing revenue for the first quarter was $6.4 billion, up 29% from a year ago and up 10% sequentially. The increases were driven by robust Blackwell workstation demand, partially offset by slower consumer PC demand that was tempered by elevated memory and systems prices."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q039",
+    "question": "In Item 2 MD&A of PepsiCo's 2026-04-16 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "PEP",
+    "company": "PepsiCo",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-16",
+    "target_section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "IB Franchise Net revenue increased 9%, reflecting effective net pricing and a 4-percentage-point impact of favorable foreign exchange translation, partially offset by an organic volume decline. Unit volume grew 0.5%, reflecting broad-based increases, partially offset by a decline in Mexico.",
+    "gold_sources": [
+      {
+        "ticker": "PEP",
+        "company": "PepsiCo",
+        "form": "10-Q",
+        "date": "2026-04-16",
+        "item": "2",
+        "section": "Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "PEP_10-Q_2026-04-16.txt",
+        "doc_id": "PEP_10-Q_2026-04-16",
+        "chunk_id": "PEP_10-Q_2026-04-16#89",
+        "acceptable_chunk_ids": [
+          "PEP_10-Q_2026-04-16#88",
+          "PEP_10-Q_2026-04-16#89",
+          "PEP_10-Q_2026-04-16#90"
+        ],
+        "evidence": "IB Franchise Net revenue increased 9%, reflecting effective net pricing and a 4-percentage-point impact of favorable foreign exchange translation, partially offset by an organic volume decline. Unit volume grew 0.5%, reflecting broad-based increases, partially offset by a decline in Mexico."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q040",
+    "question": "In Item 2 MD&A of Pfizer's 2026-05-05 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "PFE",
+    "company": "Pfizer",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-05",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "For information on our accruals for product revenue deductions, including the balance sheet classification of these accruals, seeNote 1B. Total Revenues - - Selected Product Discussion Biopharma (MILLIONS) % Change Product Global Region March 30, Total Operational Results Commentary Revenues 2025 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Eliquis $2,166 U.S.",
+    "gold_sources": [
+      {
+        "ticker": "PFE",
+        "company": "Pfizer",
+        "form": "10-Q",
+        "date": "2026-05-05",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF",
+        "source_file": "PFE_10-Q_2026-05-05.txt",
+        "doc_id": "PFE_10-Q_2026-05-05",
+        "chunk_id": "PFE_10-Q_2026-05-05#151",
+        "acceptable_chunk_ids": [
+          "PFE_10-Q_2026-05-05#150",
+          "PFE_10-Q_2026-05-05#151",
+          "PFE_10-Q_2026-05-05#152"
+        ],
+        "evidence": "For information on our accruals for product revenue deductions, including the balance sheet classification of these accruals, seeNote 1B. Total Revenues - - Selected Product Discussion Biopharma (MILLIONS) % Change Product Global Region March 30, Total Operational Results Commentary Revenues 2025 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Eliquis $2,166 U.S."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q041",
+    "question": "In Item 2 MD&A of Tesla's 2026-04-23 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "TSLA",
+    "company": "Tesla",
+    "filing_type": "10-Q",
+    "filing_date": "2026-04-23",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Results of Operations Revenues Three Months Ended March 31, Change (Dollars in millions) 2026 2025 $ % ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Automotive sales $ 15,473 $ 12,925 $ 2,548 20 Automotive regulatory credits 380 595 (215) (36) Automotive leasing 381 447 (66) (15) Total automotive revenues 16,234 13,967 2,267 16 Services and other 3,745 2,638 1,107 42 Total automotive & services and other segment revenue 19,979 16,605 3,374 20 Energy generation and storage segment revenue 2,408 2,730 (322) (12) Total revenues $ 22,387 $ 19,335 $ 3,052 16 Automotive & Services and Other Segment Automotive sales revenue increased $2.55 billion, or 20%, in the three months ended March 31, 2026 as compared to the three months ended March 31, 2025 due to an increase of approximately",
+    "gold_sources": [
+      {
+        "ticker": "TSLA",
+        "company": "Tesla",
+        "form": "10-Q",
+        "date": "2026-04-23",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+        "source_file": "TSLA_10-Q_2026-04-23.txt",
+        "doc_id": "TSLA_10-Q_2026-04-23",
+        "chunk_id": "TSLA_10-Q_2026-04-23#101",
+        "acceptable_chunk_ids": [
+          "TSLA_10-Q_2026-04-23#100",
+          "TSLA_10-Q_2026-04-23#101",
+          "TSLA_10-Q_2026-04-23#102"
+        ],
+        "evidence": "Results of Operations Revenues Three Months Ended March 31, Change (Dollars in millions) 2026 2025 $ % ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Automotive sales $ 15,473 $ 12,925 $ 2,548 20 Automotive regulatory credits 380 595 (215) (36) Automotive leasing 381 447 (66) (15) Total automotive revenues 16,234 13,967 2,267 16 Services and other 3,745 2,638 1,107 42 Total automotive & services and other segment revenue 19,979 16,605 3,374 20 Energy generation and storage segment revenue 2,408 2,730 (322) (12) Total revenues $ 22,387 $ 19,335 $ 3,052 16 Automotive & Services and Other Segment Automotive sales revenue increased $2.55 billion, or 20%, in the three months ended March 31, 2026 as compared to the three months ended March 31, 2025 due to an increase of approximately"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q042",
+    "question": "In Item 2 MD&A of UnitedHealth Group's 2026-05-05 10-Q, what does management report about growth or demand?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "UNH",
+    "company": "UnitedHealth Group",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-05",
+    "target_section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Optum Insight Revenues at Optum Insight increased due to elevated investment and other income and growth in technology services, partially offset by lower volumes within business services. Earnings from operations decreased due to investments in people, technology and new products; the impacts of restructuring and other actions and lower volumes within business services; partially offset by net portfolio divestitures in 2026, elevated investment and other income and growth in technology services.",
+    "gold_sources": [
+      {
+        "ticker": "UNH",
+        "company": "UnitedHealth Group",
+        "form": "10-Q",
+        "date": "2026-05-05",
+        "item": "2",
+        "section": "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+        "source_file": "UNH_10-Q_2026-05-05.txt",
+        "doc_id": "UNH_10-Q_2026-05-05",
+        "chunk_id": "UNH_10-Q_2026-05-05#52",
+        "acceptable_chunk_ids": [
+          "UNH_10-Q_2026-05-05#51",
+          "UNH_10-Q_2026-05-05#52",
+          "UNH_10-Q_2026-05-05#53"
+        ],
+        "evidence": "Optum Insight Revenues at Optum Insight increased due to elevated investment and other income and growth in technology services, partially offset by lower volumes within business services. Earnings from operations decreased due to investments in people, technology and new products; the impacts of restructuring and other actions and lower volumes within business services; partially offset by net portfolio divestitures in 2026, elevated investment and other income and growth in technology services."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q043",
+    "question": "In Item 2 MD&A of Walmart's 2026-05-29 10-Q, what does management report about revenue or net sales?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "WMT",
+    "company": "Walmart",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-29",
+    "target_section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Operating expenses as a percentage of net sales decreased 28 basis points for the three months ended April 30, 2026, when compared to the same period in the previous fiscal year, primarily due to disciplined cost controls and ongoing format mix shifts, partially offset by investments in strategic growth priorities in our Canada and Mexico markets.",
+    "gold_sources": [
+      {
+        "ticker": "WMT",
+        "company": "Walmart",
+        "form": "10-Q",
+        "date": "2026-05-29",
+        "item": "2",
+        "section": "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_file": "WMT_10-Q_2026-05-29.txt",
+        "doc_id": "WMT_10-Q_2026-05-29",
+        "chunk_id": "WMT_10-Q_2026-05-29#87",
+        "acceptable_chunk_ids": [
+          "WMT_10-Q_2026-05-29#86",
+          "WMT_10-Q_2026-05-29#87",
+          "WMT_10-Q_2026-05-29#88"
+        ],
+        "evidence": "Operating expenses as a percentage of net sales decreased 28 basis points for the three months ended April 30, 2026, when compared to the same period in the previous fiscal year, primarily due to disciplined cost controls and ongoing format mix shifts, partially offset by investments in strategic growth priorities in our Canada and Mexico markets."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q044",
+    "question": "In Item 2 MD&A of Exxon Mobil's 2026-05-04 10-Q, what does management report about margin or profitability?",
+    "question_type": "section-specific",
+    "difficulty": "medium",
+    "ticker": "XOM",
+    "company": "Exxon Mobil",
+    "filing_type": "10-Q",
+    "filing_date": "2026-05-04",
+    "target_section": "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND",
+    "target_item": "2",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "(1,923) 530 Total (1,262) 827 Energy Products First Quarter Earnings Driver Analysis (millions of dollars) Energy Products First Quarter Earnings Driver Analysis (millions of dollars) Energy Products First Quarter Earnings Driver Analysis (millions of dollars) ──────────────────────────────────────────────────────────────────────────────── 6 Margin - Increased earnings by$2,420 million, including strong results from trading and optimization. Advantaged Volume Growth - Increased earnings by$150 million.",
+    "gold_sources": [
+      {
+        "ticker": "XOM",
+        "company": "Exxon Mobil",
+        "form": "10-Q",
+        "date": "2026-05-04",
+        "item": "2",
+        "section": "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND",
+        "source_file": "XOM_10-Q_2026-05-04.txt",
+        "doc_id": "XOM_10-Q_2026-05-04",
+        "chunk_id": "XOM_10-Q_2026-05-04#57",
+        "acceptable_chunk_ids": [
+          "XOM_10-Q_2026-05-04#56",
+          "XOM_10-Q_2026-05-04#57",
+          "XOM_10-Q_2026-05-04#58"
+        ],
+        "evidence": "(1,923) 530 Total (1,262) 827 Energy Products First Quarter Earnings Driver Analysis (millions of dollars) Energy Products First Quarter Earnings Driver Analysis (millions of dollars) Energy Products First Quarter Earnings Driver Analysis (millions of dollars) ──────────────────────────────────────────────────────────────────────────────── 6 Margin - Increased earnings by$2,420 million, including strong results from trading and optimization. Advantaged Volume Growth - Increased earnings by$150 million."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q045",
+    "question": "In Apple's earnings call transcript dated 2026-04-30, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "AAPL",
+    "company": "Apple",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-30",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Mac revenue was $8.4 billion for the March quarter, up 6% from a year ago, despite supply constraints driven by higher than expected levels of demand. We're delighted with the reception of what is the most advanced Mac lineup in our history.",
+    "gold_sources": [
+      {
+        "ticker": "AAPL",
+        "company": "Apple",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-30",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "AAPL_TRANSCRIPT_2026-04-30.txt",
+        "doc_id": "AAPL_TRANSCRIPT_2026-04-30",
+        "chunk_id": "AAPL_TRANSCRIPT_2026-04-30#11",
+        "acceptable_chunk_ids": [
+          "AAPL_TRANSCRIPT_2026-04-30#10",
+          "AAPL_TRANSCRIPT_2026-04-30#11",
+          "AAPL_TRANSCRIPT_2026-04-30#12"
+        ],
+        "evidence": "Mac revenue was $8.4 billion for the March quarter, up 6% from a year ago, despite supply constraints driven by higher than expected levels of demand. We're delighted with the reception of what is the most advanced Mac lineup in our history."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q046",
+    "question": "In Advanced Micro Devices' earnings call transcript dated 2026-05-05, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "AMD",
+    "company": "Advanced Micro Devices",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-05",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Against this backdrop, we still expect our client revenue to grow year over year and outperform the market, driven by the strength of our Ryzen portfolio and expanding commercial adoption.",
+    "gold_sources": [
+      {
+        "ticker": "AMD",
+        "company": "Advanced Micro Devices",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-05",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "AMD_TRANSCRIPT_2026-05-05.txt",
+        "doc_id": "AMD_TRANSCRIPT_2026-05-05",
+        "chunk_id": "AMD_TRANSCRIPT_2026-05-05#14",
+        "acceptable_chunk_ids": [
+          "AMD_TRANSCRIPT_2026-05-05#13",
+          "AMD_TRANSCRIPT_2026-05-05#14",
+          "AMD_TRANSCRIPT_2026-05-05#15"
+        ],
+        "evidence": "Against this backdrop, we still expect our client revenue to grow year over year and outperform the market, driven by the strength of our Ryzen portfolio and expanding commercial adoption."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q047",
+    "question": "In Amazon's earnings call transcript dated 2026-04-29, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "AMZN",
+    "company": "Amazon",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-29",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Worldwide revenue is $181.5 billion, a 15% increase year over year, excluding the 180 basis point favorable impact of foreign exchange. Worldwide operating income was $23.9 billion, with an operating margin of 13.1%, our highest operating margin ever.",
+    "gold_sources": [
+      {
+        "ticker": "AMZN",
+        "company": "Amazon",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-29",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "AMZN_TRANSCRIPT_2026-04-29.txt",
+        "doc_id": "AMZN_TRANSCRIPT_2026-04-29",
+        "chunk_id": "AMZN_TRANSCRIPT_2026-04-29#26",
+        "acceptable_chunk_ids": [
+          "AMZN_TRANSCRIPT_2026-04-29#25",
+          "AMZN_TRANSCRIPT_2026-04-29#26",
+          "AMZN_TRANSCRIPT_2026-04-29#27"
+        ],
+        "evidence": "Worldwide revenue is $181.5 billion, a 15% increase year over year, excluding the 180 basis point favorable impact of foreign exchange. Worldwide operating income was $23.9 billion, with an operating margin of 13.1%, our highest operating margin ever."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q048",
+    "question": "In Bank of America's earnings call transcript dated 2026-04-15, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "BAC",
+    "company": "Bank of America",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-15",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "And then they saw where we had unique programs that we could grow. employee banking investments program, our local markets capabilities, the way businesses work together, our international capabilities, which is critical to the middle market business in the United States nowadays, and even business banking, which is 50 million revenue companies and under. Those three ideas, organic growth engine, already doing it, returns increasing, efficiency increasing, because the NII kicks in.",
+    "gold_sources": [
+      {
+        "ticker": "BAC",
+        "company": "Bank of America",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-15",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "BAC_TRANSCRIPT_2026-04-15.txt",
+        "doc_id": "BAC_TRANSCRIPT_2026-04-15",
+        "chunk_id": "BAC_TRANSCRIPT_2026-04-15#11",
+        "acceptable_chunk_ids": [
+          "BAC_TRANSCRIPT_2026-04-15#10",
+          "BAC_TRANSCRIPT_2026-04-15#11",
+          "BAC_TRANSCRIPT_2026-04-15#12"
+        ],
+        "evidence": "And then they saw where we had unique programs that we could grow. employee banking investments program, our local markets capabilities, the way businesses work together, our international capabilities, which is critical to the middle market business in the United States nowadays, and even business banking, which is 50 million revenue companies and under. Those three ideas, organic growth engine, already doing it, returns increasing, efficiency increasing, because the NII kicks in."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q049",
+    "question": "In Costco's earnings call transcript dated 2026-05-28, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "COST",
+    "company": "Costco",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-28",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Net sales for the third quarter were $69.15 billion, an increase of 11.6% from $61.96 billion in Q3 2025. Comparable sales were up 9.8% and 6.6% adjusted for gas price inflation and FX. Excluding gas sales entirely and adjusting for the impact of foreign exchange, comparable sales were also up 6.6%.",
+    "gold_sources": [
+      {
+        "ticker": "COST",
+        "company": "Costco",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-28",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "COST_TRANSCRIPT_2026-05-28.txt",
+        "doc_id": "COST_TRANSCRIPT_2026-05-28",
+        "chunk_id": "COST_TRANSCRIPT_2026-05-28#10",
+        "acceptable_chunk_ids": [
+          "COST_TRANSCRIPT_2026-05-28#9",
+          "COST_TRANSCRIPT_2026-05-28#10",
+          "COST_TRANSCRIPT_2026-05-28#11"
+        ],
+        "evidence": "Net sales for the third quarter were $69.15 billion, an increase of 11.6% from $61.96 billion in Q3 2025. Comparable sales were up 9.8% and 6.6% adjusted for gas price inflation and FX. Excluding gas sales entirely and adjusting for the impact of foreign exchange, comparable sales were also up 6.6%."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q050",
+    "question": "In Salesforce's earnings call transcript dated 2026-05-27, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "CRM",
+    "company": "Salesforce",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-27",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Building on the momentum from the second half of last year, we expect first half net new AOV growth to outpace AOV growth. and drive organic revenue reacceleration in the second half of FY27.",
+    "gold_sources": [
+      {
+        "ticker": "CRM",
+        "company": "Salesforce",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-27",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "CRM_TRANSCRIPT_2026-05-27.txt",
+        "doc_id": "CRM_TRANSCRIPT_2026-05-27",
+        "chunk_id": "CRM_TRANSCRIPT_2026-05-27#43",
+        "acceptable_chunk_ids": [
+          "CRM_TRANSCRIPT_2026-05-27#42",
+          "CRM_TRANSCRIPT_2026-05-27#43",
+          "CRM_TRANSCRIPT_2026-05-27#44"
+        ],
+        "evidence": "Building on the momentum from the second half of last year, we expect first half net new AOV growth to outpace AOV growth. and drive organic revenue reacceleration in the second half of FY27."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q051",
+    "question": "In Chevron's earnings call transcript dated 2026-05-01, what was said about growth or demand?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "CVX",
+    "company": "Chevron",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-01",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "And then on the growth spending side, what would you need to see to shift spending, maybe add some capital in the Permian and move away from the plateau back toward growth in that asset? So two parts to the question, but would love to hear your thoughts.",
+    "gold_sources": [
+      {
+        "ticker": "CVX",
+        "company": "Chevron",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-01",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "CVX_TRANSCRIPT_2026-05-01.txt",
+        "doc_id": "CVX_TRANSCRIPT_2026-05-01",
+        "chunk_id": "CVX_TRANSCRIPT_2026-05-01#20",
+        "acceptable_chunk_ids": [
+          "CVX_TRANSCRIPT_2026-05-01#19",
+          "CVX_TRANSCRIPT_2026-05-01#20",
+          "CVX_TRANSCRIPT_2026-05-01#21"
+        ],
+        "evidence": "And then on the growth spending side, what would you need to see to shift spending, maybe add some capital in the Permian and move away from the plateau back toward growth in that asset? So two parts to the question, but would love to hear your thoughts."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q052",
+    "question": "In Disney's earnings call transcript dated 2026-05-06, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "DIS",
+    "company": "Disney",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-06",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "At Disney Experiences, we continue to demonstrate strength in the core business and make progress against our growth initiatives with strong revenue growth of 7% and segment operating income growth of 5% in the quarter. Both revenue and segment operating income were ahead of our prior expectations and represent second quarter records.",
+    "gold_sources": [
+      {
+        "ticker": "DIS",
+        "company": "Disney",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-06",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "DIS_TRANSCRIPT_2026-05-06.txt",
+        "doc_id": "DIS_TRANSCRIPT_2026-05-06",
+        "chunk_id": "DIS_TRANSCRIPT_2026-05-06#1",
+        "acceptable_chunk_ids": [
+          "DIS_TRANSCRIPT_2026-05-06#0",
+          "DIS_TRANSCRIPT_2026-05-06#1",
+          "DIS_TRANSCRIPT_2026-05-06#2"
+        ],
+        "evidence": "At Disney Experiences, we continue to demonstrate strength in the core business and make progress against our growth initiatives with strong revenue growth of 7% and segment operating income growth of 5% in the quarter. Both revenue and segment operating income were ahead of our prior expectations and represent second quarter records."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q053",
+    "question": "In Goldman Sachs' earnings call transcript dated 2026-04-13, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "GS",
+    "company": "Goldman Sachs",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-13",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "So given the uptick in revenue, given our outlook, we did bring the ratio down 100 basis points versus where we had set it in the first quarter last year. But we have a different amount of revenue and a different outlook.",
+    "gold_sources": [
+      {
+        "ticker": "GS",
+        "company": "Goldman Sachs",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-13",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "GS_TRANSCRIPT_2026-04-13.txt",
+        "doc_id": "GS_TRANSCRIPT_2026-04-13",
+        "chunk_id": "GS_TRANSCRIPT_2026-04-13#61",
+        "acceptable_chunk_ids": [
+          "GS_TRANSCRIPT_2026-04-13#60",
+          "GS_TRANSCRIPT_2026-04-13#61",
+          "GS_TRANSCRIPT_2026-04-13#62"
+        ],
+        "evidence": "So given the uptick in revenue, given our outlook, we did bring the ratio down 100 basis points versus where we had set it in the first quarter last year. But we have a different amount of revenue and a different outlook."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q054",
+    "question": "In Intel's earnings call transcript dated 2026-04-23, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "INTC",
+    "company": "Intel",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-23",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "We delivered first quarter non-GAAP earnings per share of 29 cents versus our guidance of breakeven on higher revenue, stronger gross margins, and continued spending discipline. Q1 EPS included a roughly $0.06 one-time gain in interest and other.",
+    "gold_sources": [
+      {
+        "ticker": "INTC",
+        "company": "Intel",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-23",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "INTC_TRANSCRIPT_2026-04-23.txt",
+        "doc_id": "INTC_TRANSCRIPT_2026-04-23",
+        "chunk_id": "INTC_TRANSCRIPT_2026-04-23#13",
+        "acceptable_chunk_ids": [
+          "INTC_TRANSCRIPT_2026-04-23#12",
+          "INTC_TRANSCRIPT_2026-04-23#13",
+          "INTC_TRANSCRIPT_2026-04-23#14"
+        ],
+        "evidence": "We delivered first quarter non-GAAP earnings per share of 29 cents versus our guidance of breakeven on higher revenue, stronger gross margins, and continued spending discipline. Q1 EPS included a roughly $0.06 one-time gain in interest and other."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q055",
+    "question": "In Johnson & Johnson's earnings call transcript dated 2026-04-14, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "JNJ",
+    "company": "Johnson & Johnson",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-14",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Really strong results in the first quarter with over $15 billion in net sales, 7.4% operational growth. Really importantly, 11 key brands delivering double-digit growth. And if you take a look at what is now 96% of our business that is not including Stellara, we actually grew at 16.6%.",
+    "gold_sources": [
+      {
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-14",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "JNJ_TRANSCRIPT_2026-04-14.txt",
+        "doc_id": "JNJ_TRANSCRIPT_2026-04-14",
+        "chunk_id": "JNJ_TRANSCRIPT_2026-04-14#34",
+        "acceptable_chunk_ids": [
+          "JNJ_TRANSCRIPT_2026-04-14#33",
+          "JNJ_TRANSCRIPT_2026-04-14#34",
+          "JNJ_TRANSCRIPT_2026-04-14#35"
+        ],
+        "evidence": "Really strong results in the first quarter with over $15 billion in net sales, 7.4% operational growth. Really importantly, 11 key brands delivering double-digit growth. And if you take a look at what is now 96% of our business that is not including Stellara, we actually grew at 16.6%."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q056",
+    "question": "In JPMorgan Chase's earnings call transcript dated 2026-04-14, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "JPM",
+    "company": "JPMorgan Chase",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-14",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Revenue of $23.4 billion was up 19% year-on-year, driven by higher revenues across the businesses. To give a bit more color, IBCs were up 28% year-on-year, driven by strong performance across M&A and equity underwriting, partially offset by lower debt underwriting.",
+    "gold_sources": [
+      {
+        "ticker": "JPM",
+        "company": "JPMorgan Chase",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-14",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "JPM_TRANSCRIPT_2026-04-14.txt",
+        "doc_id": "JPM_TRANSCRIPT_2026-04-14",
+        "chunk_id": "JPM_TRANSCRIPT_2026-04-14#8",
+        "acceptable_chunk_ids": [
+          "JPM_TRANSCRIPT_2026-04-14#7",
+          "JPM_TRANSCRIPT_2026-04-14#8",
+          "JPM_TRANSCRIPT_2026-04-14#9"
+        ],
+        "evidence": "Revenue of $23.4 billion was up 19% year-on-year, driven by higher revenues across the businesses. To give a bit more color, IBCs were up 28% year-on-year, driven by strong performance across M&A and equity underwriting, partially offset by lower debt underwriting."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q057",
+    "question": "In Coca-Cola's earnings call transcript dated 2026-04-28, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "KO",
+    "company": "Coca-Cola",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-28",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "We continue to expect organic revenue growth of 4% to 5%. we now expect growth in comparable currency neutral earnings per share, excluding acquisitions and divestitures, of 6 to 7%. Notwithstanding volatility in certain commodities like tea and coffee, we believe the overall impact on our cost basket is manageable at this time.",
+    "gold_sources": [
+      {
+        "ticker": "KO",
+        "company": "Coca-Cola",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-28",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "KO_TRANSCRIPT_2026-04-28.txt",
+        "doc_id": "KO_TRANSCRIPT_2026-04-28",
+        "chunk_id": "KO_TRANSCRIPT_2026-04-28#17",
+        "acceptable_chunk_ids": [
+          "KO_TRANSCRIPT_2026-04-28#16",
+          "KO_TRANSCRIPT_2026-04-28#17",
+          "KO_TRANSCRIPT_2026-04-28#18"
+        ],
+        "evidence": "We continue to expect organic revenue growth of 4% to 5%. we now expect growth in comparable currency neutral earnings per share, excluding acquisitions and divestitures, of 6 to 7%. Notwithstanding volatility in certain commodities like tea and coffee, we believe the overall impact on our cost basket is manageable at this time."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q058",
+    "question": "In Meta's earnings call transcript dated 2026-04-29, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "META",
+    "company": "Meta",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-29",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Adoption by businesses has been strong following performance improvements we've made over the past year, with the annual revenue run rate of our value optimization suite now over $20 billion, more than doubling year over year.",
+    "gold_sources": [
+      {
+        "ticker": "META",
+        "company": "Meta",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-29",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "META_TRANSCRIPT_2026-04-29.txt",
+        "doc_id": "META_TRANSCRIPT_2026-04-29",
+        "chunk_id": "META_TRANSCRIPT_2026-04-29#27",
+        "acceptable_chunk_ids": [
+          "META_TRANSCRIPT_2026-04-29#26",
+          "META_TRANSCRIPT_2026-04-29#27",
+          "META_TRANSCRIPT_2026-04-29#28"
+        ],
+        "evidence": "Adoption by businesses has been strong following performance improvements we've made over the past year, with the annual revenue run rate of our value optimization suite now over $20 billion, more than doubling year over year."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q059",
+    "question": "In Microsoft's earnings call transcript dated 2026-04-29, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-29",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "And our agentic products and LinkedIn talent solutions, which help hirers automate time-consuming tasks like sourcing, screening, and drafting messages, have already surpassed a $450 million annualized revenue run rate.",
+    "gold_sources": [
+      {
+        "ticker": "MSFT",
+        "company": "Microsoft",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-29",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "MSFT_TRANSCRIPT_2026-04-29.txt",
+        "doc_id": "MSFT_TRANSCRIPT_2026-04-29",
+        "chunk_id": "MSFT_TRANSCRIPT_2026-04-29#16",
+        "acceptable_chunk_ids": [
+          "MSFT_TRANSCRIPT_2026-04-29#15",
+          "MSFT_TRANSCRIPT_2026-04-29#16",
+          "MSFT_TRANSCRIPT_2026-04-29#17"
+        ],
+        "evidence": "And our agentic products and LinkedIn talent solutions, which help hirers automate time-consuming tasks like sourcing, screening, and drafting messages, have already surpassed a $450 million annualized revenue run rate."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q060",
+    "question": "In Netflix's earnings call transcript dated 2026-04-16, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "NFLX",
+    "company": "Netflix",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-16",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "That's revenue growth of 12% to 14%, operating margin at 31.5%. That includes roughly doubling the advertising business to about $3 billion U.S. dollars. Now, we ended last year with more than 325 million paid members. And as that number continues to grow, we are entertaining an audience that is approaching a billion people, which is an exciting milestone to strive for and will be an exciting milestone to achieve.",
+    "gold_sources": [
+      {
+        "ticker": "NFLX",
+        "company": "Netflix",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-16",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "NFLX_TRANSCRIPT_2026-04-16.txt",
+        "doc_id": "NFLX_TRANSCRIPT_2026-04-16",
+        "chunk_id": "NFLX_TRANSCRIPT_2026-04-16#1",
+        "acceptable_chunk_ids": [
+          "NFLX_TRANSCRIPT_2026-04-16#0",
+          "NFLX_TRANSCRIPT_2026-04-16#1",
+          "NFLX_TRANSCRIPT_2026-04-16#2"
+        ],
+        "evidence": "That's revenue growth of 12% to 14%, operating margin at 31.5%. That includes roughly doubling the advertising business to about $3 billion U.S. dollars. Now, we ended last year with more than 325 million paid members. And as that number continues to grow, we are entertaining an audience that is approaching a billion people, which is an exciting milestone to strive for and will be an exciting milestone to achieve."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q061",
+    "question": "In NVIDIA's earnings call transcript dated 2026-05-20, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-20",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "ACIE revenue was 37 billion and grew 31% quarter over quarter, including AI cloud revenue that more than tripled year over year. Our customers have enabled rapid stand-up of AI compute capacity. The number of partner data centers exceeding 10 megawatts has nearly doubled in just one year, now surpassing 80 sites.",
+    "gold_sources": [
+      {
+        "ticker": "NVDA",
+        "company": "NVIDIA",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-20",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "NVDA_TRANSCRIPT_2026-05-20.txt",
+        "doc_id": "NVDA_TRANSCRIPT_2026-05-20",
+        "chunk_id": "NVDA_TRANSCRIPT_2026-05-20#7",
+        "acceptable_chunk_ids": [
+          "NVDA_TRANSCRIPT_2026-05-20#6",
+          "NVDA_TRANSCRIPT_2026-05-20#7",
+          "NVDA_TRANSCRIPT_2026-05-20#8"
+        ],
+        "evidence": "ACIE revenue was 37 billion and grew 31% quarter over quarter, including AI cloud revenue that more than tripled year over year. Our customers have enabled rapid stand-up of AI compute capacity. The number of partner data centers exceeding 10 megawatts has nearly doubled in just one year, now surpassing 80 sites."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q062",
+    "question": "In PepsiCo's earnings call transcript dated 2026-04-16, what was said about growth or demand?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "PEP",
+    "company": "PepsiCo",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-16",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "So just curious about what drove that, thoughts for 26, whether advertising, I would think advertising would go up, but that was sort of a bigger decline than I would have expected to see for 2025, and I'd love to hear more about it. We did get some efficiency from both the working and non-working advertising line.",
+    "gold_sources": [
+      {
+        "ticker": "PEP",
+        "company": "PepsiCo",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-16",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "PEP_TRANSCRIPT_2026-04-16.txt",
+        "doc_id": "PEP_TRANSCRIPT_2026-04-16",
+        "chunk_id": "PEP_TRANSCRIPT_2026-04-16#14",
+        "acceptable_chunk_ids": [
+          "PEP_TRANSCRIPT_2026-04-16#13",
+          "PEP_TRANSCRIPT_2026-04-16#14",
+          "PEP_TRANSCRIPT_2026-04-16#15"
+        ],
+        "evidence": "So just curious about what drove that, thoughts for 26, whether advertising, I would think advertising would go up, but that was sort of a bigger decline than I would have expected to see for 2025, and I'd love to hear more about it. We did get some efficiency from both the working and non-working advertising line."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q063",
+    "question": "In Pfizer's earnings call transcript dated 2026-05-05, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "PFE",
+    "company": "Pfizer",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-05",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "The 20% year-over-year operational revenue growth in the quarter of our seeds and products shows that we have made good progress in deepening our presence within the oncology community. We continue to strengthen physician engagement, and drive greater recognition of the clinical value of our medicine.",
+    "gold_sources": [
+      {
+        "ticker": "PFE",
+        "company": "Pfizer",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-05",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "PFE_TRANSCRIPT_2026-05-05.txt",
+        "doc_id": "PFE_TRANSCRIPT_2026-05-05",
+        "chunk_id": "PFE_TRANSCRIPT_2026-05-05#5",
+        "acceptable_chunk_ids": [
+          "PFE_TRANSCRIPT_2026-05-05#4",
+          "PFE_TRANSCRIPT_2026-05-05#5",
+          "PFE_TRANSCRIPT_2026-05-05#6"
+        ],
+        "evidence": "The 20% year-over-year operational revenue growth in the quarter of our seeds and products shows that we have made good progress in deepening our presence within the oncology community. We continue to strengthen physician engagement, and drive greater recognition of the clinical value of our medicine."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q064",
+    "question": "In Tesla's earnings call transcript dated 2026-04-22, what was said about growth or demand?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "TSLA",
+    "company": "Tesla",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-22",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "Whilst the recent increase in gas prices has had a positive impact on the order rate, This improvement started before the uptrend in gas prices. This is due to the work done by the Tesla team in bringing more compelling and affordable vehicles to market.",
+    "gold_sources": [
+      {
+        "ticker": "TSLA",
+        "company": "Tesla",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-22",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "TSLA_TRANSCRIPT_2026-04-22.txt",
+        "doc_id": "TSLA_TRANSCRIPT_2026-04-22",
+        "chunk_id": "TSLA_TRANSCRIPT_2026-04-22#9",
+        "acceptable_chunk_ids": [
+          "TSLA_TRANSCRIPT_2026-04-22#8",
+          "TSLA_TRANSCRIPT_2026-04-22#9",
+          "TSLA_TRANSCRIPT_2026-04-22#10"
+        ],
+        "evidence": "Whilst the recent increase in gas prices has had a positive impact on the order rate, This improvement started before the uptrend in gas prices. This is due to the work done by the Tesla team in bringing more compelling and affordable vehicles to market."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q065",
+    "question": "In UnitedHealth Group's earnings call transcript dated 2026-04-21, what was said about margin or profitability?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "UNH",
+    "company": "UnitedHealth Group",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-04-21",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "So consistent with our strategy in 2026, we're going to remain focused on financial sustainability, product durability, and then the path to margin recovery that we're on within that 2% to 4% long-term range that we've discussed.",
+    "gold_sources": [
+      {
+        "ticker": "UNH",
+        "company": "UnitedHealth Group",
+        "form": "TRANSCRIPT",
+        "date": "2026-04-21",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "UNH_TRANSCRIPT_2026-04-21.txt",
+        "doc_id": "UNH_TRANSCRIPT_2026-04-21",
+        "chunk_id": "UNH_TRANSCRIPT_2026-04-21#47",
+        "acceptable_chunk_ids": [
+          "UNH_TRANSCRIPT_2026-04-21#46",
+          "UNH_TRANSCRIPT_2026-04-21#47",
+          "UNH_TRANSCRIPT_2026-04-21#48"
+        ],
+        "evidence": "So consistent with our strategy in 2026, we're going to remain focused on financial sustainability, product durability, and then the path to margin recovery that we're on within that 2% to 4% long-term range that we've discussed."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q066",
+    "question": "In Walmart's earnings call transcript dated 2026-05-21, what was said about revenue or net sales?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "WMT",
+    "company": "Walmart",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-21",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "So maybe it would be helpful to understand how where each of those principal revenue streams are today versus where you see their potential. To start with, I'll remind everyone what we shared at our investor day. We talked about a multi-year plan of growing the top line roughly 4% and growing operating income faster than that.",
+    "gold_sources": [
+      {
+        "ticker": "WMT",
+        "company": "Walmart",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-21",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "WMT_TRANSCRIPT_2026-05-21.txt",
+        "doc_id": "WMT_TRANSCRIPT_2026-05-21",
+        "chunk_id": "WMT_TRANSCRIPT_2026-05-21#38",
+        "acceptable_chunk_ids": [
+          "WMT_TRANSCRIPT_2026-05-21#37",
+          "WMT_TRANSCRIPT_2026-05-21#38",
+          "WMT_TRANSCRIPT_2026-05-21#39"
+        ],
+        "evidence": "So maybe it would be helpful to understand how where each of those principal revenue streams are today versus where you see their potential. To start with, I'll remind everyone what we shared at our investor day. We talked about a multi-year plan of growing the top line roughly 4% and growing operating income faster than that."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q067",
+    "question": "In Exxon Mobil's earnings call transcript dated 2026-05-01, what was said about growth or demand?",
+    "question_type": "transcript QA",
+    "difficulty": "medium",
+    "ticker": "XOM",
+    "company": "Exxon Mobil",
+    "filing_type": "TRANSCRIPT",
+    "filing_date": "2026-05-01",
+    "target_section": "Full transcript",
+    "target_item": "0",
+    "metric_focus": [
+      "retrieval",
+      "citation",
+      "answer",
+      "faithfulness"
+    ],
+    "gold_answer": "But I think we'll see that demand or that supply ramp up fairly quickly again. And then ultimately we'll have to work with Cutter Energy on the two trains that were damaged. That'll be obviously a much longer time horizon with respect to repair.",
+    "gold_sources": [
+      {
+        "ticker": "XOM",
+        "company": "Exxon Mobil",
+        "form": "TRANSCRIPT",
+        "date": "2026-05-01",
+        "item": "0",
+        "section": "Full transcript",
+        "source_file": "XOM_TRANSCRIPT_2026-05-01.txt",
+        "doc_id": "XOM_TRANSCRIPT_2026-05-01",
+        "chunk_id": "XOM_TRANSCRIPT_2026-05-01#20",
+        "acceptable_chunk_ids": [
+          "XOM_TRANSCRIPT_2026-05-01#19",
+          "XOM_TRANSCRIPT_2026-05-01#20",
+          "XOM_TRANSCRIPT_2026-05-01#21"
+        ],
+        "evidence": "But I think we'll see that demand or that supply ramp up fairly quickly again. And then ultimately we'll have to work with Cutter Energy on the two trains that were damaged. That'll be obviously a much longer time horizon with respect to repair."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q068",
+    "question": "Comparing Item 1A of Apple's 10-K filings from 2023-11-03 and 2024-11-01, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "AAPL",
+    "company": "Apple",
+    "filing_type": "10-K",
+    "filing_date": "2023-11-03 vs 2024-11-01",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2023-11-03 10-K: Political uncertainty surrounding trade and other international disputes could also have a negative effect on consumer confidence and spending, which could adversely affect the Company’s business. In the 2024-11-01 10-K: The Company has invested and will continue to invest in programs to enhance reseller sales, including staffing selected resellers’ stores with Company employees and contractors, and improving product placement displays. These programs can require a substantial investment while not assuring return or incremental sales.",
+    "gold_sources": [
+      {
+        "ticker": "AAPL",
+        "company": "Apple",
+        "form": "10-K",
+        "date": "2023-11-03",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AAPL_10-K_2023-11-03.txt",
+        "doc_id": "AAPL_10-K_2023-11-03",
+        "chunk_id": "AAPL_10-K_2023-11-03#32",
+        "acceptable_chunk_ids": [
+          "AAPL_10-K_2023-11-03#31",
+          "AAPL_10-K_2023-11-03#32",
+          "AAPL_10-K_2023-11-03#33"
+        ],
+        "evidence": "Political uncertainty surrounding trade and other international disputes could also have a negative effect on consumer confidence and spending, which could adversely affect the Company’s business."
+      },
+      {
+        "ticker": "AAPL",
+        "company": "Apple",
+        "form": "10-K",
+        "date": "2024-11-01",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AAPL_10-K_2024-11-01.txt",
+        "doc_id": "AAPL_10-K_2024-11-01",
+        "chunk_id": "AAPL_10-K_2024-11-01#69",
+        "acceptable_chunk_ids": [
+          "AAPL_10-K_2024-11-01#68",
+          "AAPL_10-K_2024-11-01#69",
+          "AAPL_10-K_2024-11-01#70"
+        ],
+        "evidence": "The Company has invested and will continue to invest in programs to enhance reseller sales, including staffing selected resellers’ stores with Company employees and contractors, and improving product placement displays. These programs can require a substantial investment while not assuring return or incremental sales."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q069",
+    "question": "Comparing Item 1A of Amazon's 10-K filings from 2024-02-02 and 2025-02-07, what changed or stayed important regarding liquidity or capital risk?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "AMZN",
+    "company": "Amazon",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-02 vs 2025-02-07",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-02 10-K: The trading price of our common stock fluctuates significantly in response to, among other risks, the risks described elsewhere in this Item 1A, as well as: • changes in interest rates; • conditions or trends in the internet and the industry segments we operate in; • quarterly variations in operating results; • fluctuations in the stock market in general and market prices for internet-related companies in particular; • changes in financial estimates by us or decisions to increase or decrease future spending or investment levels; • changes in financial estimates and recommendations by securities analysts; • changes in our capital structure, including issuance of additional debt or equity to the public; • changes in the valuation methodology of, or performance by, other e-commerce or technology companies; and • transactions in our common stock by major investors and certain analyst reports, news, and speculation. In the 2025-02-07 10-K: The trading price of our common stock fluctuates significantly in response to, among other risks, the risks described elsewhere in this Item 1A, as well as: • changes in interest rates; • conditions or trends in the internet and the industry segments we operate in; • quarterly variations in operating results; • fluctuations in the stock market in general and market prices for internet-related companies in particular; • changes in financial estimates by us or decisions to increase or decrease future spending or investment levels; • changes in financial estimates and recommendations by securities analysts; • changes in our capital structure, including issuance of additional debt or equity to the public; • changes in the valuation methodology of, or performance by, other e-commerce or technology companies; and • transactions in our common stock by major investors and certain analyst reports, news, social media activity, and speculation.",
+    "gold_sources": [
+      {
+        "ticker": "AMZN",
+        "company": "Amazon",
+        "form": "10-K",
+        "date": "2024-02-02",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AMZN_10-K_2024-02-02.txt",
+        "doc_id": "AMZN_10-K_2024-02-02",
+        "chunk_id": "AMZN_10-K_2024-02-02#72",
+        "acceptable_chunk_ids": [
+          "AMZN_10-K_2024-02-02#71",
+          "AMZN_10-K_2024-02-02#72",
+          "AMZN_10-K_2024-02-02#73"
+        ],
+        "evidence": "The trading price of our common stock fluctuates significantly in response to, among other risks, the risks described elsewhere in this Item 1A, as well as: • changes in interest rates; • conditions or trends in the internet and the industry segments we operate in; • quarterly variations in operating results; • fluctuations in the stock market in general and market prices for internet-related companies in particular; • changes in financial estimates by us or decisions to increase or decrease future spending or investment levels; • changes in financial estimates and recommendations by securities analysts; • changes in our capital structure, including issuance of additional debt or equity to the public; • changes in the valuation methodology of, or performance by, other e-commerce or technology companies; and • transactions in our common stock by major investors and certain analyst reports, news, and speculation."
+      },
+      {
+        "ticker": "AMZN",
+        "company": "Amazon",
+        "form": "10-K",
+        "date": "2025-02-07",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "AMZN_10-K_2025-02-07.txt",
+        "doc_id": "AMZN_10-K_2025-02-07",
+        "chunk_id": "AMZN_10-K_2025-02-07#72",
+        "acceptable_chunk_ids": [
+          "AMZN_10-K_2025-02-07#71",
+          "AMZN_10-K_2025-02-07#72",
+          "AMZN_10-K_2025-02-07#73"
+        ],
+        "evidence": "The trading price of our common stock fluctuates significantly in response to, among other risks, the risks described elsewhere in this Item 1A, as well as: • changes in interest rates; • conditions or trends in the internet and the industry segments we operate in; • quarterly variations in operating results; • fluctuations in the stock market in general and market prices for internet-related companies in particular; • changes in financial estimates by us or decisions to increase or decrease future spending or investment levels; • changes in financial estimates and recommendations by securities analysts; • changes in our capital structure, including issuance of additional debt or equity to the public; • changes in the valuation methodology of, or performance by, other e-commerce or technology companies; and • transactions in our common stock by major investors and certain analyst reports, news, social media activity, and speculation."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q070",
+    "question": "Comparing Item 1A of Costco's 10-K filings from 2023-10-11 and 2024-10-09, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "COST",
+    "company": "Costco",
+    "filing_type": "10-K",
+    "filing_date": "2023-10-11 vs 2024-10-09",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2023-10-11 10-K: Other factors and uncertainties include, but are not limited to: • The severity and duration of pandemics; • Evolving macroeconomic factors, including general economic uncertainty, unemployment rates, and recessionary pressures; • Changes in labor markets affecting us and our suppliers; • Unknown consequences on our business performance and initiatives stemming from the substantial investment of time and other resources to the pandemic response; • The pace of post-pandemic recovery; •The long-term impact of the pandemic on our business, including consumer behaviors; and • Disruption and volatility within the financial and credit markets. Factors associated with climate change could adversely affect our business. In the 2024-10-09 10-K: We may not timely identify or effectively respond to consumer tastes and preferences, which could negatively affect our relationship with our members, the demand for our products and services, and our market share. It is difficult to consistently and successfully predict the products and services that our members will desire.",
+    "gold_sources": [
+      {
+        "ticker": "COST",
+        "company": "Costco",
+        "form": "10-K",
+        "date": "2023-10-11",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "COST_10-K_2023-10-11.txt",
+        "doc_id": "COST_10-K_2023-10-11",
+        "chunk_id": "COST_10-K_2023-10-11#72",
+        "acceptable_chunk_ids": [
+          "COST_10-K_2023-10-11#71",
+          "COST_10-K_2023-10-11#72",
+          "COST_10-K_2023-10-11#73"
+        ],
+        "evidence": "Other factors and uncertainties include, but are not limited to: • The severity and duration of pandemics; • Evolving macroeconomic factors, including general economic uncertainty, unemployment rates, and recessionary pressures; • Changes in labor markets affecting us and our suppliers; • Unknown consequences on our business performance and initiatives stemming from the substantial investment of time and other resources to the pandemic response; • The pace of post-pandemic recovery; •The long-term impact of the pandemic on our business, including consumer behaviors; and • Disruption and volatility within the financial and credit markets. Factors associated with climate change could adversely affect our business."
+      },
+      {
+        "ticker": "COST",
+        "company": "Costco",
+        "form": "10-K",
+        "date": "2024-10-09",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "COST_10-K_2024-10-09.txt",
+        "doc_id": "COST_10-K_2024-10-09",
+        "chunk_id": "COST_10-K_2024-10-09#39",
+        "acceptable_chunk_ids": [
+          "COST_10-K_2024-10-09#38",
+          "COST_10-K_2024-10-09#39",
+          "COST_10-K_2024-10-09#40"
+        ],
+        "evidence": "We may not timely identify or effectively respond to consumer tastes and preferences, which could negatively affect our relationship with our members, the demand for our products and services, and our market share. It is difficult to consistently and successfully predict the products and services that our members will desire."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q071",
+    "question": "Comparing Item 1A of Salesforce's 10-K filings from 2024-03-06 and 2025-03-05, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "CRM",
+    "company": "Salesforce",
+    "filing_type": "10-K",
+    "filing_date": "2024-03-06 vs 2025-03-05",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-03-06 10-K: For example, our efforts to further automate our processes for customer contracts may be complicated by unanticipated operating difficulties. Our success will depend in part upon the ability of our senior management to manage our projected growth effectively. In the 2025-03-05 10-K: Additionally, due to customer flexibility in the timing of their consumption, we could have lower levels of customer consumption of our products than we expect which may result in suboptimal pricing for consumption-based contracts. Further, the introduction of future platform changes and upgrades may not result in long term revenue growth.",
+    "gold_sources": [
+      {
+        "ticker": "CRM",
+        "company": "Salesforce",
+        "form": "10-K",
+        "date": "2024-03-06",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "CRM_10-K_2024-03-06.txt",
+        "doc_id": "CRM_10-K_2024-03-06",
+        "chunk_id": "CRM_10-K_2024-03-06#90",
+        "acceptable_chunk_ids": [
+          "CRM_10-K_2024-03-06#89",
+          "CRM_10-K_2024-03-06#90",
+          "CRM_10-K_2024-03-06#91"
+        ],
+        "evidence": "For example, our efforts to further automate our processes for customer contracts may be complicated by unanticipated operating difficulties. Our success will depend in part upon the ability of our senior management to manage our projected growth effectively."
+      },
+      {
+        "ticker": "CRM",
+        "company": "Salesforce",
+        "form": "10-K",
+        "date": "2025-03-05",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "CRM_10-K_2025-03-05.txt",
+        "doc_id": "CRM_10-K_2025-03-05",
+        "chunk_id": "CRM_10-K_2025-03-05#118",
+        "acceptable_chunk_ids": [
+          "CRM_10-K_2025-03-05#117",
+          "CRM_10-K_2025-03-05#118",
+          "CRM_10-K_2025-03-05#119"
+        ],
+        "evidence": "Additionally, due to customer flexibility in the timing of their consumption, we could have lower levels of customer consumption of our products than we expect which may result in suboptimal pricing for consumption-based contracts. Further, the introduction of future platform changes and upgrades may not result in long term revenue growth."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q072",
+    "question": "Comparing Item 1A of Chevron's 10-K filings from 2024-02-26 and 2025-02-21, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "CVX",
+    "company": "Chevron",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-26 vs 2025-02-21",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-26 10-K: Legislation, regulation, and other government actions related to GHG emissions and climate change could reduce demand for Chevron’s hydrocarbon and other products and/or continue to increase Chevron’s operational costs and reduce its return on investment. The Paris Agreement went into effect in November 2016, and a number of countries in which we operate have adopted and may adopt additional policies intended to meet their Paris Agreement goals. In the 2025-02-21 10-K: Legislation, regulation, and other government actions related to GHG emissions and climate change could reduce demand for Chevron’s hydrocarbon and other products and/or continue to increase Chevron’s operational costs and reduce its return on investment. The Paris Agreement went into effect in November 2016, and a number of countries in which we operate have adopted and may adopt additional policies intended to meet their Paris Agreement goals.",
+    "gold_sources": [
+      {
+        "ticker": "CVX",
+        "company": "Chevron",
+        "form": "10-K",
+        "date": "2024-02-26",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "CVX_10-K_2024-02-26.txt",
+        "doc_id": "CVX_10-K_2024-02-26",
+        "chunk_id": "CVX_10-K_2024-02-26#126",
+        "acceptable_chunk_ids": [
+          "CVX_10-K_2024-02-26#125",
+          "CVX_10-K_2024-02-26#126",
+          "CVX_10-K_2024-02-26#127"
+        ],
+        "evidence": "Legislation, regulation, and other government actions related to GHG emissions and climate change could reduce demand for Chevron’s hydrocarbon and other products and/or continue to increase Chevron’s operational costs and reduce its return on investment. The Paris Agreement went into effect in November 2016, and a number of countries in which we operate have adopted and may adopt additional policies intended to meet their Paris Agreement goals."
+      },
+      {
+        "ticker": "CVX",
+        "company": "Chevron",
+        "form": "10-K",
+        "date": "2025-02-21",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "CVX_10-K_2025-02-21.txt",
+        "doc_id": "CVX_10-K_2025-02-21",
+        "chunk_id": "CVX_10-K_2025-02-21#128",
+        "acceptable_chunk_ids": [
+          "CVX_10-K_2025-02-21#127",
+          "CVX_10-K_2025-02-21#128",
+          "CVX_10-K_2025-02-21#129"
+        ],
+        "evidence": "Legislation, regulation, and other government actions related to GHG emissions and climate change could reduce demand for Chevron’s hydrocarbon and other products and/or continue to increase Chevron’s operational costs and reduce its return on investment. The Paris Agreement went into effect in November 2016, and a number of countries in which we operate have adopted and may adopt additional policies intended to meet their Paris Agreement goals."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q073",
+    "question": "Comparing Item 1A of Disney's 10-K filings from 2024-11-14 and 2025-11-13, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "DIS",
+    "company": "Disney",
+    "filing_type": "10-K",
+    "filing_date": "2024-11-14 vs 2025-11-13",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-11-14 10-K: Further, some employees of licensees who manufacture and retailers who sell our licensed consumer products, and employees of providers of programming content (such as sports leagues) are covered by labor agreements with their employers. In the 2025-11-13 10-K: We face risks relating to misalignment with public and consumer tastes and preferences for entertainment, travel and consumer products, which impacts demand for our entertainment offerings and products and services and our results of operations.",
+    "gold_sources": [
+      {
+        "ticker": "DIS",
+        "company": "Disney",
+        "form": "10-K",
+        "date": "2024-11-14",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "DIS_10-K_2024-11-14.txt",
+        "doc_id": "DIS_10-K_2024-11-14",
+        "chunk_id": "DIS_10-K_2024-11-14#332",
+        "acceptable_chunk_ids": [
+          "DIS_10-K_2024-11-14#331",
+          "DIS_10-K_2024-11-14#332",
+          "DIS_10-K_2024-11-14#333"
+        ],
+        "evidence": "Further, some employees of licensees who manufacture and retailers who sell our licensed consumer products, and employees of providers of programming content (such as sports leagues) are covered by labor agreements with their employers."
+      },
+      {
+        "ticker": "DIS",
+        "company": "Disney",
+        "form": "10-K",
+        "date": "2025-11-13",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "DIS_10-K_2025-11-13.txt",
+        "doc_id": "DIS_10-K_2025-11-13",
+        "chunk_id": "DIS_10-K_2025-11-13#274",
+        "acceptable_chunk_ids": [
+          "DIS_10-K_2025-11-13#273",
+          "DIS_10-K_2025-11-13#274",
+          "DIS_10-K_2025-11-13#275"
+        ],
+        "evidence": "We face risks relating to misalignment with public and consumer tastes and preferences for entertainment, travel and consumer products, which impacts demand for our entertainment offerings and products and services and our results of operations."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q074",
+    "question": "Comparing Item 1A of Alphabet's 10-K filings from 2024-01-31 and 2025-02-05, what changed or stayed important regarding liquidity or capital risk and customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "GOOGL",
+    "company": "Alphabet",
+    "filing_type": "10-K",
+    "filing_date": "2024-01-31 vs 2025-02-05",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-01-31 10-K: Further, our share repurchases could affect our share trading prices, increase their volatility, reduce our cash reserves and may be suspended or terminated at any time, which may result in a decrease in the trading prices of our stock. The concentration of our stock ownership limits our stockholders’ ability to influence corporate matters. In the 2025-02-05 10-K: Several states are considering enacting or have already enacted regulations concerning the use of AI technologies, including those focused on consumer protection, and depending on the scope of AI regulation at the federal level, some states may move to regulate AI model development and deployment.",
+    "gold_sources": [
+      {
+        "ticker": "GOOGL",
+        "company": "Alphabet",
+        "form": "10-K",
+        "date": "2024-01-31",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "GOOGL_10-K_2024-01-31.txt",
+        "doc_id": "GOOGL_10-K_2024-01-31",
+        "chunk_id": "GOOGL_10-K_2024-01-31#136",
+        "acceptable_chunk_ids": [
+          "GOOGL_10-K_2024-01-31#135",
+          "GOOGL_10-K_2024-01-31#136",
+          "GOOGL_10-K_2024-01-31#137"
+        ],
+        "evidence": "Further, our share repurchases could affect our share trading prices, increase their volatility, reduce our cash reserves and may be suspended or terminated at any time, which may result in a decrease in the trading prices of our stock. The concentration of our stock ownership limits our stockholders’ ability to influence corporate matters."
+      },
+      {
+        "ticker": "GOOGL",
+        "company": "Alphabet",
+        "form": "10-K",
+        "date": "2025-02-05",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "GOOGL_10-K_2025-02-05.txt",
+        "doc_id": "GOOGL_10-K_2025-02-05",
+        "chunk_id": "GOOGL_10-K_2025-02-05#116",
+        "acceptable_chunk_ids": [
+          "GOOGL_10-K_2025-02-05#115",
+          "GOOGL_10-K_2025-02-05#116",
+          "GOOGL_10-K_2025-02-05#117"
+        ],
+        "evidence": "Several states are considering enacting or have already enacted regulations concerning the use of AI technologies, including those focused on consumer protection, and depending on the scope of AI regulation at the federal level, some states may move to regulate AI model development and deployment."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q075",
+    "question": "Comparing Item 1A of Goldman Sachs' 10-K filings from 2025-02-27 and 2026-02-25, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "GS",
+    "company": "Goldman Sachs",
+    "filing_type": "10-K",
+    "filing_date": "2025-02-27 vs 2026-02-25",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2025-02-27 10-K: Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation, interest rates, exchange rate or basic commodity price volatility or default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit trading in, or the In the 2026-02-25 10-K: Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation or interest rates; exchange rate or basic commodity price volatility; increasing or high default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit",
+    "gold_sources": [
+      {
+        "ticker": "GS",
+        "company": "Goldman Sachs",
+        "form": "10-K",
+        "date": "2025-02-27",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "GS_10-K_2025-02-27.txt",
+        "doc_id": "GS_10-K_2025-02-27",
+        "chunk_id": "GS_10-K_2025-02-27#1165",
+        "acceptable_chunk_ids": [
+          "GS_10-K_2025-02-27#1164",
+          "GS_10-K_2025-02-27#1165",
+          "GS_10-K_2025-02-27#1166"
+        ],
+        "evidence": "Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation, interest rates, exchange rate or basic commodity price volatility or default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit trading in, or the"
+      },
+      {
+        "ticker": "GS",
+        "company": "Goldman Sachs",
+        "form": "10-K",
+        "date": "2026-02-25",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "GS_10-K_2026-02-25.txt",
+        "doc_id": "GS_10-K_2026-02-25",
+        "chunk_id": "GS_10-K_2026-02-25#1162",
+        "acceptable_chunk_ids": [
+          "GS_10-K_2026-02-25#1161",
+          "GS_10-K_2026-02-25#1162",
+          "GS_10-K_2026-02-25#1163"
+        ],
+        "evidence": "Unfavorable or uncertain economic and market conditions can be caused by: low levels of or declines in economic growth, business activity or investor, business or consumer confidence; concerns over a potential recession; changes in consumer spending or borrowing patterns; pandemics; limitations on the availability or increases in the cost of credit and capital; illiquid markets; increases in inflation or interest rates; exchange rate or basic commodity price volatility; increasing or high default rates; high levels of inflation or stagflation; concerns about U.S. and other sovereign defaults; uncertainty concerning fiscal or monetary policy, government shutdowns, debt ceilings or funding; the extent of and uncertainty about potential changes in tax rates and regulatory changes; limitations on international trade and travel; changes in immigration policies; laws and regulations that limit"
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q076",
+    "question": "Comparing Item 1A of Johnson & Johnson's 10-K filings from 2024-02-16 and 2025-02-13, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "JNJ",
+    "company": "Johnson & Johnson",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-16 vs 2025-02-13",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-16 10-K: For example, the COVID-19 pandemic adversely impacted certain aspects of the Company’s business, results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products. The spread of any health crises may cause the Company to modify its business practices, and take further actions as may be required by government authorities or as the Company determines are in the best interests of our patients, customers, employees and business partners under such circumstances. In the 2025-02-13 10-K: Impacts to the Company have included and may include adverse impacts to results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products.",
+    "gold_sources": [
+      {
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "form": "10-K",
+        "date": "2024-02-16",
+        "item": "1A",
+        "section": "Risk factors",
+        "source_file": "JNJ_10-K_2024-02-16.txt",
+        "doc_id": "JNJ_10-K_2024-02-16",
+        "chunk_id": "JNJ_10-K_2024-02-16#52",
+        "acceptable_chunk_ids": [
+          "JNJ_10-K_2024-02-16#51",
+          "JNJ_10-K_2024-02-16#52",
+          "JNJ_10-K_2024-02-16#53"
+        ],
+        "evidence": "For example, the COVID-19 pandemic adversely impacted certain aspects of the Company’s business, results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products. The spread of any health crises may cause the Company to modify its business practices, and take further actions as may be required by government authorities or as the Company determines are in the best interests of our patients, customers, employees and business partners under such circumstances."
+      },
+      {
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "form": "10-K",
+        "date": "2025-02-13",
+        "item": "1A",
+        "section": "Risk factors",
+        "source_file": "JNJ_10-K_2025-02-13.txt",
+        "doc_id": "JNJ_10-K_2025-02-13",
+        "chunk_id": "JNJ_10-K_2025-02-13#50",
+        "acceptable_chunk_ids": [
+          "JNJ_10-K_2025-02-13#49",
+          "JNJ_10-K_2025-02-13#50",
+          "JNJ_10-K_2025-02-13#51"
+        ],
+        "evidence": "Impacts to the Company have included and may include adverse impacts to results of operations and financial condition, including lower sales and reduced customer demand and usage of certain of our products."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q077",
+    "question": "Comparing Item 1A of Coca-Cola's 10-K filings from 2024-02-20 and 2025-02-20, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "KO",
+    "company": "Coca-Cola",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-20 vs 2025-02-20",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-20 10-K: Our success depends in large part on our ability to maintain consumer confidence in the safety and quality of all of our products. We have rigorous product safety and quality standards, which we expect our operations as well as our bottling partners to meet. In the 2025-02-20 10-K: Our success depends in large part on our ability to maintain consumer confidence in the safety and quality of all of our products. We have rigorous product safety and quality standards that we expect our operations, bottling partners and contract manufacturers to meet.",
+    "gold_sources": [
+      {
+        "ticker": "KO",
+        "company": "Coca-Cola",
+        "form": "10-K",
+        "date": "2024-02-20",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "KO_10-K_2024-02-20.txt",
+        "doc_id": "KO_10-K_2024-02-20",
+        "chunk_id": "KO_10-K_2024-02-20#115",
+        "acceptable_chunk_ids": [
+          "KO_10-K_2024-02-20#114",
+          "KO_10-K_2024-02-20#115",
+          "KO_10-K_2024-02-20#116"
+        ],
+        "evidence": "Our success depends in large part on our ability to maintain consumer confidence in the safety and quality of all of our products. We have rigorous product safety and quality standards, which we expect our operations as well as our bottling partners to meet."
+      },
+      {
+        "ticker": "KO",
+        "company": "Coca-Cola",
+        "form": "10-K",
+        "date": "2025-02-20",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "KO_10-K_2025-02-20.txt",
+        "doc_id": "KO_10-K_2025-02-20",
+        "chunk_id": "KO_10-K_2025-02-20#116",
+        "acceptable_chunk_ids": [
+          "KO_10-K_2025-02-20#115",
+          "KO_10-K_2025-02-20#116",
+          "KO_10-K_2025-02-20#117"
+        ],
+        "evidence": "Our success depends in large part on our ability to maintain consumer confidence in the safety and quality of all of our products. We have rigorous product safety and quality standards that we expect our operations, bottling partners and contract manufacturers to meet."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q078",
+    "question": "Comparing Item 1A of Meta's 10-K filings from 2024-02-02 and 2025-01-30, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "META",
+    "company": "Meta",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-02 vs 2025-01-30",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-02 10-K: For example, we have relatively limited experience with consumer hardware products and virtual and augmented reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business. In the 2025-01-30 10-K: For example, we have relatively limited experience with consumer hardware products and virtual, augmented, and mixed reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business.",
+    "gold_sources": [
+      {
+        "ticker": "META",
+        "company": "Meta",
+        "form": "10-K",
+        "date": "2024-02-02",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "META_10-K_2024-02-02.txt",
+        "doc_id": "META_10-K_2024-02-02",
+        "chunk_id": "META_10-K_2024-02-02#96",
+        "acceptable_chunk_ids": [
+          "META_10-K_2024-02-02#95",
+          "META_10-K_2024-02-02#96",
+          "META_10-K_2024-02-02#97"
+        ],
+        "evidence": "For example, we have relatively limited experience with consumer hardware products and virtual and augmented reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business."
+      },
+      {
+        "ticker": "META",
+        "company": "Meta",
+        "form": "10-K",
+        "date": "2025-01-30",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "META_10-K_2025-01-30.txt",
+        "doc_id": "META_10-K_2025-01-30",
+        "chunk_id": "META_10-K_2025-01-30#99",
+        "acceptable_chunk_ids": [
+          "META_10-K_2025-01-30#98",
+          "META_10-K_2025-01-30#99",
+          "META_10-K_2025-01-30#100"
+        ],
+        "evidence": "For example, we have relatively limited experience with consumer hardware products and virtual, augmented, and mixed reality technology, which may adversely affect our ability to successfully develop and market these evolving products and technologies. We are also making significant investments in artificial intelligence (AI) initiatives across our business."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q079",
+    "question": "Comparing Item 1A of Microsoft's 10-K filings from 2023-07-27 and 2024-07-30, what changed or stayed important regarding customer demand or sales channels and regulation or legal proceedings?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "filing_type": "10-K",
+    "filing_date": "2023-07-27 vs 2024-07-30",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2023-07-27 10-K: Our investment in gaining insights from data is becoming central to the value of the services, including AI services, we deliver to customers, to operational efficiency and key opportunities in monetization, and to customer perceptions of quality. Our ability to use data in this way may be constrained by regulatory developments that impede realizing the expected return from this investment. In the 2024-07-30 10-K: Acquisitions and other transactions and arrangements involve significant challenges and risks, including that they do not advance our business strategy, that we get an unsatisfactory return on our investment, that they raise new compliance-related obligations and challenges, that we have difficulty integrating and retaining new employees, business systems, and technology, that they distract management from our other businesses, or that announced transactions may not be completed.",
+    "gold_sources": [
+      {
+        "ticker": "MSFT",
+        "company": "Microsoft",
+        "form": "10-K",
+        "date": "2023-07-27",
+        "item": "1A",
+        "section": "",
+        "source_file": "MSFT_10-K_2023-07-27.txt",
+        "doc_id": "MSFT_10-K_2023-07-27",
+        "chunk_id": "MSFT_10-K_2023-07-27#10",
+        "acceptable_chunk_ids": [
+          "MSFT_10-K_2023-07-27#9",
+          "MSFT_10-K_2023-07-27#10",
+          "MSFT_10-K_2023-07-27#11"
+        ],
+        "evidence": "Our investment in gaining insights from data is becoming central to the value of the services, including AI services, we deliver to customers, to operational efficiency and key opportunities in monetization, and to customer perceptions of quality. Our ability to use data in this way may be constrained by regulatory developments that impede realizing the expected return from this investment."
+      },
+      {
+        "ticker": "MSFT",
+        "company": "Microsoft",
+        "form": "10-K",
+        "date": "2024-07-30",
+        "item": "1A",
+        "section": "",
+        "source_file": "MSFT_10-K_2024-07-30.txt",
+        "doc_id": "MSFT_10-K_2024-07-30",
+        "chunk_id": "MSFT_10-K_2024-07-30#11",
+        "acceptable_chunk_ids": [
+          "MSFT_10-K_2024-07-30#10",
+          "MSFT_10-K_2024-07-30#11",
+          "MSFT_10-K_2024-07-30#12"
+        ],
+        "evidence": "Acquisitions and other transactions and arrangements involve significant challenges and risks, including that they do not advance our business strategy, that we get an unsatisfactory return on our investment, that they raise new compliance-related obligations and challenges, that we have difficulty integrating and retaining new employees, business systems, and technology, that they distract management from our other businesses, or that announced transactions may not be completed."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q080",
+    "question": "Comparing Item 1A of Netflix's 10-K filings from 2024-01-26 and 2025-01-27, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "NFLX",
+    "company": "Netflix",
+    "filing_type": "10-K",
+    "filing_date": "2024-01-26 vs 2025-01-27",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-01-26 10-K: Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon. In the 2025-01-27 10-K: Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon. We use the intellectual property of third parties in creating some of our content, merchandising our products and experiences, and marketing our service.",
+    "gold_sources": [
+      {
+        "ticker": "NFLX",
+        "company": "Netflix",
+        "form": "10-K",
+        "date": "2024-01-26",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NFLX_10-K_2024-01-26.txt",
+        "doc_id": "NFLX_10-K_2024-01-26",
+        "chunk_id": "NFLX_10-K_2024-01-26#150",
+        "acceptable_chunk_ids": [
+          "NFLX_10-K_2024-01-26#149",
+          "NFLX_10-K_2024-01-26#150",
+          "NFLX_10-K_2024-01-26#151"
+        ],
+        "evidence": "Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon."
+      },
+      {
+        "ticker": "NFLX",
+        "company": "Netflix",
+        "form": "10-K",
+        "date": "2025-01-27",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NFLX_10-K_2025-01-27.txt",
+        "doc_id": "NFLX_10-K_2025-01-27",
+        "chunk_id": "NFLX_10-K_2025-01-27#157",
+        "acceptable_chunk_ids": [
+          "NFLX_10-K_2025-01-27#156",
+          "NFLX_10-K_2025-01-27#157",
+          "NFLX_10-K_2025-01-27#158"
+        ],
+        "evidence": "Our intellectual property rights extend to our technology, business processes, the content we produce and distribute through our service, and consumer products, experiences, and marketing assets based thereon. We use the intellectual property of third parties in creating some of our content, merchandising our products and experiences, and marketing our service."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q081",
+    "question": "Comparing Item 1A of NVIDIA's 10-K filings from 2024-02-21 and 2025-02-26, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-21 vs 2025-02-26",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-21 10-K: Obtaining design wins may involve a lengthy process and depends on our ability to anticipate and provide features and functionality that customers will demand. Failure to obtain a design win may prevent us from obtaining future design wins in subsequent generations. In the 2025-02-26 10-K: Obtaining design wins may involve a lengthy process and depends on our ability to anticipate and provide features and functionality that customers will demand. Failure to obtain a design win may prevent us from obtaining future design wins in subsequent generations.",
+    "gold_sources": [
+      {
+        "ticker": "NVDA",
+        "company": "NVIDIA",
+        "form": "10-K",
+        "date": "2024-02-21",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NVDA_10-K_2024-02-21.txt",
+        "doc_id": "NVDA_10-K_2024-02-21",
+        "chunk_id": "NVDA_10-K_2024-02-21#82",
+        "acceptable_chunk_ids": [
+          "NVDA_10-K_2024-02-21#81",
+          "NVDA_10-K_2024-02-21#82",
+          "NVDA_10-K_2024-02-21#83"
+        ],
+        "evidence": "Obtaining design wins may involve a lengthy process and depends on our ability to anticipate and provide features and functionality that customers will demand. Failure to obtain a design win may prevent us from obtaining future design wins in subsequent generations."
+      },
+      {
+        "ticker": "NVDA",
+        "company": "NVIDIA",
+        "form": "10-K",
+        "date": "2025-02-26",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "NVDA_10-K_2025-02-26.txt",
+        "doc_id": "NVDA_10-K_2025-02-26",
+        "chunk_id": "NVDA_10-K_2025-02-26#85",
+        "acceptable_chunk_ids": [
+          "NVDA_10-K_2025-02-26#84",
+          "NVDA_10-K_2025-02-26#85",
+          "NVDA_10-K_2025-02-26#86"
+        ],
+        "evidence": "Obtaining design wins may involve a lengthy process and depends on our ability to anticipate and provide features and functionality that customers will demand. Failure to obtain a design win may prevent us from obtaining future design wins in subsequent generations."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q082",
+    "question": "Comparing Item 1A of PepsiCo's 10-K filings from 2024-02-09 and 2025-02-04, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "PEP",
+    "company": "PepsiCo",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-09 vs 2025-02-04",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-09 10-K: The results of elections, referendums or other political conditions (including government shutdowns), geopolitical events, wars and other military conflicts (such as the ongoing conflicts in Ukraine and the Middle East) in these markets have in the past and could continue to impact how existing laws, regulations and government programs or policies are implemented or result in uncertainty as to how such laws, regulations, programs or policies may change, including with respect to tariffs, sanctions, environmental and climate change regulations, taxes, benefit programs, the movement of goods, services and people between countries, relationships between countries, customer or consumer perception of a particular country or its government and other matters, and has resulted in and could continue to result in exchange rate fluctuation, volatility in global stock markets and global economic uncertainty or adversely affect demand for our products, any of which can adversely affect our business. In the 2025-02-04 10-K: The results of elections, referendums or other political conditions (including government shutdowns), geopolitical events and tensions, wars and other military conflicts (such as the ongoing conflicts in Ukraine and the Middle East) in these markets have in the past impacted and could continue to impact how existing laws, regulations and government programs or policies are implemented or result in uncertainty as to how such laws, regulations, programs or policies may change, including with respect to the negotiation of new trade agreements, new, expanded or retaliatory tariffs against certain countries or covering certain products or ingredients (including recent U.S. tariffs imposed or threatened to be imposed on China, Canada and Mexico and other countries and any retaliatory actions taken by such countries), sanctions, environmental and climate change regulations, taxes, benefit programs, the movement of goods, services and people between countries, relationships between countries, customer or consumer perception of a particular country or its government and other matters.",
+    "gold_sources": [
+      {
+        "ticker": "PEP",
+        "company": "PepsiCo",
+        "form": "10-K",
+        "date": "2024-02-09",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "PEP_10-K_2024-02-09.txt",
+        "doc_id": "PEP_10-K_2024-02-09",
+        "chunk_id": "PEP_10-K_2024-02-09#82",
+        "acceptable_chunk_ids": [
+          "PEP_10-K_2024-02-09#81",
+          "PEP_10-K_2024-02-09#82",
+          "PEP_10-K_2024-02-09#83"
+        ],
+        "evidence": "The results of elections, referendums or other political conditions (including government shutdowns), geopolitical events, wars and other military conflicts (such as the ongoing conflicts in Ukraine and the Middle East) in these markets have in the past and could continue to impact how existing laws, regulations and government programs or policies are implemented or result in uncertainty as to how such laws, regulations, programs or policies may change, including with respect to tariffs, sanctions, environmental and climate change regulations, taxes, benefit programs, the movement of goods, services and people between countries, relationships between countries, customer or consumer perception of a particular country or its government and other matters, and has resulted in and could continue to result in exchange rate fluctuation, volatility in global stock markets and global economic uncertainty or adversely affect demand for our products, any of which can adversely affect our business."
+      },
+      {
+        "ticker": "PEP",
+        "company": "PepsiCo",
+        "form": "10-K",
+        "date": "2025-02-04",
+        "item": "1A",
+        "section": "Risk Factors",
+        "source_file": "PEP_10-K_2025-02-04.txt",
+        "doc_id": "PEP_10-K_2025-02-04",
+        "chunk_id": "PEP_10-K_2025-02-04#81",
+        "acceptable_chunk_ids": [
+          "PEP_10-K_2025-02-04#80",
+          "PEP_10-K_2025-02-04#81",
+          "PEP_10-K_2025-02-04#82"
+        ],
+        "evidence": "The results of elections, referendums or other political conditions (including government shutdowns), geopolitical events and tensions, wars and other military conflicts (such as the ongoing conflicts in Ukraine and the Middle East) in these markets have in the past impacted and could continue to impact how existing laws, regulations and government programs or policies are implemented or result in uncertainty as to how such laws, regulations, programs or policies may change, including with respect to the negotiation of new trade agreements, new, expanded or retaliatory tariffs against certain countries or covering certain products or ingredients (including recent U.S. tariffs imposed or threatened to be imposed on China, Canada and Mexico and other countries and any retaliatory actions taken by such countries), sanctions, environmental and climate change regulations, taxes, benefit programs, the movement of goods, services and people between countries, relationships between countries, customer or consumer perception of a particular country or its government and other matters."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q083",
+    "question": "Comparing Item 1A of Pfizer's 10-K filings from 2024-02-22 and 2025-02-27, what changed or stayed important regarding customer demand or sales channels?",
+    "question_type": "cross-filing comparison",
+    "difficulty": "hard",
+    "ticker": "PFE",
+    "company": "Pfizer",
+    "filing_type": "10-K",
+    "filing_date": "2024-02-22 vs 2025-02-27",
+    "target_section": "Risk Factors",
+    "target_item": "1A",
+    "metric_focus": [
+      "multi-document retrieval",
+      "citation",
+      "faithfulness"
+    ],
+    "gold_answer": "In the 2024-02-22 10-K: They may demand rebates from biopharmaceutical manufacturers for preferred placement on a drug formulary. The growing availability and use of innovative specialty pharmaceutical medicines that treat rare or life threatening conditions, typically with a relatively higher cost as compared to other types of pharmaceutical products, also has generated increased payor interest in development of cost-containment strategies. In the 2025-02-27 10-K: While we are committed to responsible business growth, if we do not meet, or are perceived not to meet, our goals or other stakeholder expectations in these key areas, we risk negative stakeholder reaction, including from proxy advisory services, as well as damage to our brand and reputation, reduced demand for our products or other negative impacts on our business and operations. While we monitor a broad range of corporate responsibility matters, we cannot be certain that we will manage such matters successfully, or that we will successfully meet the expectations of investors, employees, consumers, governments and other stakeholders.",
+    "gold_sources": [
+      {
+        "ticker": "PFE",
+        "company": "Pfizer",
+        "form": "10-K",
+        "date": "2024-02-22",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "PFE_10-K_2024-02-22.txt",
+        "doc_id": "PFE_10-K_2024-02-22",
+        "chunk_id": "PFE_10-K_2024-02-22#155",
+        "acceptable_chunk_ids": [
+          "PFE_10-K_2024-02-22#154",
+          "PFE_10-K_2024-02-22#155",
+          "PFE_10-K_2024-02-22#156"
+        ],
+        "evidence": "They may demand rebates from biopharmaceutical manufacturers for preferred placement on a drug formulary. The growing availability and use of innovative specialty pharmaceutical medicines that treat rare or life threatening conditions, typically with a relatively higher cost as compared to other types of pharmaceutical products, also has generated increased payor interest in development of cost-containment strategies."
+      },
+      {
+        "ticker": "PFE",
+        "company": "Pfizer",
+        "form": "10-K",
+        "date": "2025-02-27",
+        "item": "1A",
+        "section": "RISK FACTORS",
+        "source_file": "PFE_10-K_2025-02-27.txt",
+        "doc_id": "PFE_10-K_2025-02-27",
+        "chunk_id": "PFE_10-K_2025-02-27#243",
+        "acceptable_chunk_ids": [
+          "PFE_10-K_2025-02-27#242",
+          "PFE_10-K_2025-02-27#243",
+          "PFE_10-K_2025-02-27#244"
+        ],
+        "evidence": "While we are committed to responsible business growth, if we do not meet, or are perceived not to meet, our goals or other stakeholder expectations in these key areas, we risk negative stakeholder reaction, including from proxy advisory services, as well as damage to our brand and reputation, reduced demand for our products or other negative impacts on our business and operations. While we monitor a broad range of corporate responsibility matters, we cannot be certain that we will manage such matters successfully, or that we will successfully meet the expectations of investors, employees, consumers, governments and other stakeholders."
+      }
+    ]
+  },
+  {
+    "question_id": "RAG_Q084",
+    "question": "What revenue guidance does Apple provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "AAPL",
+    "company": "Apple",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Apple.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q085",
+    "question": "What revenue guidance does Advanced Micro Devices provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "AMD",
+    "company": "Advanced Micro Devices",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Advanced Micro Devices.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q086",
+    "question": "What revenue guidance does Amazon provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "AMZN",
+    "company": "Amazon",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Amazon.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q087",
+    "question": "What revenue guidance does Bank of America provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "BAC",
+    "company": "Bank of America",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Bank of America.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q088",
+    "question": "What revenue guidance does Costco provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "COST",
+    "company": "Costco",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Costco.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q089",
+    "question": "What revenue guidance does Salesforce provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "CRM",
+    "company": "Salesforce",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Salesforce.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q090",
+    "question": "What revenue guidance does Chevron provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "CVX",
+    "company": "Chevron",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Chevron.",
+    "gold_sources": []
+  },
+  {
+    "question_id": "RAG_Q091",
+    "question": "What revenue guidance does Disney provide for fiscal 2030 in the available filings?",
+    "question_type": "unanswerable",
+    "difficulty": "hard",
+    "ticker": "DIS",
+    "company": "Disney",
+    "filing_type": "mixed",
+    "filing_date": "not present in corpus",
+    "target_section": "N/A",
+    "target_item": "N/A",
+    "expected_unanswerable": true,
+    "metric_focus": [
+      "abstention",
+      "hallucination control"
+    ],
+    "gold_answer": "The available filings do not provide fiscal 2030 revenue guidance for Disney.",
+    "gold_sources": []
+  }
+]

@@ -15,11 +15,20 @@ class RegressionResult:
     intercept: float
     t_stat: float
     r2: float
+    rmse: float
+    mae: float
     controls: dict = field(default_factory=dict)
 
     def summary(self) -> str:
-        base = (f"{self.window}-day forward return ~ signal | n={self.n}, "
-                f"b={self.coef:.4f} (t={self.t_stat:.2f}), R²={self.r2:.3f}")
+        base = (
+            f"{self.window}-day forward return ~ signal | "
+            f"n={self.n}, "
+            f"b={self.coef:.4f} "
+            f"(t={self.t_stat:.2f}), "
+            f"R²={self.r2:.3f}, "
+            f"RMSE={self.rmse:.4f}, "
+            f"MAE={self.mae:.4f}"
+        )
         for name, (c, t) in self.controls.items():
             base += f" | {name}: {c:.3f} (t={t:.2f})"
         return base
@@ -66,6 +75,11 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
     X = np.column_stack(cols)
     beta, *_ = np.linalg.lstsq(X, y, rcond=None)
     resid = y - X @ beta
+    pred = X @ beta
+
+    rmse = float(np.sqrt(np.mean((y - pred) ** 2)))
+
+    mae = float(np.mean(np.abs(y - pred)))
     dof = n - X.shape[1]
     sigma2 = resid @ resid / max(dof, 1)
     try:
@@ -79,7 +93,7 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
 
     ctrl_out = {k: (float(beta[2 + i]), float(t[2 + i])) for i, k in enumerate(ctrl)}
     return RegressionResult(window, n, float(beta[1]), float(beta[0]),
-                            float(t[1]), float(r2), ctrl_out)
+                            float(t[1]), float(r2), rmse, mae, ctrl_out)
 
 
 def run_study(rows: list[dict], windows=(5, 20), market_control: bool = True

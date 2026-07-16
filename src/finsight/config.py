@@ -13,7 +13,7 @@ INDEX_DIR = DATA_DIR / "index"
 
 @dataclass
 class Settings:
-    embedding_model: str = "BAAI/bge-large-en-v1.5"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
     chunk_size: int = 900
     chunk_overlap: int = 150
     top_k: int = 5

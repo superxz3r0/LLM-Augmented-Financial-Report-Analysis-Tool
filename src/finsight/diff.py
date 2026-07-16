@@ -92,9 +92,13 @@ def diff_documents(old: Document, new: Document, max_items: int = 40) -> list[Di
                 matched_old.add(i)
             if score >= t_boiler:
                 continue
-            kind = ("new" if score < t_new
-                    else "substantive" if score < t_subst
-                    else "minor")
+            lexical_score = token_jaccard(old_paras[i], np_text) if i >= 0 else 0.0
+            if sim.backend == "embeddings" and lexical_score < 0.15:
+                kind = "new"
+            else:
+                kind = ("new" if score < t_new
+                        else "substantive" if score < t_subst
+                        else "minor")
             results.append(DiffItem(kind, new_sec.item, round(score, 3),
                                     old_paras[i][:600] if i >= 0 else "", np_text[:600]))
 

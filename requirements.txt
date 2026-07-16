@@ -9,12 +9,13 @@ chromadb>=0.5
 sentence-transformers>=3.0
 
 # Sentiment
-transformers>=4.41
+transformers>=4.41,<5
 torch
 
 # Generation (optional — extractive fallback works without these)
 openai>=1.30
 google-generativeai>=0.7
+python-dotenv>=1.0
 
 # Data
 edgartools>=2.20
