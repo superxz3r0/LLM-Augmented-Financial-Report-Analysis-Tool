@@ -5,6 +5,7 @@ import os
 import sys
 from pathlib import Path
 
+
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
@@ -13,7 +14,7 @@ st.set_page_config(page_title="FinSight — Filing Analysis", page_icon="📑",
                    layout="wide", initial_sidebar_state="expanded")
 
 from finsight import diff as diff_mod
-from finsight import rag, sentiment
+from finsight import rag, sentiment, s3links  
 from finsight.config import FILINGS_DIR, SAMPLE_DIR
 from finsight.chunker import chunk_corpus
 from finsight.index import build_index
@@ -178,7 +179,20 @@ with tab_qa:
                 ans = rag.answer(index, q,
                                  ticker=None if scope == "All companies" else scope,
                                  history=history)
-            st.markdown(esc(ans.text))
+            urls = {}
+            for i, (c, _s) in enumerate(ans.sources, 1):
+                m = re.match(r"\[.*\]\((.*)\)", s3links.citation_link(c))
+                if m:
+                    urls[i] = m.group(1)
+
+            def linkify(text: str) -> str:
+                return re.sub(
+                    r"\[(\d+)\]",
+                    lambda m: f"[[{m.group(1)}]]({urls[int(m.group(1))]})"
+                              if int(m.group(1)) in urls else m.group(0),
+                    text)
+
+            st.markdown(linkify(esc(ans.text)))
             st.caption(f"backend: `{ans.backend}`")
 
             entry = {"role": "assistant", "content": ans.text,
@@ -190,7 +204,7 @@ with tab_qa:
                 entry["audit"] = {"passed": report.passed, "summary": report.summary()}
             with st.expander(f"Sources ({len(ans.sources)})", expanded=True):
                 for i, (c, score) in enumerate(ans.sources, 1):
-                    st.markdown(f"**[{i}] {c.citation}** · relevance {score:.2f}")
+                    st.markdown(f"**[{i}]** {s3links.citation_link(c)} · relevance {score:.2f}")
                     st.caption(esc(c.text[:300]) + "…")
             st.session_state.chat.append(entry)
 
