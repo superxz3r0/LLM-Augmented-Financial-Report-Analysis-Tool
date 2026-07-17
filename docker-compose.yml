@@ -1,0 +1,16 @@
+services:
+  finsight:
+    build: .
+    image: finsight:latest
+    ports:
+      - "80:8501"                  # access by EIP
+    environment:
+      FINSIGHT_DATA_DIR: /mnt/data           # config.py 
+      FINSIGHT_S3_BUCKET: ${FINSIGHT_S3_BUCKET}
+      HF_HOME: /mnt/data/hf                  # bge/FinBERT 
+      AWS_DEFAULT_REGION: eu-west-1
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    volumes:
+      - /mnt/data:/mnt/data
+    restart: unless-stopped
