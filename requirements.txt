@@ -22,3 +22,5 @@ yfinance>=0.2.40
 
 # Dev / CI
 pytest>=8.0
+
+boto3

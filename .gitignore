@@ -5,4 +5,5 @@ data/filings/
 data/index/
 .streamlit/secrets.toml
 data/finsight.db
-*.pdf
+*.pdf*.tar.gz
+finsight-data-*
