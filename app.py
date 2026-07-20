@@ -612,23 +612,69 @@ with tab_diff:
                 st.divider()
 
 with tab_returns:
-    st.caption("Regresses filing sentiment against 5- and 20-day forward returns, "
-               "controlling for the market (SPY) over the same window.")
     real_docs = [d for d in docs if d.path.parent.name != "sample"]
+    st.caption(
+        "Evaluate whether filing sentiment predicts future stock returns."
+    )
+
+    study_col1, study_col2 = st.columns([2,2])
+
+    study_type = study_col1.radio(
+        "Study Type",
+        ["Overall Corpus", "Individual Company"],
+        horizontal=True
+    )
+
+    selected_company = None
+
+    if study_type == "Individual Company":
+        selected_company = study_col2.selectbox(
+            "Company",
+            sorted({d.ticker for d in real_docs})
+        )
     if not real_docs:
         st.info("No real filings loaded yet. Once `scripts/fetch_filings.py` has run, "
                 "this tab scores sentiment per filing, fetches forward returns, and "
                 "reports OLS coefficients, t-statistics and R² per window.")
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
-        rows = []
         prog = st.progress(0.0, "Scoring sentiment per filing…")
-        for i, d in enumerate(real_docs):
+        rows = []
+
+        docs_to_use = real_docs
+
+        if selected_company is not None:
+            docs_to_use = [
+                d for d in real_docs
+                if d.ticker == selected_company
+            ]
+
+        for i, d in enumerate(docs_to_use):
+
             s = sentiment.score_text(d.full_text[:20000])
-            rows.append({"ticker": d.ticker, "date": d.date, "signal": s.score})
-            prog.progress((i + 1) / len(real_docs))
+
+            rows.append(
+                {
+                    "ticker": d.ticker,
+                    "date": d.date,
+                    "signal": s.score
+                }
+            )
+            prog.progress((i + 1) / len(docs_to_use))
         prog.empty()
+        if len(rows) < 5:
+            st.warning(
+                f"Only {len(rows)} filings are available for this company. "
+                "Regression results should be interpreted with caution."
+            )
         with st.spinner("Fetching prices and running regressions…"):
+            if selected_company:
+                st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
+            else:
+                st.markdown("Overall Corpus Signal → Return Study")
+
+            st.divider()
+
             results = ret_mod.run_study(rows)
             for r in results:
 
