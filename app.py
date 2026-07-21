@@ -381,16 +381,19 @@ with tab_fund:
 
         with st.container(border=True):
 
-            cols = st.columns(len(flags))
+            if not flags:
+                st.caption("Not enough data to compute health-check flags for this period.")
+            else:
+                cols = st.columns(len(flags))
 
-            for col, f in zip(cols, flags):
+                for col, f in zip(cols, flags):
 
-                metric_name = DISPLAY.get(f.metric, f.metric.replace("_", " ").title())
+                    metric_name = DISPLAY.get(f.metric, f.metric.replace("_", " ").title())
 
-                col.markdown(f"## {icon[f.severity]}")
-                col.markdown(f"**{metric_name}**")
-                col.caption(status[f.severity])
-                col.write(f.message)
+                    col.markdown(f"## {icon[f.severity]}")
+                    col.markdown(f"**{metric_name}**")
+                    col.caption(status[f.severity])
+                    col.write(f.message)
 
         st.divider()
             
@@ -541,10 +544,11 @@ with tab_fund:
                     else:
                         trend.append("➜ Stable")
 
-            gdf["Trend"] = trend
-            
+            gdf_display = gdf.copy()
+            gdf_display["Trend"] = trend
+
             st.dataframe(
-                gdf.map(lambda v: "—" if pd.isna(v) else f"{v:+.1%}" if isinstance(v, (int, float)) else v),
+                gdf_display.map(lambda v: "—" if pd.isna(v) else f"{v:+.1%}" if isinstance(v, (int, float)) else v),
                 use_container_width=True,
             )
 
@@ -653,6 +657,7 @@ with tab_returns:
                 "reports OLS coefficients, t-statistics and R² per window.")
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
+        from finsight.store import cached_extract
         prog = st.progress(0.0, "Scoring sentiment per filing…")
         rows = []
 
@@ -666,13 +671,16 @@ with tab_returns:
 
         for i, d in enumerate(docs_to_use):
 
-            s = sentiment.score_text(d.full_text[:20000])
+            # Reuses the same SQLite-cached signal as the "Structured signals"
+            # tab (keyed on doc_id) instead of re-running FinBERT over every
+            # filing on every click — the dominant cost of this tab.
+            s = cached_extract(d, use_llm=False)
 
             rows.append(
                 {
                     "ticker": d.ticker,
                     "date": d.date,
-                    "signal": s.score
+                    "signal": s["sentiment_score"]
                 }
             )
             prog.progress((i + 1) / len(docs_to_use))
@@ -776,11 +784,11 @@ with tab_returns:
                 else:
                     verdict = "Inconclusive"
 
+                c7, c8, c9 = st.columns(3)
+
                 if "mkt" in r.controls:
 
                     beta, t = r.controls["mkt"]
-
-                    c7, c8, c9 = st.columns(3)
 
                     c7.metric(
                         "Market β",
@@ -797,7 +805,7 @@ with tab_returns:
                 Statistical significance of the market coefficient. Higher absolute values indicate stronger evidence that market movements influence future returns.
                 """
                     )
-                    
+
                 c9.metric(
                     "Signal Assessment",
                     verdict,

@@ -27,3 +27,21 @@ class Settings:
 
 
 settings = Settings()
+
+_embedder_cache: dict[str, object] = {}
+
+
+def get_embedder(model_name: str | None = None):
+    """Lazily load and cache a SentenceTransformer by name.
+
+    Loading the model (bge-large is ~1.3GB) dominates wall-clock time far
+    more than actually encoding text with it, so every caller (diff, audit,
+    index) shares one instance per process instead of each constructing its
+    own — diff.py in particular used to build a fresh instance per Item
+    section, reloading the model many times over on a single "Run diff" click.
+    """
+    name = model_name or settings.embedding_model
+    if name not in _embedder_cache:
+        from sentence_transformers import SentenceTransformer
+        _embedder_cache[name] = SentenceTransformer(name)
+    return _embedder_cache[name]

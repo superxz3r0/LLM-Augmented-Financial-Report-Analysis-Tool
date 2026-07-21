@@ -105,9 +105,9 @@ class _ChromaIndex:
         import hashlib
 
         import chromadb
-        from sentence_transformers import SentenceTransformer
 
-        self.model = SentenceTransformer(settings.embedding_model)
+        from .config import get_embedder
+        self.model = get_embedder()
         self.chunks = {c.chunk_id: c for c in chunks}
         client = chromadb.PersistentClient(path=str(INDEX_DIR))
 
