@@ -580,9 +580,16 @@ with tab_fund:
                     key="growth_plot"
                 )
 
+                growth_series = (
+                    pd.to_numeric(
+                        gdf.loc[metric].drop("Trend"),
+                        errors="coerce"
+                    ) * 100
+                )
+
                 plot_df = pd.DataFrame(
                     {
-                        metric: gdf.loc[metric].astype(float) * 100
+                        metric: growth_series
                     }
                 )
 
