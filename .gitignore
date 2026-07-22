@@ -1,9 +1,16 @@
 __pycache__/
 *.pyc
+.pytest_cache/
+.agent-*/
+.codex-pytest-*/
 .venv/
 data/filings/
 data/index/
 .streamlit/secrets.toml
 data/finsight.db
+data/yfinance-cache/
 *.pdf*.tar.gz
 finsight-data-*
+/.streamlit/*.log
+/.vscode/
+/data/finsight.pre-*.db

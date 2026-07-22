@@ -3,6 +3,7 @@ streamlit>=1.35
 numpy
 pandas>=2.1
 scikit-learn
+scipy>=1.10
 
 # Semantic retrieval (preferred backend)
 chromadb>=0.5

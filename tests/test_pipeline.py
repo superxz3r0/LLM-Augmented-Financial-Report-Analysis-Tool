@@ -76,6 +76,68 @@ def test_sentiment_direction_flips_between_years(docs):
     assert s24 > s25
 
 
+def test_score_texts_batches_across_documents(monkeypatch):
+    from finsight import sentiment
+
+    class FakePipeline:
+        def __init__(self):
+            self.calls = []
+
+        def __call__(self, texts, batch_size):
+            self.calls.append((list(texts), batch_size))
+            outputs = []
+            for text in texts:
+                positive = "growth" in text.lower() or "record" in text.lower()
+                pos, neg = (0.8, 0.1) if positive else (0.1, 0.8)
+                outputs.append([
+                    {"label": "positive", "score": pos},
+                    {"label": "negative", "score": neg},
+                    {"label": "neutral", "score": 0.1},
+                ])
+            return outputs
+
+    fake = FakePipeline()
+    monkeypatch.setattr(sentiment._FinBert, "_pipe", fake)
+    progress = []
+    results = sentiment.score_texts(
+        [
+            "Strong growth improved performance significantly. "
+            "Record demand created profitable opportunities.",
+            "Weak demand caused significant losses and uncertainty. "
+            "Litigation risks created an adverse outlook.",
+            "",
+        ],
+        batch_size=2,
+        inference_chunk_size=3,
+        progress=lambda done, total: progress.append((done, total)),
+    )
+
+    assert [len(texts) for texts, _batch in fake.calls] == [3, 1]
+    assert all(batch == 2 for _texts, batch in fake.calls)
+    assert [r.n_sentences for r in results] == [2, 2, 0]
+    assert results[0].score == pytest.approx(0.7)
+    assert results[1].score == pytest.approx(-0.7)
+    assert results[2].backend == "none"
+    assert progress == [(0, 4), (3, 4), (4, 4)]
+
+
+def test_score_texts_falls_back_per_document(monkeypatch):
+    from finsight import sentiment
+
+    class BrokenPipeline:
+        def __call__(self, texts, batch_size):
+            raise RuntimeError("model unavailable")
+
+    monkeypatch.setattr(sentiment._FinBert, "_pipe", BrokenPipeline())
+    results = sentiment.score_texts([
+        "Strong growth and record profitable performance continued this year.",
+        "Adverse litigation risks and losses created significant uncertainty.",
+    ])
+    assert [r.backend for r in results] == ["lexicon", "lexicon"]
+    assert results[0].score > 0
+    assert results[1].score < 0
+
+
 def test_diff_surfaces_new_and_removed_disclosures(docs):
     a24 = next(d for d in docs if "AURB_10-K_2024" in d.doc_id)
     a25 = next(d for d in docs if "AURB_10-K_2025" in d.doc_id)
@@ -229,10 +291,11 @@ def test_bm25_ranks_exact_terms_first(docs):
     assert hits and "export control" in hits[0][0].text.lower()
 
 
-def test_rrf_fusion_merges_rankers(docs):
-    from finsight.index import build_index
+def test_rrf_fusion_merges_rankers(docs, tmp_path, monkeypatch):
+    from finsight import index as index_mod
     from finsight.chunker import chunk_corpus
-    index, name = build_index(chunk_corpus(docs))
+    monkeypatch.setattr(index_mod, "INDEX_DIR", tmp_path / "index")
+    index, name = index_mod.build_index(chunk_corpus(docs))
     assert name.startswith("hybrid(bm25+")
     hits = index.search("supply chain risk", k=5)
     assert len(hits) == 5
@@ -277,11 +340,148 @@ def test_llm_payload_validation_rejects_garbage():
     assert _validate_llm_payload(fenced)["capex_guidance"] == ["$240 million"]
 
 
-def test_sqlite_signal_cache_roundtrip(docs):
+def test_sqlite_signal_cache_roundtrip(docs, tmp_path, monkeypatch):
     from finsight import store
+    monkeypatch.setattr(store, "_DB", tmp_path / "finsight.db")
     store.put_signals("FAKE_DOC", {"sentiment_score": 0.5})
     assert store.get_signals("FAKE_DOC")["sentiment_score"] == 0.5
     d = docs[0]
     first = store.cached_extract(d, use_llm=False)
     second = store.cached_extract(d, use_llm=False)
     assert first == second and "risk_factor_count" in first
+
+
+def test_regression_sentiment_cache_validates_text_and_model(tmp_path, monkeypatch):
+    from finsight import sentiment, store
+
+    monkeypatch.setattr(store, "_DB", tmp_path / "finsight.db")
+    store.put_signals("EXISTING_SIGNAL", {"sentiment_score": 0.1})
+    model_key = store.regression_sentiment_model_key()
+    first_hash = store.regression_text_hash("first exact input")
+    second_hash = store.regression_text_hash("second exact input")
+    first = sentiment.SentimentResult(
+        score=0.25,
+        n_sentences=4,
+        backend="finbert",
+        breakdown={"positive": 0.5, "negative": 0.25, "neutral": 0.25},
+    )
+    second = sentiment.SentimentResult(
+        score=-0.4,
+        n_sentences=3,
+        backend="finbert",
+        breakdown={"positive": 0.1, "negative": 0.5, "neutral": 0.4},
+    )
+
+    requested = {"DOC_1": first_hash, "DOC_2": second_hash}
+    assert store.get_regression_sentiments(requested, model_key) == {}
+    store.put_regression_sentiments(
+        [("DOC_1", first_hash, first), ("DOC_2", second_hash, second)],
+        model_key,
+    )
+
+    cached = store.get_regression_sentiments(requested, model_key)
+    assert set(cached) == {"DOC_1", "DOC_2"}
+    assert cached["DOC_1"].score == pytest.approx(0.25)
+    assert cached["DOC_2"].breakdown["negative"] == pytest.approx(0.5)
+    assert store.get_regression_sentiments(
+        {"DOC_1": store.regression_text_hash("changed input")}, model_key
+    ) == {}
+    assert store.get_regression_sentiments(requested, model_key + "|changed") == {}
+
+    replacement = sentiment.SentimentResult(0.75, 2, "finbert", {"positive": 0.8})
+    changed_hash = store.regression_text_hash("changed input")
+    store.put_regression_sentiments([("DOC_1", changed_hash, replacement)], model_key)
+    assert store.get_regression_sentiments({"DOC_1": first_hash}, model_key) == {}
+    assert store.get_regression_sentiments(
+        {"DOC_1": changed_hash}, model_key
+    )["DOC_1"].score == pytest.approx(0.75)
+    assert store.get_signals("EXISTING_SIGNAL")["sentiment_score"] == pytest.approx(0.1)
+
+    monkeypatch.setattr(
+        store,
+        "REGRESSION_SENTIMENT_VERSION",
+        store.REGRESSION_SENTIMENT_VERSION + 1,
+    )
+    assert store.get_regression_sentiments({"DOC_1": changed_hash}, model_key) == {}
+
+
+def test_cached_regression_scoring_only_batches_misses(tmp_path, monkeypatch):
+    from finsight import sentiment, store
+
+    monkeypatch.setattr(store, "_DB", tmp_path / "finsight.db")
+    items = [("DOC_A", "alpha exact text"),
+             ("DOC_B", "bravo exact text"),
+             ("DOC_C", "charlie exact text")]
+    model_key = store.regression_sentiment_model_key()
+    alpha = sentiment.SentimentResult(0.1, 1, "finbert", {"positive": 0.4})
+    store.put_regression_sentiments(
+        [("DOC_A", store.regression_text_hash(items[0][1]), alpha)],
+        model_key,
+    )
+
+    calls = []
+
+    def fake_score_texts(texts, max_sentences, progress=None, **_kwargs):
+        calls.append((list(texts), max_sentences))
+        if progress:
+            progress(0, len(texts))
+            progress(len(texts), len(texts))
+        return [
+            sentiment.SentimentResult(0.2, 1, "finbert", {"positive": 0.5}),
+            sentiment.SentimentResult(0.3, 1, "finbert", {"positive": 0.6}),
+        ]
+
+    monkeypatch.setattr(sentiment, "score_texts", fake_score_texts)
+    results, hit_count, computed_count = store.score_regression_sentiments_cached(items)
+    assert calls == [(["bravo exact text", "charlie exact text"],
+                      store.REGRESSION_MAX_SENTENCES)]
+    assert [r.score for r in results] == pytest.approx([0.1, 0.2, 0.3])
+    assert (hit_count, computed_count) == (1, 2)
+
+    calls.clear()
+    results, hit_count, computed_count = store.score_regression_sentiments_cached(items)
+    assert calls == []
+    assert [r.score for r in results] == pytest.approx([0.1, 0.2, 0.3])
+    assert (hit_count, computed_count) == (3, 0)
+
+    with pytest.raises(ValueError, match="unique document IDs"):
+        store.score_regression_sentiments_cached([
+            ("DUPLICATE", "first"), ("DUPLICATE", "second")
+        ])
+
+
+def test_yfinance_cache_is_configured_before_ticker_lookup(tmp_path, monkeypatch):
+    import types
+
+    import pandas as pd
+
+    from finsight import returns
+
+    events = []
+    fake_yfinance = types.ModuleType("yfinance")
+
+    def set_tz_cache_location(path):
+        events.append(("cache", Path(path)))
+
+    class FakeTicker:
+        def __init__(self, ticker):
+            events.append(("ticker", ticker))
+
+        def history(self, **_kwargs):
+            return pd.DataFrame(
+                {"Close": [100.0, 101.0, 102.0, 103.0]},
+                index=pd.date_range("2024-01-01", periods=4),
+            )
+
+    fake_yfinance.set_tz_cache_location = set_tz_cache_location
+    fake_yfinance.Ticker = FakeTicker
+    monkeypatch.setitem(sys.modules, "yfinance", fake_yfinance)
+    monkeypatch.setattr(returns, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(returns, "_YFINANCE_CACHE_CONFIGURED", False)
+    monkeypatch.delenv("FINSIGHT_YFINANCE_CACHE_DIR", raising=False)
+
+    returns.fetch_forward_returns("AAPL", ["2024-01-01"], windows=(1,))
+
+    expected = tmp_path / "yfinance-cache"
+    assert events[:2] == [("cache", expected), ("ticker", "AAPL")]
+    assert expected.is_dir()

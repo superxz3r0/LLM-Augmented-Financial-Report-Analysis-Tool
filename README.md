@@ -8,7 +8,7 @@ LLM-augmented analysis tool for SEC financial filings (10-K / 10-Q). Ask questio
 - **Signal extraction** — revenue guidance, capex guidance, risk-factor count, and FinBERT sentiment per filing
 - **Fundamentals** — computed ratios (margins, leverage, FCF), YoY growth, and health flags from SEC XBRL or yfinance
 - **Filing diff** — detects substantive disclosure changes between two filings of the same company
-- **Signal → returns** — OLS regression of sentiment signals against 5- and 20-day forward stock returns, with SPY market control
+- **Signal → returns** — event-level sentiment, disclosure-change, and joint regressions with SPY, sector/form controls, clustered robust inference, and full confidence intervals
 
 ---
 
@@ -103,6 +103,32 @@ python scripts/fetch_filings.py
 ```
 
 > Requires `edgartools` (already in `requirements.txt`). The SEC requires a declared identity; set it via the `EDGAR_IDENTITY` environment variable or leave the default.
+
+---
+
+## Signal-to-returns methodology
+
+The unit of observation is a **company-date event**, not an individual file. If a company has multiple documents on the same date, FinSight averages the available continuous signals and uses one realized forward return; its form is marked as a combined category such as `10-Q+TRANSCRIPT`. This prevents duplicate documents from artificially increasing the sample size. The dependent variables are 5- and 20-trading-day forward stock returns, and `mkt` is the matching SPY forward return.
+
+FinSight estimates three OLS specifications:
+
+```text
+return = sentiment + mkt + sector dummies + form dummies
+return = disclosure_change + mkt + sector dummies
+return = sentiment + disclosure_change + mkt + sector dummies + form dummies
+```
+
+The disclosure-change signal is a normalized `[0, 1]` section-aligned change score relative to the strictly earlier filing for the same ticker and form. A first filing with no predecessor, an empty comparison, or a transcript has no comparable disclosure signal. These values remain missing and are omitted from disclosure/joint regressions; they are never converted to zero.
+
+Stock and SPY prices are requested only for the bounded event-date range needed by the selected windows. Computed forward returns are persisted in the `forward_return_cache` table inside `data/finsight.db`, so local and hosted runs can work from the deployed database without repeatedly contacting Yahoo Finance. If neither live prices nor cached returns are available, the study reports a market-data error instead of rendering an empty `N = 0` regression.
+
+```bash
+python scripts/precompute_forward_returns.py
+```
+
+Sector and form controls use reference-category coding (`k - 1` dummies plus an intercept). The most frequent category in each model's complete event sample is the deterministic reference, and the result reports the selected reference categories. For the bundled 24-company universe, sectors use a fixed local mapping so the analysis does not depend on a live metadata request.
+
+Inference uses one-way cluster-robust CR1 standard errors. Corpus studies cluster by ticker; if only one ticker is selected, ticker clustering is unidentified and the implementation falls back to event-date clusters. CR1 applies its finite-sample correction and uses cluster degrees of freedom for p-values and 95% confidence intervals. Results report every coefficient together with its standard error, t-statistic, p-value, 95% confidence interval, observation count, R-squared, adjusted R-squared, RMSE, MAE, cluster variable/count, reference categories, and any small-sample warnings.
 
 ---
 
