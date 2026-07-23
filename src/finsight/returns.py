@@ -1,4 +1,5 @@
-from __future__ import annotations
+#prevents all type annotations from being evaluated immediately at definition time.
+from __future__ import annotations 
 
 from dataclasses import dataclass, field
 
@@ -17,7 +18,7 @@ class RegressionResult:
     r2: float
     rmse: float
     mae: float
-    controls: dict = field(default_factory=dict)
+    controls: dict = field(default_factory=dict)#create a new dict object every time
 
     def summary(self) -> str:
         base = (
@@ -38,6 +39,7 @@ def fetch_forward_returns(ticker: str, dates: list[str], windows=(5, 20)) -> dic
     import pandas as pd
     import yfinance as yf
 
+    #calculate the adjusted closing price
     px = yf.Ticker(ticker).history(period="max", auto_adjust=True)["Close"]
     if px.empty:
         return {d: {} for d in dates}
@@ -47,8 +49,13 @@ def fetch_forward_returns(ticker: str, dates: list[str], windows=(5, 20)) -> dic
     out: dict[str, dict[int, float]] = {}
     for d in dates:
         ts = pd.Timestamp(d)
+
+        #we need to let side = "right" cause we can only buy it after the signal 
+        #day, and assume buy and sell both with closing price
         idx = px.index.searchsorted(ts, side="right")
         out[d] = {}
+        
+        #calculate the return rate for 5 and 20 days
         for w in windows:
             if idx + w < len(px):
                 p0, p1 = float(px.iloc[idx]), float(px.iloc[idx + w])
