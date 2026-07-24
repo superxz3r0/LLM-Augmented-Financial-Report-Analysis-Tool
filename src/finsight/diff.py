@@ -63,6 +63,13 @@ class _Similarity:
 def diff_documents(old: Document, new: Document, max_items: int = 40) -> list[DiffItem]:
     results: list[DiffItem] = []
     old_by_item = {s.item: s for s in old.sections}
+    new_items = {s.item for s in new.sections}
+
+    for old_sec in old.sections:
+        if old_sec.item in new_items:
+            continue
+        for op in _paragraphs(old_sec.text):
+            results.append(DiffItem("removed", old_sec.item, 0.0, op[:600], ""))
 
     for new_sec in new.sections:
         old_sec = old_by_item.get(new_sec.item)

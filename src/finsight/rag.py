@@ -12,7 +12,11 @@ _CITE_GROUP = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
 def _group_numbers(group: str) -> list[int]:
     return [int(n) for n in re.findall(r"\d+", group)]
 
-SYSTEM_PROMPT = """You are a financial filings analyst. Answer the question using ONLY the numbered context passages provided. Cite passages inline as [1], [2] etc. after each claim. If the context does not contain the answer, say so explicitly — do not guess. Keep answers under 200 words."""
+SYSTEM_PROMPT = """You are a financial filings analyst. Answer the question using ONLY the numbered context passages provided. Cite passages inline as [1], [2] etc. after each claim. If the context does not contain the answer, say so explicitly — do not guess.
+
+Some passages contain financial tables that have been flattened into plain text, so column headers (e.g. fiscal years or segment names) may sit on their own line above rows of unlabeled numbers. Before citing a figure, re-check which column and row it actually belongs to; if that mapping is ambiguous, say so instead of guessing. Never compute, round, or infer a number that is not itself stated verbatim in the passages.
+
+Keep answers under 200 words."""
 
 
 @dataclass
@@ -51,6 +55,37 @@ def _token_jaccard(a: str, b: str) -> float:
     if not wa or not wb:
         return 0.0
     return len(wa & wb) / len(wa | wb)
+
+
+def _rerank(question: str, hits: list) -> list:
+    """Cross-encoder re-scoring of the hybrid retrieval pool.
+
+    RRF fusion (see index.py) is rank-based and fuses two independently
+    computed rankings — it has no notion of how relevant a passage actually
+    is to *this* question, just where it landed in each list. A
+    cross-encoder reads the (question, passage) pair jointly and scores
+    relevance directly, which is why it reliably outperforms bi-encoder /
+    lexical fusion alone as a final ordering step. Falls back to the
+    untouched hybrid order if the model can't load (e.g. first run with no
+    internet to fetch it from Hugging Face).
+    """
+    if not hits:
+        return hits
+    try:
+        import numpy as np
+
+        from .config import get_reranker
+        model = get_reranker()
+        logits = model.predict([(question, c.text) for c, _ in hits])
+        # the cross-encoder's raw logits (e.g. -11..+8) aren't meaningful to
+        # show a user as "relevance" the way the old RRF score was at least
+        # bounded — squash to [0, 1] so the sources panel reads sensibly.
+        scores = 1.0 / (1.0 + np.exp(-np.asarray(logits, dtype=float)))
+        order = sorted(range(len(hits)), key=lambda i: -scores[i])
+        return [(hits[i][0], float(scores[i])) for i in order]
+    except Exception as e:
+        print(f"[rag] reranker unavailable ({type(e).__name__}: {e}); using hybrid ranking order")
+        return hits
 
 
 def _dedupe(hits: list, k: int) -> list:
@@ -92,7 +127,8 @@ def _drop_uncited(text: str, hits: list) -> tuple[str, list]:
 def answer(index, question: str, ticker: str | None = None, k: int | None = None,
            history: list[tuple[str, str]] | None = None) -> RagAnswer:
     k = k or settings.top_k
-    hits = _dedupe(index.search(question, k * 3, ticker=ticker), k)
+    pool = index.search(question, max(settings.rerank_pool, k * 3), ticker=ticker)
+    hits = _dedupe(_rerank(question, pool), k)
     if not hits:
         return RagAnswer("No relevant passages found in the corpus.", [], "none")
 

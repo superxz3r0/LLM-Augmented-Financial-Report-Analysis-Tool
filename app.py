@@ -106,6 +106,14 @@ with st.sidebar:
     st.subheader("Corpus")
     st.write(f"**Companies:** {', '.join(tickers)}")
     st.write(f"**Retrieval backend:** `{backend}`")
+    if "tfidf" in backend:
+        st.warning(
+            "Semantic (embedding) retrieval is unavailable — falling back to "
+            "keyword-only TF-IDF search, which misses paraphrased questions "
+            "(e.g. \"spending plan for new facilities\" won't match \"capital "
+            "expenditures\"). Check the app logs for `[index] semantic backend "
+            "unavailable` and restart once resolved."
+        )
     if n_real == 0:
         st.info("Running on bundled synthetic samples. Add real EDGAR filings:\n\n"
                 "`python scripts/fetch_filings.py`")

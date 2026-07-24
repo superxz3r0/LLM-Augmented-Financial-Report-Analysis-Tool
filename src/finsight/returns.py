@@ -84,7 +84,7 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
     ctrl = {k: v[mask] for k, v in ctrl.items()}
     n = len(x)
     if n < 3 + len(ctrl):
-        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan)
+        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
 
     cols = [np.ones(n), x] + [ctrl[k] for k in ctrl]
     X = np.column_stack(cols)
@@ -100,7 +100,7 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
     try:
         cov = sigma2 * np.linalg.inv(X.T @ X)
     except np.linalg.LinAlgError:
-        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan)
+        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
     se = np.sqrt(np.diag(cov))
     t = np.where(se > 0, beta / se, np.nan)
     ss_tot = ((y - y.mean()) ** 2).sum()

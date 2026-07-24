@@ -128,6 +128,16 @@ python eval/run_extraction_eval.py
 python eval\run_extraction_eval.py
 ```
 
+To run the retrieval accuracy evaluation (checks that hybrid search + reranking surface the right passage for paraphrased questions, not just keyword matches):
+
+```bash
+# Linux / macOS
+python eval/run_retrieval_eval.py
+
+# Windows
+python eval\run_retrieval_eval.py
+```
+
 ---
 
 ## Project structure
