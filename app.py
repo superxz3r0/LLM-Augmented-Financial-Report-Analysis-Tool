@@ -15,7 +15,7 @@ st.set_page_config(page_title="FinSight — Filing Analysis", page_icon="📑",
                    layout="wide", initial_sidebar_state="expanded")
 
 from finsight import diff as diff_mod
-from finsight import rag, sentiment, s3links  
+from finsight import artifacts, rag, sentiment, s3links
 from finsight.config import FILINGS_DIR, SAMPLE_DIR
 from finsight.chunker import chunk_corpus
 from finsight.index import build_index
@@ -135,6 +135,19 @@ with st.sidebar:
         st.warning("No LLM key set — running in extractive mode. "
                    "Paste a key below to enable generated answers.")
         _render_key_form()
+
+    st.divider()
+    st.subheader("Precomputed artifacts")
+    _art = artifacts.summary()
+    st.caption(f"sentiment: {_art['sentiment']} filings · "
+               f"prices: {_art['returns_tickers']} tickers · "
+               f"diffs: {_art['diff_pairs']} filing pairs")
+    if _art["returns_generated"]:
+        st.caption(f"prices generated {_art['returns_generated']}")
+    if not (_art["sentiment"] and _art["returns_tickers"]):
+        st.info("Artifacts missing — tabs will compute on the fly (slow). "
+                "Build them with `python scripts/precompute.py --all` "
+                "and rsync `data/derived/` to this machine.")
 
     st.caption("COMP47250 · Project P8 · UCD Summer 2026")
 
@@ -617,8 +630,13 @@ with tab_diff:
         new_doc = c3.selectbox("Newer filing", newer, index=len(newer) - 1,
                                format_func=lambda d: f"{d.form} · {d.date}")
         if st.button("Run diff", type="primary"):
-            with st.spinner("Comparing filings…"):
-                items = diff_mod.diff_documents(old_doc, new_doc)
+            items = artifacts.get_diff(artifacts.load_diffs(), t,
+                                       str(old_doc.date), str(new_doc.date))
+            if items is None:
+                with st.spinner("Comparing filings (pair not precomputed)…"):
+                    items = diff_mod.diff_documents(old_doc, new_doc)
+            else:
+                st.caption("precomputed diff")
             shown = [i for i in items if i.kind in ("new", "substantive", "removed")]
             st.success(f"{len(shown)} substantive changes "
                        f"({len(items) - len(shown)} minor edits suppressed)")
@@ -660,8 +678,6 @@ with tab_returns:
                 "reports OLS coefficients, t-statistics and R² per window.")
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
-        prog = st.progress(0.0, "Scoring sentiment per filing…")
-        rows = []
 
         docs_to_use = real_docs
 
@@ -671,19 +687,34 @@ with tab_returns:
                 if d.ticker == selected_company
             ]
 
-        for i, d in enumerate(docs_to_use):
+        # ---- sentiment: precomputed artifact first, CPU fallback ----------
+        art = artifacts.load_sentiment()
+        keyed = [(d, t, artifacts.text_key(t))
+                 for d, t in ((d, d.full_text[:artifacts.SENT_CHARS])
+                              for d in docs_to_use)]
+        missing = [(d, t, k) for d, t, k in keyed if k not in art]
 
-            s = sentiment.score_text(d.full_text[:20000])
-
-            rows.append(
-                {
-                    "ticker": d.ticker,
-                    "date": d.date,
-                    "signal": s.score
-                }
+        if missing:
+            st.warning(
+                f"{len(missing)} filings have no precomputed sentiment score — "
+                "scoring FULL filing text on the local CPU now (roughly one to "
+                "two minutes per filing). For the fast path, run "
+                "`python scripts/precompute.py --sentiment --gpu` and sync "
+                "`data/derived/` to this machine."
             )
-            prog.progress((i + 1) / len(docs_to_use))
-        prog.empty()
+            prog = st.progress(0.0, f"Scoring {len(missing)} filings on CPU…")
+            for i, (d, t, k) in enumerate(missing):
+                r = sentiment.score_text(
+                    t, max_sentences=artifacts.SENT_MAX_SENTENCES)
+                art[k] = {"score": r.score, "n_sentences": r.n_sentences,
+                          "backend": r.backend, "ticker": d.ticker,
+                          "date": str(d.date), "form": d.form}
+                prog.progress((i + 1) / len(missing))
+            prog.empty()
+            artifacts.save_sentiment(art)
+
+        rows = [{"ticker": d.ticker, "date": d.date,
+                 "signal": art[k]["score"]} for d, _t, k in keyed]
         if len(rows) < 5:
             st.warning(
                 f"Only {len(rows)} filings are available for this company. "
@@ -697,7 +728,16 @@ with tab_returns:
 
             st.divider()
 
-            results = ret_mod.run_study(rows)
+            ret_art = artifacts.load_returns()
+            if ret_art and artifacts.returns_cover(ret_art, rows):
+                results = artifacts.run_study_offline(rows, ret_art)
+                st.caption("forward returns: precomputed prices "
+                           f"({ret_art.get('generated_at', 'date unknown')})")
+            else:
+                if ret_art:
+                    st.caption("precomputed prices don't cover every filing — "
+                               "fetching live from yfinance instead")
+                results = ret_mod.run_study(rows)
             for r in results:
 
                 st.subheader(f"{r.window}-Day Forward Return")

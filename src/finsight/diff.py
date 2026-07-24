@@ -29,20 +29,48 @@ def token_jaccard(a: str, b: str) -> float:
     return len(wa & wb) / len(wa | wb)
 
 
+class _Embedder:
+    """Lazy process-wide singleton for the sentence-transformer.
+
+    diff_documents builds a _Similarity per section, and previously each
+    one re-loaded the model from disk — 15-20 loads per filing pair,
+    which dominated runtime on bulk precompute. Load once, reuse forever;
+    a failed load (package missing etc.) is remembered so we don't retry
+    per section.
+    """
+    _model = None
+    _failed = False
+
+    @classmethod
+    def get(cls):
+        if cls._failed:
+            return None
+        if cls._model is None:
+            try:
+                from sentence_transformers import SentenceTransformer
+                cls._model = SentenceTransformer(settings.embedding_model)
+            except Exception:
+                cls._failed = True
+                return None
+        return cls._model
+
+
 class _Similarity:
     def __init__(self, old: list[str], new: list[str]):
         self.backend = "jaccard"
         self.old, self.new = old, new
-        try:
-            from sentence_transformers import SentenceTransformer
-            import numpy as np
-            model = SentenceTransformer(settings.embedding_model)
-            self.e_old = model.encode(old, normalize_embeddings=True)
-            self.e_new = model.encode(new, normalize_embeddings=True)
-            self.np = np
-            self.backend = "embeddings"
-        except Exception:
-            self._old_sets = [set(o.lower().split()) for o in old]
+        model = _Embedder.get()
+        if model is not None:
+            try:
+                import numpy as np
+                self.e_old = model.encode(old, normalize_embeddings=True)
+                self.e_new = model.encode(new, normalize_embeddings=True)
+                self.np = np
+                self.backend = "embeddings"
+                return
+            except Exception:
+                pass
+        self._old_sets = [set(o.lower().split()) for o in old]
 
     def best_match(self, j: int) -> tuple[int, float]:
         if self.backend == "embeddings":
