@@ -7,3 +7,4 @@ data/index/
 data/finsight.db
 *.pdf*.tar.gz
 finsight-data-*
+issues-list.md

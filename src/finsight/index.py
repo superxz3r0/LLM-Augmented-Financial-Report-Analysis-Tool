@@ -23,6 +23,8 @@ import re
 from .chunker import Chunk
 from .config import settings, INDEX_DIR
 
+# The first character must be a lowercase letter or a number, 
+# followed by one or more lowercase letters, digits, or hyphens.
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-]+")
 
 
@@ -31,9 +33,8 @@ def _tokenize(text: str) -> list[str]:
 
 
 class _BM25:
-    """Okapi BM25 (k1=1.5, b=0.75). ~50 lines, fully explainable in an
-    interview — that is the point of implementing it rather than importing."""
 
+    #Okapi BM25 algorithm (k1=1.5, b=0.75)
     K1, B = 1.5, 0.75
 
     def __init__(self, chunks: list[Chunk]):
