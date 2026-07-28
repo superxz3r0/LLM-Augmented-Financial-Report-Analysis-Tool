@@ -1,0 +1,45 @@
+{
+  "_README": "Hand-labelled ground truth for retrieval evaluation, mirroring labels.json's extraction eval. Each query is deliberately phrased with little lexical overlap with the source sentence it targets, so a pass requires real semantic retrieval (not just BM25 keyword matching) to rank the right passage in the top k. 'ticker' scopes retrieval the way the Q&A tab's company selector does; 'expect_any' passes if at least one of the substrings (case-insensitive) appears in the top-k retrieved chunks' text.",
+  "queries": [
+    {
+      "question": "What new government rules could stop Aurora from selling its autonomous systems overseas?",
+      "ticker": "AURB",
+      "expect_any": ["export control", "export licence"]
+    },
+    {
+      "question": "Why did Aurora's profitability get worse in fiscal 2025?",
+      "ticker": "AURB",
+      "expect_any": ["gross margin declined", "pricing pressure"]
+    },
+    {
+      "question": "How reliant is Aurora on its biggest clients?",
+      "ticker": "AURB",
+      "expect_any": ["three largest customers", "34 percent"]
+    },
+    {
+      "question": "What is Aurora planning to spend on new capacity next year?",
+      "ticker": "AURB",
+      "expect_any": ["240 million", "capital expenditures"]
+    },
+    {
+      "question": "How does Aurora source the parts it needs and what could go wrong?",
+      "ticker": "AURB",
+      "expect_any": ["semiconductor suppliers", "precision motion controllers"]
+    },
+    {
+      "question": "Who makes Helix's drug candidates and what's the risk there?",
+      "ticker": "HELX",
+      "expect_any": ["contract manufactur"]
+    },
+    {
+      "question": "Did Helix increase its research spending?",
+      "ticker": "HELX",
+      "expect_any": ["research and development expenses increased", "410 million"]
+    },
+    {
+      "question": "What could go wrong with Helix getting paid for its drugs even if they're approved?",
+      "ticker": "HELX",
+      "expect_any": ["reimbursement", "pricing pressure"]
+    }
+  ]
+}

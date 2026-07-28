@@ -33,6 +33,42 @@ _TAG = re.compile(r"<[^>]+>")
 _SCRIPT_STYLE = re.compile(r"<(script|style)\b.*?</\1>", re.DOTALL | re.IGNORECASE)
 _MIN_SECTION_CHARS = 200          # below this it's a TOC entry / cross-reference
 
+# Fallback for filers (JPMorgan's real 10-K/10-Q are confirmed cases) whose
+# body text states each "Item N." heading only once, in the table of
+# contents, and never repeats it before the section itself — the section
+# instead starts with a bare descriptive heading and no item number at all.
+# Against that structure ITEM_PATTERN only ever matches inside the TOC
+# block, so the *last* TOC entry's unbounded "body" swallows the entire rest
+# of the document under one item number (see _split_sections). These are
+# standard SEC item titles used verbatim as bare standalone headings by at
+# least some filers; matching them lets that content be recovered under its
+# real item number instead of being lost inside whichever item happened to
+# be last in the TOC. This is inherently best-effort — filers are free to
+# caption sections however they like, and not every item is guaranteed to be
+# recoverable this way for every filer.
+#
+# 10-K and 10-Q item *numbers* diverge for the same content (MD&A is Item 7
+# in a 10-K but Item 2 in a 10-Q), so each heading phrase maps to a
+# form-specific item number. 10-Q Part II reuses Item numbers 1-6 for
+# unrelated topics (Legal Proceedings, Risk Factors, etc., distinct from
+# Part I's Items 1-4) — too ambiguous to resolve from the item number alone,
+# so only Part I's essentially unambiguous items are mapped for 10-Qs.
+_BARE_HEADING_PATTERNS: dict[str, str] = {
+    "risk_factors": r"risk factors",
+    "legal_proceedings": r"legal proceedings",
+    "mdna": r"management[’']s discussion and analysis",
+    "market_risk": r"quantitative and qualitative disclosures about market risk",
+    "fin_statements": r"financial statements and supplementary data",
+    "controls": r"controls and procedures",
+}
+_BARE_HEADING_RES = {key: re.compile(rf"^\s*({pat})\s*:?\s*$", re.IGNORECASE | re.MULTILINE)
+                     for key, pat in _BARE_HEADING_PATTERNS.items()}
+_BARE_ITEM_10K: dict[str, str] = {
+    "risk_factors": "1A", "legal_proceedings": "3", "mdna": "7",
+    "market_risk": "7A", "fin_statements": "8", "controls": "9A",
+}
+_BARE_ITEM_10Q: dict[str, str] = {"mdna": "2", "market_risk": "3", "controls": "4"}
+
 
 @dataclass
 class Section:
@@ -74,33 +110,47 @@ def clean_text(raw: str) -> str:
     return text.strip()
 
 
-def _split_sections(text: str) -> list[Section]:
-    """Split filing text on 'Item N.' headings; fall back to one big section.
-
-    TOC handling: every heading occurrence becomes a candidate; candidates
-    whose body is shorter than _MIN_SECTION_CHARS are dropped, and when the
-    same Item number appears more than once (TOC + body + cross-references)
-    the occurrence with the longest body wins.
-    """
-    matches = list(ITEM_PATTERN.finditer(text))
-    if not matches:
-        return [Section(item="0", title="Full document", text=text.strip())]
-
+def _sections_from_spans(text: str, spans: list[tuple[str, str, int]]) -> list[Section]:
+    """Shared TOC-vs-body resolution: spans is (item, title, body_start) in
+    document order; each body runs to the next span's start (or EOF).
+    Candidates whose body is shorter than _MIN_SECTION_CHARS are dropped
+    (TOC entries / cross-references), and when the same item number appears
+    more than once the occurrence with the longest body wins."""
     best: dict[str, Section] = {}
     order: list[str] = []
-    for i, m in enumerate(matches):
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+    for i, (item, title, start) in enumerate(spans):
+        end = spans[i + 1][2] if i + 1 < len(spans) else len(text)
         body = text[start:end].strip()
         if len(body) < _MIN_SECTION_CHARS:
             continue
-        item = m.group(1).upper()
         if item not in best or len(body) > len(best[item].text):
             if item not in best:
                 order.append(item)
-            best[item] = Section(item=item, title=m.group(2).strip(" .:\u2013\u2014-"), text=body)
+            best[item] = Section(item=item, title=title, text=body)
+    return [best[i] for i in order]
 
-    sections = [best[i] for i in order]
+
+def _split_sections(text: str, form: str = "10-K") -> list[Section]:
+    """Split filing text on 'Item N.' headings, augmented with a fallback
+    for bare (unprefixed) versions of those same headings \u2014 see
+    _BARE_HEADING_PATTERNS. Both heading styles are merged into one span
+    list, in document order, and resolved together by _sections_from_spans:
+    whichever style actually located a given item's real content ends up
+    winning that item's longest-body slot, and a bare-heading span
+    downstream of a TOC-only "Item N." span correctly caps that item's
+    runaway body instead of letting it swallow the rest of the document.
+    Items no filer wrote a heading style this recognises for just don't get
+    their own section, same as always.
+    """
+    matches = list(ITEM_PATTERN.finditer(text))
+    item_spans = [(m.group(1).upper(), m.group(2).strip(" .:\u2013\u2014-"), m.end()) for m in matches]
+
+    bare_item = _BARE_ITEM_10Q if form.upper() == "10-Q" else _BARE_ITEM_10K
+    bare_spans = [(bare_item[key], m.group(1).strip(), m.end())
+                  for key in bare_item for m in _BARE_HEADING_RES[key].finditer(text)]
+    spans = sorted(item_spans + bare_spans, key=lambda s: s[2])
+
+    sections = _sections_from_spans(text, spans)
     return sections or [Section(item="0", title="Full document", text=text.strip())]
 
 
@@ -203,9 +253,11 @@ def load_document(path: Path) -> Document:
         raise ValueError(f"Bad filename (want TICKER_FORM_DATE.txt): {path.name}")
     ticker, form, date = parts
     text = clean_text(path.read_text(encoding="utf-8", errors="ignore"))
-    splitter = _split_transcript if form.upper() == "TRANSCRIPT" else _split_sections
-    return Document(ticker=ticker, form=form, date=date, path=path,
-                    sections=splitter(text))
+    if form.upper() == "TRANSCRIPT":
+        sections = _split_transcript(text)
+    else:
+        sections = _split_sections(text, form)
+    return Document(ticker=ticker, form=form, date=date, path=path, sections=sections)
 
 
 def load_corpus(*dirs: Path) -> list[Document]:

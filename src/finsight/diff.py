@@ -34,9 +34,9 @@ class _Similarity:
         self.backend = "jaccard"
         self.old, self.new = old, new
         try:
-            from sentence_transformers import SentenceTransformer
             import numpy as np
-            model = SentenceTransformer(settings.embedding_model)
+            from .config import get_embedder
+            model = get_embedder()
             self.e_old = model.encode(old, normalize_embeddings=True)
             self.e_new = model.encode(new, normalize_embeddings=True)
             self.np = np
@@ -63,6 +63,13 @@ class _Similarity:
 def diff_documents(old: Document, new: Document, max_items: int = 40) -> list[DiffItem]:
     results: list[DiffItem] = []
     old_by_item = {s.item: s for s in old.sections}
+    new_items = {s.item for s in new.sections}
+
+    for old_sec in old.sections:
+        if old_sec.item in new_items:
+            continue
+        for op in _paragraphs(old_sec.text):
+            results.append(DiffItem("removed", old_sec.item, 0.0, op[:600], ""))
 
     for new_sec in new.sections:
         old_sec = old_by_item.get(new_sec.item)
@@ -95,6 +102,15 @@ def diff_documents(old: Document, new: Document, max_items: int = 40) -> list[Di
             kind = ("new" if score < t_new
                     else "substantive" if score < t_subst
                     else "minor")
+            # Embeddings can rate two paragraphs as similar purely on shared
+            # risk-disclosure vocabulary (e.g. two unrelated "risk factor"
+            # paragraphs) even when they share almost no actual content.
+            # Lexical overlap catches that false match, so treat very low
+            # word overlap with the matched paragraph as "new" regardless
+            # of the embedding score.
+            if sim.backend == "embeddings" and kind != "new" and i >= 0 \
+                    and token_jaccard(np_text, old_paras[i]) < 0.15:
+                kind = "new"
             results.append(DiffItem(kind, new_sec.item, round(score, 3),
                                     old_paras[i][:600] if i >= 0 else "", np_text[:600]))
 

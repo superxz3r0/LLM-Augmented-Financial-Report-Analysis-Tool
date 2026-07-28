@@ -46,6 +46,28 @@ def test_toc_lines_are_skipped():
     assert all(len(s.text) > 200 for s in sections)
 
 
+def test_bare_heading_recovers_section_never_prefixed_with_item_n():
+    """Regression for a real JPMorgan 10-K: its table of contents states
+    'Item 7.' once and the body never repeats it, captioning the section
+    with a bare 'Management's discussion and analysis' heading instead. The
+    old code let Item 7's real content get swallowed into whichever item
+    happened to be last in the TOC (Item 15), because ITEM_PATTERN only ever
+    matched inside the TOC block and its last match's body ran unbounded to
+    EOF. The bare-heading fallback should recover Item 7 as its own section
+    and cap Item 15's TOC-only body well short of the whole document."""
+    toc = "\n".join(f"Item {n}. Some Item {n} Title ... {n}" for n in
+                     ["1", "1A", "7", "7A", "8", "15"])
+    body = ("Cover page and signature boilerplate. " * 20 + "\n\n"
+            "Management's discussion and analysis:\n" +
+            "Real MD&A content discussing results of operations. " * 40)
+    text = toc + "\n\n" + body
+    from finsight.ingest import _split_sections
+    sections = {s.item: s for s in _split_sections(text)}
+    assert "7" in sections
+    assert "results of operations" in sections["7"].text.lower()
+    assert "15" not in sections or len(sections["15"].text) < len(sections["7"].text)
+
+
 def test_chunks_carry_citation_metadata(docs):
     chunks = chunk_document(docs[0])
     assert chunks
@@ -58,6 +80,23 @@ def test_chunk_sizes_bounded(docs):
     from finsight.config import settings
     for c in chunk_corpus(docs):
         assert len(c.text) <= settings.chunk_size + settings.chunk_overlap + 200
+
+
+def test_unsplittable_table_is_still_bounded():
+    """Real SEC financial tables have no '.', '!' or '?' inside them, so
+    _SENT_SPLIT can't break them up — a multi-row table bigger than
+    chunk_size must still be hard-wrapped instead of passing through as one
+    oversized chunk (regression: a real Apple 10-K segment table produced a
+    2,532-char chunk against a 900-char target before this was fixed)."""
+    from finsight.config import settings
+    from finsight.ingest import Document, Section
+    row = " ".join(f"Segment{i} $ {i * 1111},000 {i}" for i in range(40))
+    table = "The following table shows net sales by segment:\n\n" + row + "\n" * 1 + row
+    doc = Document(ticker="X", form="10-K", date="2025-01-01", path=Path("x"),
+                    sections=[Section(item="7", title="MD&A", text=table)])
+    cap = settings.chunk_size + settings.chunk_overlap + 200
+    for c in chunk_document(doc):
+        assert len(c.text) <= cap
 
 
 def test_extract_finds_guidance_and_risks(docs):

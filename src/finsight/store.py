@@ -19,16 +19,24 @@ def _conn() -> sqlite3.Connection:
 
 
 def get_signals(doc_id: str) -> dict | None:
-    with _conn() as con:
-        row = con.execute("SELECT payload FROM signals WHERE doc_id=? AND version=?",
-                          (doc_id, EXTRACTOR_VERSION)).fetchone()
+    con = _conn()
+    try:
+        with con:
+            row = con.execute("SELECT payload FROM signals WHERE doc_id=? AND version=?",
+                              (doc_id, EXTRACTOR_VERSION)).fetchone()
+    finally:
+        con.close()
     return json.loads(row[0]) if row else None
 
 
 def put_signals(doc_id: str, payload: dict) -> None:
-    with _conn() as con:
-        con.execute("INSERT OR REPLACE INTO signals VALUES (?,?,?)",
-                    (doc_id, EXTRACTOR_VERSION, json.dumps(payload)))
+    con = _conn()
+    try:
+        with con:
+            con.execute("INSERT OR REPLACE INTO signals VALUES (?,?,?)",
+                        (doc_id, EXTRACTOR_VERSION, json.dumps(payload)))
+    finally:
+        con.close()
 
 
 def cached_extract(doc, use_llm: bool = True) -> dict:

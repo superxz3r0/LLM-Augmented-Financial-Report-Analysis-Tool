@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -34,15 +35,29 @@ class RegressionResult:
         return base
 
 
-def fetch_forward_returns(ticker: str, dates: list[str], windows=(5, 20)) -> dict:
-    import pandas as pd
+@functools.lru_cache(maxsize=128)
+def _price_history(ticker: str):
+    """Full daily close history for a ticker, cached per process.
+
+    The signal->returns study calls fetch_forward_returns once per ticker per
+    window set; without this cache, re-running the study (or an "overall
+    corpus" study whose tickers overlap an earlier per-company one) re-downloads
+    each ticker's entire price history from Yahoo every time.
+    """
     import yfinance as yf
 
     px = yf.Ticker(ticker).history(period="max", auto_adjust=True)["Close"]
-    if px.empty:
-        return {d: {} for d in dates}
     if px.index.tz is not None:
         px.index = px.index.tz_localize(None)
+    return px
+
+
+def fetch_forward_returns(ticker: str, dates: list[str], windows=(5, 20)) -> dict:
+    import pandas as pd
+
+    px = _price_history(ticker)
+    if px.empty:
+        return {d: {} for d in dates}
 
     out: dict[str, dict[int, float]] = {}
     for d in dates:
@@ -69,7 +84,7 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
     ctrl = {k: v[mask] for k, v in ctrl.items()}
     n = len(x)
     if n < 3 + len(ctrl):
-        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan)
+        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
 
     cols = [np.ones(n), x] + [ctrl[k] for k in ctrl]
     X = np.column_stack(cols)
@@ -85,7 +100,7 @@ def ols(signal: np.ndarray, ret: np.ndarray, window: int,
     try:
         cov = sigma2 * np.linalg.inv(X.T @ X)
     except np.linalg.LinAlgError:
-        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan)
+        return RegressionResult(window, n, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan)
     se = np.sqrt(np.diag(cov))
     t = np.where(se > 0, beta / se, np.nan)
     ss_tot = ((y - y.mean()) ** 2).sum()

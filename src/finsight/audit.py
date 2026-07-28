@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 
 _SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
-_CITE = re.compile(r"\[\d+\]")
+_CITE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
 _NUM = re.compile(r"\$?\d[\d,.]*\s*(?:billion|million|bn|m\b|percent|%|basis points)?",
                   re.IGNORECASE)
 _WORD = re.compile(r"[a-z]{3,}")
@@ -57,37 +57,59 @@ def audit_answer(answer: str, source_chunks: list) -> AuditReport:
     if not sources:
         return AuditReport(False, 0.0, "none", [])
 
-    clean = _CITE.sub("", answer)
-    sentences = [s.strip() for s in _SENT_SPLIT.split(clean)
-                 if s.strip() and not _is_meta(s)]
+    # Split (and record each sentence's cited chunk numbers) before stripping
+    # the [n] markers, so grounding can be checked against the *specific*
+    # chunk(s) a sentence claims to cite rather than the whole retrieved pool
+    # — a sentence citing [1] but whose number only appears in [4] should
+    # fail, even though that number is present "somewhere" in the sources.
+    # Handles grouped citations like "[1, 2]" as well as single "[1]".
+    sentences: list[str] = []
+    cited_sets: list[set[int]] = []
+    for raw in _SENT_SPLIT.split(answer):
+        cited = {int(n) for group in _CITE.findall(raw) for n in re.findall(r"\d+", group)}
+        clean_s = _CITE.sub("", raw).strip()
+        if clean_s and not _is_meta(clean_s):
+            sentences.append(clean_s)
+            cited_sets.append(cited)
     if not sentences:
         return AuditReport(True, 1.0, "trivial", [])
+
+    def _candidate_idxs(cited: set[int]) -> list[int]:
+        valid = [i - 1 for i in cited if 1 <= i <= len(sources)]
+        return valid or list(range(len(sources)))
 
     backend = "jaccard"
     scores: list[float] = []
     try:
-        from sentence_transformers import SentenceTransformer
-        from .config import settings
-        model = SentenceTransformer(settings.embedding_model)
+        from .config import get_embedder
+        model = get_embedder()
         e_sent = model.encode(sentences, normalize_embeddings=True)
         e_src = model.encode(sources, normalize_embeddings=True)
         sims = e_sent @ e_src.T
-        scores = sims.max(axis=1).tolist()
+        for row, cited in zip(sims, cited_sets):
+            idxs = _candidate_idxs(cited)
+            scores.append(float(max(row[i] for i in idxs)))
         backend, threshold = "embeddings", EMB_THRESHOLD
     except Exception:
         src_tokens = [_content_tokens(s) for s in sources]
-        for sent in sentences:
+        for sent, cited in zip(sentences, cited_sets):
             st = _content_tokens(sent)
-            best = max((len(st & src) / max(len(st | src), 1) for src in src_tokens),
+            idxs = _candidate_idxs(cited)
+            best = max((len(st & src_tokens[i]) / max(len(st | src_tokens[i]), 1) for i in idxs),
                        default=0.0)
             scores.append(best)
         threshold = JACCARD_THRESHOLD
 
     all_source_numbers = {_normalise_number(n) for s in sources for n in _NUM.findall(s)}
     audits: list[SentenceAudit] = []
-    for sent, score in zip(sentences, scores):
+    for sent, score, cited in zip(sentences, scores, cited_sets):
         nums = [n.strip() for n in _NUM.findall(sent) if any(ch.isdigit() for ch in n)]
-        missing = [n for n in nums if _normalise_number(n) not in all_source_numbers]
+        if cited:
+            idxs = _candidate_idxs(cited)
+            allowed_numbers = {_normalise_number(n) for i in idxs for n in _NUM.findall(sources[i])}
+        else:
+            allowed_numbers = all_source_numbers
+        missing = [n for n in nums if _normalise_number(n) not in allowed_numbers]
         grounded = score >= threshold and not missing
         audits.append(SentenceAudit(sent, round(float(score), 3), grounded, missing))
 

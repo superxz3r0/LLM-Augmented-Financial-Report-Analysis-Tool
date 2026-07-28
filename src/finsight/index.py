@@ -102,42 +102,55 @@ class HybridIndex:
 
 class _ChromaIndex:
     def __init__(self, chunks: list[Chunk]):
-        import hashlib
-
         import chromadb
-        from sentence_transformers import SentenceTransformer
 
-        self.model = SentenceTransformer(settings.embedding_model)
+        from .config import get_embedder
+        self.model = get_embedder()
         self.chunks = {c.chunk_id: c for c in chunks}
         client = chromadb.PersistentClient(path=str(INDEX_DIR))
 
-        # Fingerprint the corpus; if the persisted collection matches, reuse
-        # it instead of re-embedding (a 300-doc corpus takes ~20-40 min on
-        # CPU — unacceptable on every app start).
-        fp = hashlib.sha256("|".join(sorted(self.chunks)).encode()).hexdigest()[:16]
-        try:
-            col = client.get_collection("filings")
-            if (col.metadata or {}).get("fingerprint") == fp and col.count() == len(chunks):
-                self.col = col
-                print(f"[index] reusing persisted index ({col.count()} chunks)")
-                return
-            client.delete_collection("filings")
-        except Exception:
-            pass
+        # Incremental indexing: diff this corpus's chunk ids against what's
+        # already persisted and only embed what's new / delete what's gone,
+        # instead of fingerprinting the whole corpus as one blob and
+        # re-embedding everything the moment a single chunk changes. Under
+        # the old whole-corpus-fingerprint scheme, adding one more company's
+        # filings meant re-embedding every already-indexed company's filings
+        # too — a 300-doc corpus took 20-40 min on CPU for what should have
+        # been a handful of new documents. Chunk ids are stable across runs
+        # (doc_id + a positional index — see chunker.py), so a plain id diff
+        # is enough; this doesn't catch a filing's content changing in place
+        # under an unchanged id, which the old fingerprint-by-id scheme
+        # didn't catch either.
+        self.col = client.get_or_create_collection("filings", metadata={"hnsw:space": "cosine"})
+        existing_ids = set(self.col.get(include=[])["ids"])
+        wanted_ids = set(self.chunks)
+        to_remove = existing_ids - wanted_ids
+        to_add = wanted_ids - existing_ids
 
-        self.col = client.create_collection(
-            "filings", metadata={"hnsw:space": "cosine", "fingerprint": fp})
-        texts = [c.text for c in chunks]
+        # Chroma caps a single call at ~5461 records — batch to stay under it
+        # (unbatched, a 5,863-chunk corpus raises and silently falls back to TF-IDF).
+        BATCH = 5000
+        if to_remove:
+            to_remove = list(to_remove)
+            for i in range(0, len(to_remove), BATCH):
+                self.col.delete(ids=to_remove[i:i + BATCH])
+
+        if not to_add:
+            print(f"[index] reusing persisted index ({len(wanted_ids)} chunks, "
+                  f"{len(to_remove)} removed)")
+            return
+
+        print(f"[index] embedding {len(to_add)} new chunks "
+              f"({len(wanted_ids) - len(to_add)} already indexed, {len(to_remove)} removed)")
+        new_chunks = [self.chunks[cid] for cid in to_add]
+        texts = [c.text for c in new_chunks]
         embeddings = self.model.encode(texts, batch_size=32, show_progress_bar=True,
                                        normalize_embeddings=True)
-        ids = [c.chunk_id for c in chunks]
+        ids = [c.chunk_id for c in new_chunks]
         embs = embeddings.tolist()
         metas = [{"ticker": c.ticker, "form": c.form, "date": c.date,
                   "doc_id": c.doc_id, "item": c.item,
-                  "section_title": c.section_title} for c in chunks]
-        # Chroma caps a single .add() at ~5461 records — batch to stay under it
-        # (unbatched, a 5,863-chunk corpus raises and silently falls back to TF-IDF).
-        BATCH = 5000
+                  "section_title": c.section_title} for c in new_chunks]
         for i in range(0, len(ids), BATCH):
             self.col.add(
                 ids=ids[i:i + BATCH],
