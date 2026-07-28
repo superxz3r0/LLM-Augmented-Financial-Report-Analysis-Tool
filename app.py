@@ -695,6 +695,7 @@ with tab_returns:
                 {
                     "ticker": d.ticker,
                     "date": d.date,
+                    "form": d.form,
                     "signal": s["sentiment_score"]
                 }
             )
@@ -712,9 +713,21 @@ with tab_returns:
                 st.markdown("Overall Corpus Signal → Return Study")
 
             st.divider()
+            
+            grouped_results = ret_mod.run_study_grouped(rows)
+            group_counts = {}
+            for _row in rows:
+                _g = ret_mod.doc_group(_row.get("form", ""))
+                group_counts[_g] = group_counts.get(_g, 0) + 1
 
-            results = ret_mod.run_study(rows)
-            for r in results:
+            for group_label, results in grouped_results.items():
+              st.header(group_label)
+              st.caption(
+                  f"Separate regression over {group_counts.get(group_label, 0)} "
+                  f"document(s) in this group."
+              )
+            
+              for r in results:
 
                 st.subheader(f"{r.window}-Day Forward Return")
 
