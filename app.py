@@ -719,8 +719,8 @@ with tab_returns:
                   f"Separate regression over {group_counts.get(group_label, 0)} "
                   f"document(s) in this group."
               )
-            results = ret_mod.run_study(rows)
-            for r in results:
+            
+              for r in results:
 
                 st.subheader(f"{r.window}-Day Forward Return")
 
