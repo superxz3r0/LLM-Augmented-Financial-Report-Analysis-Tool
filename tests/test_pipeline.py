@@ -107,6 +107,31 @@ def test_extract_finds_guidance_and_risks(docs):
     assert any("310" in g for g in sig.capex_guidance)
 
 
+def test_risk_count_handles_real_filing_text_layouts():
+    body = "The explanatory discussion describes the business impact and mitigation. " * 6
+
+    # Some filings keep bold labels as short prefixes in a larger paragraph.
+    inline = "\n\n".join(
+        f"Risk area {i}. {body}" for i in range(10)
+    )
+    assert extract._count_risk_factors(inline) == 10
+
+    # Other text conversions remove the separator between a bold heading and
+    # its body. The capitalised subject still exposes the structural boundary.
+    glued = "\n\n".join(
+        f"Supply disruption could harm operations {body}" for _ in range(8)
+    )
+    assert extract._count_risk_factors(glued) == 8
+
+    # Title-cased templates need no explicit risk keyword in every heading.
+    title_case = "\n\n".join(
+        part
+        for i in range(15)
+        for part in (f"International Market Conditions Number {i}", body)
+    )
+    assert extract._count_risk_factors(title_case) == 15
+
+
 def test_sentiment_direction_flips_between_years(docs):
     a24 = next(d for d in docs if "AURB_10-K_2024" in d.doc_id)
     a25 = next(d for d in docs if "AURB_10-K_2025" in d.doc_id)

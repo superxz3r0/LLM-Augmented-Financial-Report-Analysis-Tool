@@ -25,7 +25,9 @@ def main() -> int:
         if doc_id not in docs:
             print(f"[skip] {doc_id}: filing not on disk")
             continue
-        sig = extract_signals(docs[doc_id])
+        # Keep the benchmark deterministic and offline. Optional API keys in
+        # the caller's environment must not silently change the test result.
+        sig = extract_signals(docs[doc_id], use_llm=False)
 
         per_signal["risk_factor_count"].append(
             abs(sig.risk_factor_count - truth["risk_factor_count"]) <= 1)
