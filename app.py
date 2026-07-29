@@ -771,7 +771,12 @@ with tab_fund:
 with tab_diff:
     st.caption("Detects substantive disclosure changes between two filings of the same company, "
                "filtering out boilerplate and numeric-only edits.")
-    by_ticker = {t: sorted([d for d in docs if d.ticker == t], key=lambda d: d.date)
+    # Diff only applies to periodic filings (10-K / 10-Q). Earnings-call
+    # transcripts are excluded — they aren't versioned disclosures with a
+    # comparable predecessor, so diffing them isn't meaningful.
+    by_ticker = {t: sorted([d for d in docs
+                            if d.ticker == t and d.form != "TRANSCRIPT"],
+                           key=lambda d: d.date)
                  for t in tickers}
     eligible = [t for t, ds in by_ticker.items() if len(ds) >= 2]
     if not eligible:
@@ -837,21 +842,14 @@ with tab_returns:
         "Evaluate whether filing sentiment predicts future stock returns."
     )
 
-    study_col1, study_col2 = st.columns([2,2])
+    # Per-company only: pooling different companies' returns into one
+    # regression has no clean economic meaning, so the study always scopes to
+    # a single ticker (like the RAG tab's company filter).
+    selected_company = st.selectbox(
+        "Company",
+        sorted({d.ticker for d in real_docs})
+    ) if real_docs else None
 
-    study_type = study_col1.radio(
-        "Study Type",
-        ["Overall Corpus", "Individual Company"],
-        horizontal=True
-    )
-
-    selected_company = None
-
-    if study_type == "Individual Company":
-        selected_company = study_col2.selectbox(
-            "Company",
-            sorted({d.ticker for d in real_docs})
-        )
     if not real_docs:
         st.info("No real filings loaded yet. Once `scripts/fetch_filings.py` has run, "
                 "this tab scores sentiment per filing, fetches forward returns, and "
@@ -859,8 +857,8 @@ with tab_returns:
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
 
-        # Look up a precomputed study first (overall corpus or per-company).
-        _cache_key = selected_company if selected_company is not None else "__overall__"
+        # Look up a precomputed per-company study first.
+        _cache_key = selected_company
         _cached_study = _RETURNS_CACHE.get(_cache_key)
 
         if _cached_study is not None:
@@ -876,10 +874,7 @@ with tab_returns:
                 label: (results[0].n if results else 0)
                 for label, results in grouped_results.items()
             }
-            if selected_company:
-                st.markdown(f"{selected_company} Signal → Return Study")
-            else:
-                st.markdown("Overall Corpus Signal → Return Study")
+            st.markdown(f"{selected_company} Signal → Return Study")
             st.caption("Loaded from precomputed study cache.")
             st.divider()
             _render_returns(grouped_results, group_counts)
@@ -889,13 +884,7 @@ with tab_returns:
         prog = st.progress(0.0, "Scoring sentiment per filing…")
         rows = []
 
-        docs_to_use = real_docs
-
-        if selected_company is not None:
-            docs_to_use = [
-                d for d in real_docs
-                if d.ticker == selected_company
-            ]
+        docs_to_use = [d for d in real_docs if d.ticker == selected_company]
 
         for i, d in enumerate(docs_to_use):
 
@@ -920,10 +909,7 @@ with tab_returns:
                 "Regression results should be interpreted with caution."
             )
         with st.spinner("Fetching prices and running regressions…"):
-            if selected_company:
-                st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
-            else:
-                st.markdown("Overall Corpus Signal → Return Study")
+            st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
 
             st.divider()
 
