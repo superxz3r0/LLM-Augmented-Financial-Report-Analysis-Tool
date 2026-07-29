@@ -112,27 +112,6 @@ def _load_diff_cache() -> dict:
 _DIFF_CACHE = _load_diff_cache()
 
 
-@st.cache_data(show_spinner=False)
-def _load_returns_cache() -> dict:
-    """Load precomputed signal→return studies from data/returns_cache.json.
-
-    Produced by scripts/precompute_returns.py (ideally on the GPU box with
-    network access for price fetches). Lets the Signal→returns tab show
-    regressions instantly. Missing file → empty cache and the app computes
-    studies on demand.
-    """
-    cache_path = FILINGS_DIR.parent / "returns_cache.json"
-    if not cache_path.exists():
-        return {}
-    try:
-        return json.loads(cache_path.read_text())
-    except Exception:
-        return {}
-
-
-_RETURNS_CACHE = _load_returns_cache()
-
-
 def _render_returns(grouped_results, group_counts):
     """Render grouped signal→return regression results.
 
@@ -856,49 +835,58 @@ with tab_returns:
                 "reports OLS coefficients, t-statistics and R² per window.")
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
-
-        # Look up a precomputed per-company study first.
-        _cache_key = selected_company
-        _cached_study = _RETURNS_CACHE.get(_cache_key)
-
-        if _cached_study is not None:
-            # Rebuild RegressionResult objects from cached dicts so the
-            # rendering below is identical to a live run — skips sentiment
-            # scoring and price fetches entirely.
-            grouped_results = {
-                label: [ret_mod.RegressionResult(**r) for r in results]
-                for label, results in _cached_study.items()
-            }
-            # Approximate per-group document count from the regression n.
-            group_counts = {
-                label: (results[0].n if results else 0)
-                for label, results in grouped_results.items()
-            }
-            st.markdown(f"{selected_company} Signal → Return Study")
-            st.caption("Loaded from precomputed study cache.")
-            st.divider()
-            _render_returns(grouped_results, group_counts)
-            st.stop()
-
         from finsight.store import cached_extract
+
+        docs_to_use = sorted(
+            [d for d in real_docs if d.ticker == selected_company],
+            key=lambda d: d.date,
+        )
+
+        # Disclosure-change signal: for each periodic filing, how many
+        # substantive changes it introduced versus the previous filing of the
+        # same form. Reuses the diff engine (via the precomputed diff cache
+        # when available, else computed live) so we don't recompute diffs here.
+        prev_same_form = {}
+        _seen = {}
+        for d in docs_to_use:
+            if d.form != "TRANSCRIPT" and d.form in _seen:
+                prev_same_form[d.doc_id] = _seen[d.form]
+            _seen[d.form] = d
+
+        def _disclosure_change(doc):
+            """Count substantive changes vs the previous same-form filing.
+
+            Returns None when there is no comparable predecessor (e.g. the
+            first 10-K, or transcripts), so that row is dropped from the
+            disclosure-change regression rather than counted as zero change.
+            """
+            prev = prev_same_form.get(doc.doc_id)
+            if prev is None:
+                return None
+            key = f"{prev.doc_id}|{doc.doc_id}"
+            cached = _DIFF_CACHE.get(key)
+            if cached is not None:
+                items = cached
+                return sum(1 for it in items
+                           if it.get("kind") in ("new", "substantive", "removed"))
+            items = diff_mod.diff_documents(prev, doc)
+            return sum(1 for it in items
+                       if it.kind in ("new", "substantive", "removed"))
+
         prog = st.progress(0.0, "Scoring sentiment per filing…")
         rows = []
-
-        docs_to_use = [d for d in real_docs if d.ticker == selected_company]
-
         for i, d in enumerate(docs_to_use):
-
             # Reuses the same SQLite-cached signal as the "Structured signals"
             # tab (keyed on doc_id) instead of re-running FinBERT over every
             # filing on every click — the dominant cost of this tab.
             s = cached_extract(d, use_llm=False)
-
             rows.append(
                 {
                     "ticker": d.ticker,
                     "date": d.date,
                     "form": d.form,
-                    "signal": s["sentiment_score"]
+                    "signal": s["sentiment_score"],
+                    "disclosure_change": _disclosure_change(d),
                 }
             )
             prog.progress((i + 1) / len(docs_to_use))
@@ -911,12 +899,35 @@ with tab_returns:
         with st.spinner("Fetching prices and running regressions…"):
             st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
 
-            st.divider()
-
-            grouped_results = ret_mod.run_study_grouped(rows)
             group_counts = {}
             for _row in rows:
                 _g = ret_mod.doc_group(_row.get("form", ""))
                 group_counts[_g] = group_counts.get(_g, 0) + 1
 
-            _render_returns(grouped_results, group_counts)
+            # Study 1: sentiment signal → forward returns.
+            st.header("Signal: Filing Sentiment")
+            st.divider()
+            sentiment_results = ret_mod.run_study_grouped(rows, signal_field="signal")
+            _render_returns(sentiment_results, group_counts)
+
+            # Study 2: disclosure-change signal → forward returns. Only rows
+            # with a comparable predecessor carry a disclosure_change value;
+            # the rest are dropped by the regression's NaN mask.
+            dc_rows = [r for r in rows if r.get("disclosure_change") is not None]
+            st.divider()
+            st.header("Signal: Disclosure Change (substantive edits vs. prior filing)")
+            if len(dc_rows) < 5:
+                st.info(
+                    f"Only {len(dc_rows)} filing(s) have a comparable prior "
+                    "same-form filing, so the disclosure-change regression is "
+                    "omitted (needs more history to be meaningful)."
+                )
+            else:
+                dc_counts = {}
+                for _row in dc_rows:
+                    _g = ret_mod.doc_group(_row.get("form", ""))
+                    dc_counts[_g] = dc_counts.get(_g, 0) + 1
+                st.divider()
+                dc_results = ret_mod.run_study_grouped(
+                    dc_rows, signal_field="disclosure_change")
+                _render_returns(dc_results, dc_counts)

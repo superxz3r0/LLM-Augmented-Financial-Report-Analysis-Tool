@@ -17,6 +17,8 @@ MARKET_PROXY = "SPY"
 # company rather than searching one undifferentiated pool. We therefore run
 # one regression *per document group*: periodic filings together, transcripts
 # on their own.
+
+# Cohen, Malloy & Nguyen, Journal of Finance 2020,"Lazy Prices"
 DOC_GROUPS: dict[str, str] = {
     "10-K": "Periodic Filings (10-K / 10-Q)",
     "10-Q": "Periodic Filings (10-K / 10-Q)",
@@ -166,11 +168,11 @@ def _enrich(rows: list[dict], windows, market_control: bool) -> list[dict]:
     return enriched
 
 
-def _regress(enriched: list[dict], windows, market_control: bool, group: str = ""
-             ) -> list[RegressionResult]:
+def _regress(enriched: list[dict], windows, market_control: bool, group: str = "",
+             signal_field: str = "signal") -> list[RegressionResult]:
     results = []
     for w in windows:
-        sig = np.array([r["signal"] for r in enriched])
+        sig = np.array([r.get(signal_field, np.nan) for r in enriched], dtype=float)
         ret = np.array([r["returns"].get(w, np.nan) for r in enriched])
         controls = None
         if market_control:
@@ -188,15 +190,17 @@ def run_study(rows: list[dict], windows=(5, 20), market_control: bool = True
     return _regress(enriched, windows, market_control)
 
 
-def run_study_grouped(rows: list[dict], windows=(5, 20), market_control: bool = True
+def run_study_grouped(rows: list[dict], windows=(5, 20), market_control: bool = True,
+                      signal_field: str = "signal"
                       ) -> dict[str, list[RegressionResult]]:
     """Run one regression per document group.
 
     Each row must carry a "form" key ("10-K", "10-Q", "TRANSCRIPT", …); rows
     are partitioned by `doc_group(form)` so periodic filings and transcripts
-    are modelled separately rather than pooled. Returns an ordered mapping of
-    group label -> per-window results. Groups are emitted in a stable order
-    (periodic filings first, then transcripts, then any fallback bucket).
+    are modelled separately rather than pooled. `signal_field` selects which
+    row key is the regression signal — "signal" for the sentiment study, or
+    "disclosure_change" for the disclosure-change study. Returns an ordered
+    mapping of group label -> per-window results.
     """
     enriched = _enrich(rows, windows, market_control)
 
@@ -209,6 +213,7 @@ def run_study_grouped(rows: list[dict], windows=(5, 20), market_control: bool = 
     ordered_labels += [g for g in grouped if g not in order]
 
     return {
-        label: _regress(grouped[label], windows, market_control, group=label)
+        label: _regress(grouped[label], windows, market_control, group=label,
+                        signal_field=signal_field)
         for label in ordered_labels
     }
