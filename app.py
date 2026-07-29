@@ -592,16 +592,9 @@ with tab_fund:
                     key="growth_plot"
                 )
 
-                growth_series = (
-                    pd.to_numeric(
-                        gdf.loc[metric].drop("Trend"),
-                        errors="coerce"
-                    ) * 100
-                )
-
                 plot_df = pd.DataFrame(
                     {
-                        metric: growth_series
+                        metric: gdf.loc[metric].astype(float) * 100
                     }
                 )
 
@@ -623,11 +616,31 @@ with tab_diff:
         c1, c2, c3 = st.columns(3)
         t = c1.selectbox("Company", eligible, key="diff_ticker")
         ds = by_ticker[t]
-        old_doc = c2.selectbox("Older filing", ds[:-1],
+
+        # A filing is only comparable to the *next* filing of the SAME form
+        # (10-K vs the following 10-K, 10-Q vs the following 10-Q, …). So the
+        # "Older filing" dropdown only offers filings that have a same-form
+        # successor, and the "Newer filing" is auto-locked to that successor.
+        same_form_next = {}
+        for form in {d.form for d in ds}:
+            same_form = [d for d in ds if d.form == form]  # already date-sorted
+            for older, nxt in zip(same_form, same_form[1:]):
+                same_form_next[older.doc_id] = nxt
+
+        old_candidates = [d for d in ds if d.doc_id in same_form_next]
+        if not old_candidates:
+            st.info("Need at least two filings of the same form (e.g. two 10-Ks "
+                    "or two 10-Qs) for this company — fetch more with "
+                    "`scripts/fetch_filings.py`.")
+            st.stop()
+
+        old_doc = c2.selectbox("Older filing", old_candidates,
                                format_func=lambda d: f"{d.form} · {d.date}")
-        newer = [d for d in ds if d.date > old_doc.date]
-        new_doc = c3.selectbox("Newer filing", newer, index=len(newer) - 1,
-                               format_func=lambda d: f"{d.form} · {d.date}")
+        new_doc = same_form_next[old_doc.doc_id]
+        # Newer filing is fixed to the consecutive same-form successor.
+        c3.selectbox("Newer filing", [new_doc], index=0, disabled=True,
+                     format_func=lambda d: f"{d.form} · {d.date}")
+
         if st.button("Run diff", type="primary"):
             with st.spinner("Comparing filings…"):
                 items = diff_mod.diff_documents(old_doc, new_doc)
@@ -713,7 +726,7 @@ with tab_returns:
                 st.markdown("Overall Corpus Signal → Return Study")
 
             st.divider()
-            
+
             grouped_results = ret_mod.run_study_grouped(rows)
             group_counts = {}
             for _row in rows:
@@ -726,7 +739,6 @@ with tab_returns:
                   f"Separate regression over {group_counts.get(group_label, 0)} "
                   f"document(s) in this group."
               )
-            
               for r in results:
 
                 st.subheader(f"{r.window}-Day Forward Return")
