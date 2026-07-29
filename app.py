@@ -112,6 +112,43 @@ def _load_diff_cache() -> dict:
 _DIFF_CACHE = _load_diff_cache()
 
 
+@st.cache_data(show_spinner=False)
+def _load_returns_cache() -> dict:
+    """Load precomputed per-company signal→return studies from
+    data/returns_cache.json (produced by scripts/precompute_returns.py).
+
+    Lets the Signal→returns tab render both the sentiment and disclosure-change
+    regressions instantly, skipping FinBERT extraction and price fetches.
+    Missing file → empty cache and the app computes studies on demand.
+    """
+    cache_path = FILINGS_DIR.parent / "returns_cache.json"
+    if not cache_path.exists():
+        return {}
+    try:
+        return json.loads(cache_path.read_text())
+    except Exception:
+        return {}
+
+
+_RETURNS_CACHE = _load_returns_cache()
+
+
+def _show_source_check(level: str, text: str):
+    """Render the retrieval-grounding notice on a friendly 3-point scale.
+
+    This is a confidence signal for a RAG answer, not a pass/fail gate: the
+    answer and its citations are always shown so the user can verify. High
+    grounding → green, medium → neutral info, low → amber caution (never a
+    scary red 'FAILED').
+    """
+    if level == "high":
+        st.success(text)
+    elif level == "medium":
+        st.info(text)
+    else:
+        st.warning(text)
+
+
 def _render_returns(grouped_results, group_counts):
     """Render grouped signal→return regression results.
 
@@ -319,7 +356,13 @@ with tab_qa:
         with st.chat_message(msg["role"]):
             st.markdown(esc(msg["content"]))
             if msg.get("audit"):
-                (st.success if msg["audit"]["passed"] else st.error)(msg["audit"]["summary"])
+                _a = msg["audit"]
+                # Backward-compat: older entries stored passed/summary.
+                if "level" in _a:
+                    _show_source_check(_a["level"], _a["notice"])
+                else:
+                    _show_source_check("high" if _a.get("passed") else "low",
+                                       _a.get("summary", ""))
             if msg.get("sources"):
                 with st.expander(f"Sources ({len(msg['sources'])})"):
                     for i, (cite, snippet) in enumerate(msg["sources"], 1):
@@ -359,8 +402,8 @@ with tab_qa:
             if ans.backend not in ("extractive", "none"):
                 from finsight.audit import audit_answer
                 report = audit_answer(ans.text, [c for c, _ in ans.sources])
-                (st.success if report.passed else st.error)(report.summary())
-                entry["audit"] = {"passed": report.passed, "summary": report.summary()}
+                _show_source_check(report.level(), report.notice())
+                entry["audit"] = {"level": report.level(), "notice": report.notice()}
             with st.expander(f"Sources ({len(ans.sources)})", expanded=True):
                 for i, (c, score) in enumerate(ans.sources, 1):
                     st.markdown(f"**[{i}]** {s3links.citation_link(c)} · relevance {score:.2f}")
@@ -836,6 +879,34 @@ with tab_returns:
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
         from finsight.store import cached_extract
+
+        # Fast path: precomputed per-company study (both signals) from
+        # data/returns_cache.json. Skips extraction + price fetches entirely.
+        _cached = _RETURNS_CACHE.get(selected_company)
+        if _cached is not None:
+            def _rebuild(study):
+                return {label: [ret_mod.RegressionResult(**r) for r in results]
+                        for label, results in study.items()}
+
+            st.markdown(f"{selected_company} Signal → Return Study")
+            st.caption("Loaded from precomputed study cache.")
+
+            st.header("Signal: Filing Sentiment")
+            st.divider()
+            _render_returns(_rebuild(_cached.get("sentiment", {})),
+                            _cached.get("group_counts", {}))
+
+            st.divider()
+            st.header("Signal: Disclosure Change (substantive edits vs. prior filing)")
+            disclosure = _cached.get("disclosure", {})
+            if not disclosure:
+                st.info("Not enough filings with a comparable prior same-form "
+                        "filing for a disclosure-change regression.")
+            else:
+                st.divider()
+                _render_returns(_rebuild(disclosure),
+                                _cached.get("dc_group_counts", {}))
+            st.stop()
 
         docs_to_use = sorted(
             [d for d in real_docs if d.ticker == selected_company],
