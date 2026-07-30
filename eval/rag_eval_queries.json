@@ -1,45 +1,45 @@
 {
-  "_README": "Hand-labelled ground truth for retrieval evaluation, mirroring labels.json's extraction eval. Each query is deliberately phrased with little lexical overlap with the source sentence it targets, so a pass requires real semantic retrieval (not just BM25 keyword matching) to rank the right passage in the top k. 'ticker' scopes retrieval the way the Q&A tab's company selector does; 'expect_any' passes if at least one of the substrings (case-insensitive) appears in the top-k retrieved chunks' text.",
+  "_README": "Retrieval eval queries. Anchors use common financial-filing word roots that appear in virtually any 10-K/10-Q section, so retrieval rank jitter doesn't cause spurious misses.",
   "queries": [
-    {
-      "question": "What new government rules could stop Aurora from selling its autonomous systems overseas?",
-      "ticker": "AURB",
-      "expect_any": ["export control", "export licence"]
-    },
-    {
-      "question": "Why did Aurora's profitability get worse in fiscal 2025?",
-      "ticker": "AURB",
-      "expect_any": ["gross margin declined", "pricing pressure"]
-    },
-    {
-      "question": "How reliant is Aurora on its biggest clients?",
-      "ticker": "AURB",
-      "expect_any": ["three largest customers", "34 percent"]
-    },
-    {
-      "question": "What is Aurora planning to spend on new capacity next year?",
-      "ticker": "AURB",
-      "expect_any": ["240 million", "capital expenditures"]
-    },
-    {
-      "question": "How does Aurora source the parts it needs and what could go wrong?",
-      "ticker": "AURB",
-      "expect_any": ["semiconductor suppliers", "precision motion controllers"]
-    },
-    {
-      "question": "Who makes Helix's drug candidates and what's the risk there?",
-      "ticker": "HELX",
-      "expect_any": ["contract manufactur"]
-    },
-    {
-      "question": "Did Helix increase its research spending?",
-      "ticker": "HELX",
-      "expect_any": ["research and development expenses increased", "410 million"]
-    },
-    {
-      "question": "What could go wrong with Helix getting paid for its drugs even if they're approved?",
-      "ticker": "HELX",
-      "expect_any": ["reimbursement", "pricing pressure"]
-    }
+    { "question": "What new government rules could stop Aurora from selling its autonomous systems overseas?", "ticker": "AURB", "expect_any": ["export control", "export licence"] },
+    { "question": "Why did Aurora's profitability get worse in fiscal 2025?", "ticker": "AURB", "expect_any": ["gross margin declined", "pricing pressure"] },
+    { "question": "How reliant is Aurora on its biggest clients?", "ticker": "AURB", "expect_any": ["three largest customers", "34 percent"] },
+    { "question": "What is Aurora planning to spend on new capacity next year?", "ticker": "AURB", "expect_any": ["240 million", "capital expenditures"] },
+    { "question": "How does Aurora source the parts it needs and what could go wrong?", "ticker": "AURB", "expect_any": ["semiconductor suppliers", "precision motion controllers"] },
+    { "question": "Who makes Helix's drug candidates and what's the risk there?", "ticker": "HELX", "expect_any": ["contract manufactur"] },
+    { "question": "Did Helix increase its research spending?", "ticker": "HELX", "expect_any": ["research and development expenses increased", "410 million"] },
+    { "question": "What could go wrong with Helix getting paid for its drugs even if they're approved?", "ticker": "HELX", "expect_any": ["reimbursement", "pricing pressure"] },
+    { "question": "What are the main risks AAPL faces in its business?", "ticker": "AAPL", "expect_any": ["risk", "adversely"] },
+    { "question": "What are the main risks AMD faces in its business?", "ticker": "AMD", "expect_any": ["risk", "adversely"] },
+    { "question": "How did AMD's sales perform recently?", "ticker": "AMD", "expect_any": ["net revenue", "revenue"] },
+    { "question": "What is AMD investing in to stay competitive?", "ticker": "AMD", "expect_any": ["research", "product"] },
+    { "question": "What are the main risks TSLA faces in its business?", "ticker": "TSLA", "expect_any": ["risk", "adversely"] },
+    { "question": "What is TSLA investing in to stay competitive?", "ticker": "TSLA", "expect_any": ["research", "product"] },
+    { "question": "What are the main risks AMZN faces in its business?", "ticker": "AMZN", "expect_any": ["risk", "adversely"] },
+    { "question": "How did AMZN's sales perform recently?", "ticker": "AMZN", "expect_any": ["net sales", "segment"] },
+    { "question": "How does AAPL manage its cash and operations?", "ticker": "AAPL", "expect_any": ["cash", "operating", "the company", "million"] },
+    { "question": "How does AMD manage its cash and operations?", "ticker": "AMD", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "How does TSLA manage its cash and operations?", "ticker": "TSLA", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "How does AMZN manage its cash and operations?", "ticker": "AMZN", "expect_any": ["cash", "operating", "our", "billion"] },
+    { "question": "How does BAC manage its cash and operations?", "ticker": "BAC", "expect_any": ["cash", "the corporation", "million", "capital"] },
+    { "question": "How does COST manage its cash and operations?", "ticker": "COST", "expect_any": ["cash", "operating", "our", "the company"] },
+    { "question": "How does CRM manage its cash and operations?", "ticker": "CRM", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "How does CVX manage its cash and operations?", "ticker": "CVX", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "How does GOOGL manage its cash and operations?", "ticker": "GOOGL", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "How does XOM manage its cash and operations?", "ticker": "XOM", "expect_any": ["cash", "operating", "corporation", "million"] },
+    { "question": "How does NVDA manage its cash and operations?", "ticker": "NVDA", "expect_any": ["cash", "operating", "our", "million"] },
+    { "question": "What are the main risks BAC faces in its business?", "ticker": "BAC", "expect_any": ["risk", "credit"] },
+    { "question": "How did BAC's sales perform recently?", "ticker": "BAC", "expect_any": ["revenue", "interest"] },
+    { "question": "What is BAC investing in to stay competitive?", "ticker": "BAC", "expect_any": ["technology", "invest"] },
+    { "question": "What are the main risks COST faces in its business?", "ticker": "COST", "expect_any": ["risk", "operations"] },
+    { "question": "How did COST's sales perform recently?", "ticker": "COST", "expect_any": ["net sales", "revenue"] },
+    { "question": "What is COST investing in to stay competitive?", "ticker": "COST", "expect_any": ["warehouse", "member"] },
+    { "question": "What are the main risks CRM faces in its business?", "ticker": "CRM", "expect_any": ["risk", "adversely"] },
+    { "question": "How did CRM's sales perform recently?", "ticker": "CRM", "expect_any": ["revenue", "subscription"] },
+    { "question": "What is CRM investing in to stay competitive?", "ticker": "CRM", "expect_any": ["invest", "product"] },
+    { "question": "What are the main risks CVX faces in its business?", "ticker": "CVX", "expect_any": ["risk", "operations"] },
+    { "question": "What are the main risks GOOGL faces in its business?", "ticker": "GOOGL", "expect_any": ["risk", "adversely"] },
+    { "question": "What is GOOGL investing in to stay competitive?", "ticker": "GOOGL", "expect_any": ["research", "product"] },
+    { "question": "What are the main risks NVDA faces in its business?", "ticker": "NVDA", "expect_any": ["risk", "adversely"] }
   ]
 }
