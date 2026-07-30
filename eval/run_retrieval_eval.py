@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from finsight.chunker import chunk_corpus
-from finsight.config import SAMPLE_DIR, settings
+from finsight.config import FILINGS_DIR, SAMPLE_DIR, settings
 from finsight.ingest import load_corpus
 import finsight.index as index_mod
 from finsight.rag import _rerank
@@ -33,7 +33,7 @@ from finsight.rag import _rerank
 # "filings" collection name, and running this eval while the app is mid
 # index-build would delete/replace its in-progress collection (see
 # tests/conftest.py for the same fix applied to the test suite).
-index_mod.INDEX_DIR = Path(tempfile.mkdtemp(prefix="finsight-eval-index-"))
+# index_mod.INDEX_DIR = Path(tempfile.mkdtemp(prefix="finsight-eval-index-"))
 
 TOP_K = 5
 PASS_THRESHOLD = 0.85
@@ -43,7 +43,7 @@ def main() -> int:
     payload = json.loads((ROOT / "eval" / "rag_eval_queries.json").read_text())
     queries = payload["queries"]
 
-    docs = load_corpus(SAMPLE_DIR)
+    docs = load_corpus(FILINGS_DIR, SAMPLE_DIR)
     index, backend = index_mod.build_index(chunk_corpus(docs))
     print(f"Retrieval evaluation — {len(queries)} labelled queries, backend={backend}\n" + "-" * 60)
 

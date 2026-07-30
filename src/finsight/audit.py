@@ -37,6 +37,35 @@ class AuditReport:
         verdict = "PASSED" if self.passed else "FAILED"
         return f"Hallucination audit {verdict}: {g}/{n} sentences grounded ({self.backend})"
 
+    def level(self) -> str:
+        """UI severity for the source-support notice: 'high' | 'medium' | 'low'.
+
+        This is a retrieval-grounding *confidence* signal, not a pass/fail
+        gate — the answer and its citations are always shown so the user can
+        verify for themselves. We surface it on a friendly 3-point scale
+        instead of a scary binary FAILED.
+        """
+        if self.grounded_ratio >= PASS_RATIO:
+            return "high"
+        if self.grounded_ratio >= 0.5:
+            return "medium"
+        return "low"
+
+    def notice(self) -> str:
+        """Friendly, user-facing phrasing of the grounding check."""
+        n = len(self.sentences)
+        g = sum(s.grounded for s in self.sentences)
+        pct = int(round(self.grounded_ratio * 100))
+        if self.level() == "high":
+            return (f"Source check: {g}/{n} statements ({pct}%) are supported by the "
+                    "cited passages. Open the sources below to verify.")
+        if self.level() == "medium":
+            return (f"Source check: {g}/{n} statements ({pct}%) are clearly supported "
+                    "by the cited passages. Please double-check the citations for the rest.")
+        return (f"Source check: only {g}/{n} statements ({pct}%) map cleanly onto the "
+                "cited passages. Treat this answer with caution and verify against the "
+                "sources below before relying on it.")
+
 
 def _normalise_number(s: str) -> str:
     return re.sub(r"[\s,$]", "", s.lower()).replace("percent", "%")

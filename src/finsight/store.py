@@ -5,7 +5,7 @@ import sqlite3
 
 from .config import DATA_DIR
 
-EXTRACTOR_VERSION = 2
+EXTRACTOR_VERSION = 3
 _DB = DATA_DIR / "finsight.db"
 
 

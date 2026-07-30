@@ -89,6 +89,193 @@ def boot():
 
 docs, chunks, index, backend = boot()
 tickers = sorted({d.ticker for d in docs})
+
+
+@st.cache_data(show_spinner=False)
+def _load_diff_cache() -> dict:
+    """Load precomputed diffs from data/diff_cache.json if present.
+
+    The cache is produced by scripts/precompute_diffs.py (ideally on a GPU
+    box) so the Filing-diff tab can show results instantly instead of running
+    the slow embedding diff on a CPU-only machine. Missing file → empty cache,
+    and the app falls back to computing diffs on demand.
+    """
+    cache_path = FILINGS_DIR.parent / "diff_cache.json"
+    if not cache_path.exists():
+        return {}
+    try:
+        return json.loads(cache_path.read_text())
+    except Exception:
+        return {}
+
+
+_DIFF_CACHE = _load_diff_cache()
+
+
+@st.cache_data(show_spinner=False)
+def _load_returns_cache() -> dict:
+    """Load precomputed per-company signal→return studies from
+    data/returns_cache.json (produced by scripts/precompute_returns.py).
+
+    Lets the Signal→returns tab render both the sentiment and disclosure-change
+    regressions instantly, skipping FinBERT extraction and price fetches.
+    Missing file → empty cache and the app computes studies on demand.
+    """
+    cache_path = FILINGS_DIR.parent / "returns_cache.json"
+    if not cache_path.exists():
+        return {}
+    try:
+        return json.loads(cache_path.read_text())
+    except Exception:
+        return {}
+
+
+_RETURNS_CACHE = _load_returns_cache()
+
+
+def _show_source_check(level: str, text: str):
+    """Render the retrieval-grounding notice on a friendly 3-point scale.
+
+    This is a confidence signal for a RAG answer, not a pass/fail gate: the
+    answer and its citations are always shown so the user can verify. High
+    grounding → green, medium → neutral info, low → amber caution (never a
+    scary red 'FAILED').
+    """
+    if level == "high":
+        st.success(text)
+    elif level == "medium":
+        st.info(text)
+    else:
+        st.warning(text)
+
+
+def _render_returns(grouped_results, group_counts):
+    """Render grouped signal→return regression results.
+
+    Shared by both the live-compute path and the precomputed-cache path in the
+    Signal→returns tab, so cached and freshly-computed studies look identical.
+    """
+    for group_label, results in grouped_results.items():
+      st.header(group_label)
+      st.caption(
+          f"Separate regression over {group_counts.get(group_label, 0)} "
+          f"document(s) in this group."
+      )
+      for r in results:
+
+        st.subheader(f"{r.window}-Day Forward Return")
+
+        c1, c2, c3 = st.columns(3)
+
+        c1.metric(
+            "R²",
+            f"{r.r2:.3f}",
+            help="""
+        Coefficient of Determination : Measures how much of the variation in future stock returns is explained by the model. The higher the better.
+
+        Benchmark:
+
+        • >0.60  Strong
+
+        • 0.30–0.60  Moderate
+
+        • <0.30  Weak
+        """
+        )
+
+        c2.metric(
+            "RMSE",
+            f"{r.rmse:.4f}",
+            help="""
+        Root Mean Squared Error : Measures the typical prediction error. Lower values indicate better predictive accuracy.
+        """
+        )
+
+        c3.metric(
+            "MAE",
+            f"{r.mae:.4f}",
+            help="""
+        Mean Absolute Error : Measures the average absolute difference between predicted and actual returns. Lower values indicate more accurate predictions.
+        """
+        )
+
+        c4, c5, c6 = st.columns(3)
+
+        c4.metric(
+            "Coefficient (β)",
+            f"{r.coef:.4f}",
+            help="""
+        Regression coefficient : Represents the expected change in future return for a one-unit increase in the filing sentiment signal.
+
+        • Positive value - Positive relationship
+
+        • Negative value - Negative relationship
+        """
+        )
+
+        c5.metric(
+            "t-statistic",
+            f"{r.t_stat:.2f}",
+            help="""
+        It measures whether the relationship is statistically significant.
+
+        Benchmark:
+
+        • |t| > 2  → Significant
+
+        • |t| < 2  → Weak statistical evidence
+        """
+        )
+
+        c6.metric(
+            "Observations",
+            str(r.n),
+            help="""
+        Number of company filings used to train the regression model. More observations generally improve the reliability of the estimated relationship.
+        """
+        )
+
+        if abs(r.t_stat) >= 2:
+            verdict = "Positive" if r.coef > 0 else "Negative"
+        else:
+            verdict = "Inconclusive"
+
+        c7, c8, c9 = st.columns(3)
+
+        if "mkt" in r.controls:
+            beta, t = r.controls["mkt"]
+            c7.metric(
+                "Market β",
+                f"{beta:.3f}",
+                help="""
+        Regression coefficient for the market return (SPY). Controls for overall market movement so that the filing signal is evaluated independently.
+        """
+            )
+            c8.metric(
+                "Market t-stat",
+                f"{t:.2f}",
+                help="""
+        Statistical significance of the market coefficient. Higher absolute values indicate stronger evidence that market movements influence future returns.
+        """
+            )
+
+        c9.metric(
+            "Signal Assessment",
+            verdict,
+            help="""
+        Overall assessment of the predictive power of the filing signal.
+
+        • Positive - Positive relationship with statistically meaningful evidence.
+
+        • Inconclusive - Relationship exists but evidence is not yet strong enough to draw firm conclusions.
+
+        • Negative - Negative relationship supported by the regression.
+        """
+        )
+
+        st.divider()
+    st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
+               "holding the market return constant. |t| > 2 ≈ significant at 5%.")
 n_real = len([d for d in docs if d.path.parent.name != "sample"])
 
 left, right = st.columns([3, 2])
@@ -169,7 +356,13 @@ with tab_qa:
         with st.chat_message(msg["role"]):
             st.markdown(esc(msg["content"]))
             if msg.get("audit"):
-                (st.success if msg["audit"]["passed"] else st.error)(msg["audit"]["summary"])
+                _a = msg["audit"]
+                # Backward-compat: older entries stored passed/summary.
+                if "level" in _a:
+                    _show_source_check(_a["level"], _a["notice"])
+                else:
+                    _show_source_check("high" if _a.get("passed") else "low",
+                                       _a.get("summary", ""))
             if msg.get("sources"):
                 with st.expander(f"Sources ({len(msg['sources'])})"):
                     for i, (cite, snippet) in enumerate(msg["sources"], 1):
@@ -209,8 +402,8 @@ with tab_qa:
             if ans.backend not in ("extractive", "none"):
                 from finsight.audit import audit_answer
                 report = audit_answer(ans.text, [c for c, _ in ans.sources])
-                (st.success if report.passed else st.error)(report.summary())
-                entry["audit"] = {"passed": report.passed, "summary": report.summary()}
+                _show_source_check(report.level(), report.notice())
+                entry["audit"] = {"level": report.level(), "notice": report.notice()}
             with st.expander(f"Sources ({len(ans.sources)})", expanded=True):
                 for i, (c, score) in enumerate(ans.sources, 1):
                     st.markdown(f"**[{i}]** {s3links.citation_link(c)} · relevance {score:.2f}")
@@ -303,29 +496,23 @@ with tab_fund:
 
     st.caption("Computed financial analysis: Health Checks, Ratios and YoY growth")
     source = st.radio("Data source",
-                      ["Sample (offline)", "SEC XBRL (structured)", "yfinance"],
+                      ["SEC XBRL (structured)", "yfinance"],
                       horizontal=True, label_visibility="collapsed")
     periods = []
-    if source == "Sample (offline)":
-        payload = json.loads((SAMPLE_DIR / "AURB_fundamentals.json").read_text())
-        periods = [metrics_mod.Fundamentals(**{k: v for k, v in p.items()})
-                   for p in payload["periods"]]
-        st.caption(f"Synthetic fundamentals for {payload['ticker']} (USD millions)")
-    else:
-        cc1, cc2 = st.columns([1, 3])
-        live_ticker = cc1.text_input("Ticker", value="AAPL", label_visibility="collapsed")
-        if cc2.button("Fetch statements"):
-            with st.spinner("Fetching…"):
-                try:
-                    if source.startswith("SEC"):
-                        from finsight.xbrl import fetch_fundamentals
-                        st.session_state.fund = fetch_fundamentals(live_ticker)
-                        st.caption("Source: SEC XBRL companyfacts — issuer-filed structured data.")
-                    else:
-                        st.session_state.fund = metrics_mod.from_yfinance(live_ticker)
-                except Exception as e:
-                    st.error(f"Fetch failed: {e}")
-        periods = st.session_state.get("fund", [])
+    cc1, cc2 = st.columns([1, 3])
+    live_ticker = cc1.text_input("Ticker", value="AAPL", label_visibility="collapsed")
+    if cc2.button("Fetch statements"):
+        with st.spinner("Fetching…"):
+            try:
+                if source.startswith("SEC"):
+                    from finsight.xbrl import fetch_fundamentals
+                    st.session_state.fund = fetch_fundamentals(live_ticker)
+                    st.caption("Source: SEC XBRL companyfacts — issuer-filed structured data.")
+                else:
+                    st.session_state.fund = metrics_mod.from_yfinance(live_ticker)
+            except Exception as e:
+                st.error(f"Fetch failed: {e}")
+    periods = st.session_state.get("fund", [])
 
     if periods:
         import pandas as pd
@@ -592,16 +779,9 @@ with tab_fund:
                     key="growth_plot"
                 )
 
-                growth_series = (
-                    pd.to_numeric(
-                        gdf.loc[metric].drop("Trend"),
-                        errors="coerce"
-                    ) * 100
-                )
-
                 plot_df = pd.DataFrame(
                     {
-                        metric: growth_series
+                        metric: gdf.loc[metric].astype(float) * 100
                     }
                 )
 
@@ -613,7 +793,12 @@ with tab_fund:
 with tab_diff:
     st.caption("Detects substantive disclosure changes between two filings of the same company, "
                "filtering out boilerplate and numeric-only edits.")
-    by_ticker = {t: sorted([d for d in docs if d.ticker == t], key=lambda d: d.date)
+    # Diff only applies to periodic filings (10-K / 10-Q). Earnings-call
+    # transcripts are excluded — they aren't versioned disclosures with a
+    # comparable predecessor, so diffing them isn't meaningful.
+    by_ticker = {t: sorted([d for d in docs
+                            if d.ticker == t and d.form != "TRANSCRIPT"],
+                           key=lambda d: d.date)
                  for t in tickers}
     eligible = [t for t, ds in by_ticker.items() if len(ds) >= 2]
     if not eligible:
@@ -623,14 +808,42 @@ with tab_diff:
         c1, c2, c3 = st.columns(3)
         t = c1.selectbox("Company", eligible, key="diff_ticker")
         ds = by_ticker[t]
-        old_doc = c2.selectbox("Older filing", ds[:-1],
+
+        # A filing is only comparable to the *next* filing of the SAME form
+        # (10-K vs the following 10-K, 10-Q vs the following 10-Q, …). So the
+        # "Older filing" dropdown only offers filings that have a same-form
+        # successor, and the "Newer filing" is auto-locked to that successor.
+        same_form_next = {}
+        for form in {d.form for d in ds}:
+            same_form = [d for d in ds if d.form == form]  # already date-sorted
+            for older, nxt in zip(same_form, same_form[1:]):
+                same_form_next[older.doc_id] = nxt
+
+        old_candidates = [d for d in ds if d.doc_id in same_form_next]
+        if not old_candidates:
+            st.info("Need at least two filings of the same form (e.g. two 10-Ks "
+                    "or two 10-Qs) for this company — fetch more with "
+                    "`scripts/fetch_filings.py`.")
+            st.stop()
+
+        old_doc = c2.selectbox("Older filing", old_candidates,
                                format_func=lambda d: f"{d.form} · {d.date}")
-        newer = [d for d in ds if d.date > old_doc.date]
-        new_doc = c3.selectbox("Newer filing", newer, index=len(newer) - 1,
-                               format_func=lambda d: f"{d.form} · {d.date}")
+        new_doc = same_form_next[old_doc.doc_id]
+        # Newer filing is fixed to the consecutive same-form successor.
+        c3.selectbox("Newer filing", [new_doc], index=0, disabled=True,
+                     format_func=lambda d: f"{d.form} · {d.date}")
+
         if st.button("Run diff", type="primary"):
-            with st.spinner("Comparing filings…"):
-                items = diff_mod.diff_documents(old_doc, new_doc)
+            cache_key = f"{old_doc.doc_id}|{new_doc.doc_id}"
+            cached = _DIFF_CACHE.get(cache_key)
+            if cached is not None:
+                # Precomputed on the GPU box: rebuild DiffItem objects from the
+                # cached dicts so the rendering below is identical to a live run.
+                items = [diff_mod.DiffItem(**d) for d in cached]
+                st.caption("Loaded from precomputed diff cache.")
+            else:
+                with st.spinner("Comparing filings…"):
+                    items = diff_mod.diff_documents(old_doc, new_doc)
             shown = [i for i in items if i.kind in ("new", "substantive", "removed")]
             st.success(f"{len(shown)} substantive changes "
                        f"({len(items) - len(shown)} minor edits suppressed)")
@@ -651,21 +864,14 @@ with tab_returns:
         "Evaluate whether filing sentiment predicts future stock returns."
     )
 
-    study_col1, study_col2 = st.columns([2,2])
+    # Per-company only: pooling different companies' returns into one
+    # regression has no clean economic meaning, so the study always scopes to
+    # a single ticker (like the RAG tab's company filter).
+    selected_company = st.selectbox(
+        "Company",
+        sorted({d.ticker for d in real_docs})
+    ) if real_docs else None
 
-    study_type = study_col1.radio(
-        "Study Type",
-        ["Overall Corpus", "Individual Company"],
-        horizontal=True
-    )
-
-    selected_company = None
-
-    if study_type == "Individual Company":
-        selected_company = study_col2.selectbox(
-            "Company",
-            sorted({d.ticker for d in real_docs})
-        )
     if not real_docs:
         st.info("No real filings loaded yet. Once `scripts/fetch_filings.py` has run, "
                 "this tab scores sentiment per filing, fetches forward returns, and "
@@ -673,30 +879,85 @@ with tab_returns:
     elif st.button("Run signal → return study", type="primary"):
         from finsight import returns as ret_mod
         from finsight.store import cached_extract
+
+        # Fast path: precomputed per-company study (both signals) from
+        # data/returns_cache.json. Skips extraction + price fetches entirely.
+        _cached = _RETURNS_CACHE.get(selected_company)
+        if _cached is not None:
+            def _rebuild(study):
+                return {label: [ret_mod.RegressionResult(**r) for r in results]
+                        for label, results in study.items()}
+
+            st.markdown(f"{selected_company} Signal → Return Study")
+            st.caption("Loaded from precomputed study cache.")
+
+            st.header("Signal: Filing Sentiment")
+            st.divider()
+            _render_returns(_rebuild(_cached.get("sentiment", {})),
+                            _cached.get("group_counts", {}))
+
+            st.divider()
+            st.header("Signal: Disclosure Change (substantive edits vs. prior filing)")
+            disclosure = _cached.get("disclosure", {})
+            if not disclosure:
+                st.info("Not enough filings with a comparable prior same-form "
+                        "filing for a disclosure-change regression.")
+            else:
+                st.divider()
+                _render_returns(_rebuild(disclosure),
+                                _cached.get("dc_group_counts", {}))
+            st.stop()
+
+        docs_to_use = sorted(
+            [d for d in real_docs if d.ticker == selected_company],
+            key=lambda d: d.date,
+        )
+
+        # Disclosure-change signal: for each periodic filing, how many
+        # substantive changes it introduced versus the previous filing of the
+        # same form. Reuses the diff engine (via the precomputed diff cache
+        # when available, else computed live) so we don't recompute diffs here.
+        prev_same_form = {}
+        _seen = {}
+        for d in docs_to_use:
+            if d.form != "TRANSCRIPT" and d.form in _seen:
+                prev_same_form[d.doc_id] = _seen[d.form]
+            _seen[d.form] = d
+
+        def _disclosure_change(doc):
+            """Count substantive changes vs the previous same-form filing.
+
+            Returns None when there is no comparable predecessor (e.g. the
+            first 10-K, or transcripts), so that row is dropped from the
+            disclosure-change regression rather than counted as zero change.
+            """
+            prev = prev_same_form.get(doc.doc_id)
+            if prev is None:
+                return None
+            key = f"{prev.doc_id}|{doc.doc_id}"
+            cached = _DIFF_CACHE.get(key)
+            if cached is not None:
+                items = cached
+                return sum(1 for it in items
+                           if it.get("kind") in ("new", "substantive", "removed"))
+            items = diff_mod.diff_documents(prev, doc)
+            return sum(1 for it in items
+                       if it.kind in ("new", "substantive", "removed"))
+
         prog = st.progress(0.0, "Scoring sentiment per filing…")
         rows = []
-
-        docs_to_use = real_docs
-
-        if selected_company is not None:
-            docs_to_use = [
-                d for d in real_docs
-                if d.ticker == selected_company
-            ]
-
         for i, d in enumerate(docs_to_use):
-
             # Reuses the same SQLite-cached signal as the "Structured signals"
             # tab (keyed on doc_id) instead of re-running FinBERT over every
             # filing on every click — the dominant cost of this tab.
             s = cached_extract(d, use_llm=False)
-
             rows.append(
                 {
                     "ticker": d.ticker,
                     "date": d.date,
                     "form": d.form,
-                    "signal": s["sentiment_score"]
+                    "signal": s["sentiment_score"],
+                    "disclosure_change": _disclosure_change(d),
                 }
             )
             prog.progress((i + 1) / len(docs_to_use))
@@ -707,147 +968,37 @@ with tab_returns:
                 "Regression results should be interpreted with caution."
             )
         with st.spinner("Fetching prices and running regressions…"):
-            if selected_company:
-                st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
-            else:
-                st.markdown("Overall Corpus Signal → Return Study")
+            st.markdown(f"{selected_company} Signal → Return Study Analysing {len(rows)} filings")
 
-            st.divider()
-            
-            grouped_results = ret_mod.run_study_grouped(rows)
             group_counts = {}
             for _row in rows:
                 _g = ret_mod.doc_group(_row.get("form", ""))
                 group_counts[_g] = group_counts.get(_g, 0) + 1
 
-            for group_label, results in grouped_results.items():
-              st.header(group_label)
-              st.caption(
-                  f"Separate regression over {group_counts.get(group_label, 0)} "
-                  f"document(s) in this group."
-              )
-            
-              for r in results:
+            # Study 1: sentiment signal → forward returns.
+            st.header("Signal: Filing Sentiment")
+            st.divider()
+            sentiment_results = ret_mod.run_study_grouped(rows, signal_field="signal")
+            _render_returns(sentiment_results, group_counts)
 
-                st.subheader(f"{r.window}-Day Forward Return")
-
-                c1, c2, c3 = st.columns(3)
-
-                c1.metric(
-                    "R²",
-                    f"{r.r2:.3f}",
-                    help="""
-                Coefficient of Determination : Measures how much of the variation in future stock returns is explained by the model. The higher the better.
-
-                Benchmark:
-                
-                • >0.60  Strong
-                
-                • 0.30–0.60  Moderate
-                
-                • <0.30  Weak
-                """
+            # Study 2: disclosure-change signal → forward returns. Only rows
+            # with a comparable predecessor carry a disclosure_change value;
+            # the rest are dropped by the regression's NaN mask.
+            dc_rows = [r for r in rows if r.get("disclosure_change") is not None]
+            st.divider()
+            st.header("Signal: Disclosure Change (substantive edits vs. prior filing)")
+            if len(dc_rows) < 5:
+                st.info(
+                    f"Only {len(dc_rows)} filing(s) have a comparable prior "
+                    "same-form filing, so the disclosure-change regression is "
+                    "omitted (needs more history to be meaningful)."
                 )
-
-                c2.metric(
-                    "RMSE",
-                    f"{r.rmse:.4f}",
-                    help="""
-                Root Mean Squared Error : Measures the typical prediction error. Lower values indicate better predictive accuracy.
-                """
-                )
-
-                c3.metric(
-                    "MAE",
-                    f"{r.mae:.4f}",
-                    help="""
-                Mean Absolute Error : Measures the average absolute difference between predicted and actual returns. Lower values indicate more accurate predictions.
-                """
-                )
-
-                c4, c5, c6 = st.columns(3)
-
-                c4.metric(
-                    "Coefficient (β)",
-                    f"{r.coef:.4f}",
-                    help="""
-                Regression coefficient : Represents the expected change in future return for a one-unit increase in the filing sentiment signal.
-
-                • Positive value - Positive relationship
-                
-                • Negative value - Negative relationship
-                """
-                )
-
-                c5.metric(
-                    "t-statistic",
-                    f"{r.t_stat:.2f}",
-                    help="""
-                It measures whether the relationship is statistically significant.
-
-                Benchmark:
-                
-                • |t| > 2  → Significant
-                
-                • |t| < 2  → Weak statistical evidence
-                """
-                )
-
-                c6.metric(
-                    "Observations",
-                    str(r.n),
-                    help="""
-                Number of company filings used to train the regression model. More observations generally improve the reliability of the estimated relationship.
-                """
-                )
-
-                if abs(r.t_stat) >= 2:
-
-                    if r.coef > 0:
-                        verdict = "Positive"
-
-                    else:
-                        verdict = "Negative"
-
-                else:
-                    verdict = "Inconclusive"
-
-                c7, c8, c9 = st.columns(3)
-
-                if "mkt" in r.controls:
-
-                    beta, t = r.controls["mkt"]
-
-                    c7.metric(
-                        "Market β",
-                        f"{beta:.3f}",
-                        help="""
-                Regression coefficient for the market return (SPY). Controls for overall market movement so that the filing signal is evaluated independently.
-                """
-                    )
-
-                    c8.metric(
-                        "Market t-stat",
-                        f"{t:.2f}",
-                        help="""
-                Statistical significance of the market coefficient. Higher absolute values indicate stronger evidence that market movements influence future returns.
-                """
-                    )
-
-                c9.metric(
-                    "Signal Assessment",
-                    verdict,
-                    help="""
-                Overall assessment of the predictive power of the filing signal.
-
-                • Positive - Positive relationship with statistically meaningful evidence.
-                
-                • Inconclusive - Relationship exists but evidence is not yet strong enough to draw firm conclusions.
-                
-                • Negative - Negative relationship supported by the regression.
-                """
-                )
-
+            else:
+                dc_counts = {}
+                for _row in dc_rows:
+                    _g = ret_mod.doc_group(_row.get("form", ""))
+                    dc_counts[_g] = dc_counts.get(_g, 0) + 1
                 st.divider()
-        st.caption("Coefficient b is the marginal forward return per unit of sentiment, "
-                   "holding the market return constant. |t| > 2 ≈ significant at 5%.")
+                dc_results = ret_mod.run_study_grouped(
+                    dc_rows, signal_field="disclosure_change")
+                _render_returns(dc_results, dc_counts)

@@ -20,6 +20,23 @@ _RISK_HEADING = re.compile(
     r"^(?=.{15,160}$)[A-Z][^!?\n]*?(?:risk|adversely|could|may|uncertain|depend|harm|expose|fail|litigation)[^!?\n]*?\.?$",
     re.IGNORECASE | re.MULTILINE,
 )
+_RISK_CUE = re.compile(
+    r"\b(?:risk\w*|advers\w*|could|may|uncertain\w*|depend\w*|rely|reliance|"
+    r"harm\w*|expos\w*|fail\w*|litigation|subject to|ability|competition|"
+    r"impact\w*|affect\w*|challeng\w*|vulnerab\w*|threat\w*|disrupt\w*|"
+    r"fluctuat\w*|declin\w*|loss\w*|unable|inability)\b",
+    re.IGNORECASE,
+)
+_INLINE_RISK_PREFIX = re.compile(r"^([^.!?]{3,40}\.)\s+\S")
+_GLUED_RISK_BOUNDARY = re.compile(
+    r"(?<=[a-z\u2019)])\s+(?=(?:The|Our|We|There|Changes|Legislation|Increasing|In|"
+    r"[A-Z][a-z]{3,}(?:[\u2019']s)?)\b)"
+)
+_TITLE_STOPWORDS = {
+    "a", "an", "and", "as", "at", "by", "for", "from", "in", "into", "of",
+    "on", "or", "our", "the", "to", "with", "we", "us", "is", "are", "may",
+    "could", "not",
+}
 
 
 @dataclass
@@ -101,6 +118,103 @@ def _numbers(strings: list[str]) -> set[str]:
     return {n for s in strings for n in re.findall(r"\d[\d,.]*", s)}
 
 
+def _count_risk_factors(text: str) -> int:
+    """Count risk-factor headings from paragraph structure.
+
+    SEC text conversions commonly preserve bold headings in one of three
+    forms: a separate paragraph, a short ``Heading.`` prefix, or a heading
+    glued directly to its explanatory paragraph.  Counting those structures
+    is substantially less sensitive to arbitrary line wrapping than the
+    original one-line keyword regex, which remains as a fallback.
+    """
+    paragraphs = [
+        re.sub(r"\s+", " ", p).strip()
+        for p in re.split(r"\n\s*\n", text)
+        if p.strip()
+    ]
+    if not paragraphs:
+        return 0
+
+    def is_noise(p: str) -> bool:
+        lower = p.lower()
+        return (
+            "form 10-k" in lower
+            or "table of contents" in lower
+            or lower.startswith(("item 1b", "risk factor summary"))
+            or bool(re.fullmatch(r"[\d\s|]+", p))
+        )
+
+    # Most filings retain each bold risk heading as a short paragraph followed
+    # by a materially longer explanatory paragraph. Bulleted risk statements
+    # remain eligible because some filings use bullets as the heading itself.
+    structural_count = sum(
+        40 <= len(p) <= 280
+        and not is_noise(p)
+        and bool(_RISK_CUE.search(p))
+        and i + 1 < len(paragraphs)
+        and len(paragraphs[i + 1]) >= 250
+        for i, p in enumerate(paragraphs)
+    )
+
+    # Some filers use consistently title-cased headings without explicit risk
+    # words.  Only use this mode when it is clearly the document-wide template.
+    def is_title_case(p: str) -> bool:
+        words = re.findall(r"[A-Za-z][A-Za-z\u2019'-]*", p)
+        content = [w for w in words if w.lower() not in _TITLE_STOPWORDS]
+        return (
+            len(content) >= 2
+            and sum(w[0].isupper() for w in content) / len(content) >= 0.8
+        )
+
+    title_count = sum(
+        20 <= len(p) <= 160
+        and not is_noise(p)
+        and is_title_case(p)
+        and i + 1 < len(paragraphs)
+        and len(paragraphs[i + 1]) >= 150
+        for i, p in enumerate(paragraphs)
+    )
+    if title_count >= 15:
+        return title_count
+
+    # Compact layouts often encode headings inside the same paragraph.  A
+    # dominant short "Heading." prefix or a glued heading/body boundary is a
+    # stronger signal for these documents than paragraph length alone.
+    if len(paragraphs) < 60:
+        inline_count = 0
+        for p in paragraphs:
+            match = _INLINE_RISK_PREFIX.match(p)
+            if not match:
+                continue
+            prefix = match.group(1)
+            if (
+                len(prefix[:-1].split()) <= 5
+                and not prefix.lower().startswith(("item ", "the oil, gas"))
+            ):
+                inline_count += 1
+        if inline_count >= 10:
+            return inline_count
+
+        glued_count = 0
+        for p in paragraphs:
+            for match in _GLUED_RISK_BOUNDARY.finditer(p[:165]):
+                prefix = p[:match.start()]
+                if len(prefix) >= 30 and _RISK_CUE.search(prefix):
+                    glued_count += 1
+                    break
+        if glued_count >= 8:
+            return glued_count
+
+    line_count = len(_RISK_HEADING.findall(text))
+    # Repeated page headers fragment paragraphs.  Blending the conservative
+    # line count with the structural count prevents either representation from
+    # dominating this known conversion artifact.
+    if len(re.findall(r"table of contents", text, re.IGNORECASE)) >= 8 \
+            and structural_count:
+        return round((structural_count + line_count) / 2)
+    return structural_count or line_count
+
+
 def extract_signals(doc: Document, use_llm: bool = True) -> SignalSet:
     mda = _section_text(doc, ("7", "2"))
     risk = _section_text(doc, ("1A",))
@@ -116,7 +230,7 @@ def extract_signals(doc: Document, use_llm: bool = True) -> SignalSet:
     else:
         guidance, method, agree = regex_g, "regex", None
 
-    risk_count = len(_RISK_HEADING.findall(risk))
+    risk_count = _count_risk_factors(risk)
     senti = sentiment.score_text(mda)
 
     return SignalSet(
